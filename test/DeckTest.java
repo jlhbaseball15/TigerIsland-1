@@ -15,9 +15,9 @@ public class DeckTest {
 
     @Test
     public void RecieveThreeHexes() {
-        Hex[][] hex = MyDeck.getTile();
-        Assert.assertEquals('A', hex[0][0].getTerrain());
-        Assert.assertEquals('A', hex[0][1].getTerrain());
-        Assert.assertEquals('V', hex[0][2].getTerrain());
+        Hex[] hex = MyDeck.getTile();
+        Assert.assertEquals('A', hex[0].getTerrain());
+        Assert.assertEquals('A', hex[1].getTerrain());
+        Assert.assertEquals('V', hex[2].getTerrain());
     }
 }

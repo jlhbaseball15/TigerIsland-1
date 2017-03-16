@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 
 
 /**
@@ -12,14 +11,14 @@ import java.util.IdentityHashMap;
  */
 public class Maptest {
 
-    private map gameBoard;
+    private GameBoard gameBoard;
     private Hex hex[];
     private char type[] = {'V', 'L', 'G'};
     private Point HexPoints[];
 
     @Before
     public void MapObject(){
-        gameBoard = new map();
+        gameBoard = new GameBoard();
         hex = new Hex[3];
         HexPoints = new Point [3];
         HexPoints[0] = new Point (0,0);

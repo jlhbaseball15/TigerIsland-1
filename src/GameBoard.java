@@ -4,7 +4,7 @@ import java.util.HashMap;
 /**
  * Created by dontf on 3/14/2017.
  */
-public class map {
+public class GameBoard {
     private final int mapCapacity = 144;
     private final int tileSize = 3;
 
@@ -12,7 +12,7 @@ public class map {
     private static Hex Tiles[];
     private static Point TileLocations[];
 
-    public map() {
+    public GameBoard() {
         BoardGame = new HashMap<Integer, HashMap<Integer, Hex>>(mapCapacity);
     }
 

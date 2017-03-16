@@ -10,8 +10,8 @@ public class Deck {
         newDeck = new Deckdesigner();
     }
 
-    public Hex[][] getTile() {
-        return newDeck.getTile();
+    public Hex[] getTile() {
+        return newDeck.getTile()[currentTile++];
     }
 
 }
