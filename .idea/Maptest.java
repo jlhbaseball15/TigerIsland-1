@@ -172,4 +172,37 @@ public class Maptest {
 
        Assert.assertEquals(-1, gameBoard.TryToAddTile(hex, HexPoints));
     }
+
+    @Test
+    public void PlacingTileOnEvenLevelsVolcanoDoesntOverLap() {
+        gameBoard.TryToAddTile(hex, HexPoints);
+
+        hex[0] = new Hex(type[0]);
+        hex[1] = new Hex(type[1]);
+        hex[2] = new Hex(type[2]);
+        hex[0].setLevel(1);
+        hex[1].setLevel(1);
+        hex[2].setLevel(1);
+        hex[0].setTile(1);
+        hex[1].setTile(1);
+        hex[2].setTile(1);
+        HexPoints[0] = new Point (0,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameBoard.TryToAddTile(hex, HexPoints);
+
+        hex[0] = new Hex(type[1]);
+        hex[1] = new Hex(type[0]);
+        hex[2] = new Hex(type[2]);
+        hex[0].setLevel(2);
+        hex[1].setLevel(2);
+        hex[2].setLevel(2);
+        hex[0].setTile(2);
+        hex[1].setTile(2);
+        hex[2].setTile(2);
+        HexPoints[0] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        Assert.assertEquals(-1, gameBoard.TryToAddTile(hex, HexPoints));
+    }
 }

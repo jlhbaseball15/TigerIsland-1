@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class map {
     private final int mapCapacity = 144;
     private final int tileSize = 3;
+
     private HashMap<Integer, HashMap<Integer, Hex>> BoardGame;
     private static Hex Tiles[];
     private static Point TileLocations[];
@@ -81,10 +82,10 @@ public class map {
 
     private boolean TileOnTopOfAnother() {
         // directly over another
-        if (BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getTile() ==
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTile() &&
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTile() ==
-                        BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getTile()) {
+        if (BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getTileNum() ==
+                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTileNum() &&
+                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTileNum() ==
+                        BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getTileNum()) {
             return true;
         }
         // over different leveled tiles
@@ -94,7 +95,17 @@ public class map {
                         BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getLevel()) {
             return true;
         }
-        return false;
+        // Volcanoes must line up
+        boolean NoMatch = true;
+        for (int i = 0; i < tileSize; ++i) {
+            if ((BoardGame.get(TileLocations[i].x).get(TileLocations[i].y).getTerrain() == 'V' &&
+                    Tiles[i].getTerrain() == 'V')) {
+                NoMatch = false;
+                break;
+            }
+        }
+
+        return NoMatch;
     }
 
     private void AddTile(){
