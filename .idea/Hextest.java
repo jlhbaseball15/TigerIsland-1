@@ -15,7 +15,7 @@ public class Hextest {
     public void setup() {
         level = 1;
         tile = 5;
-        type = 'v';
+        type = 'V';
     }
 
     @Test
@@ -28,7 +28,7 @@ public class Hextest {
         Hex hex = new Hex(type);
         Assert.assertEquals(0, hex.getLevel());
         Assert.assertEquals(0, hex.getTile());
-        Assert.assertEquals('v', hex.getTerrain());
+        Assert.assertEquals('V', hex.getTerrain());
         Assert.assertEquals(Pieces.NO_ONE, hex.getPiece());
     }
 

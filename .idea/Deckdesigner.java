@@ -4,11 +4,16 @@
 public class Deckdesigner {
     int numberofterrainspertile=3;
     int numberoftotaltiles = 48;
-    public Hex[][] Deckoftiles= new Hex[numberoftotaltiles][numberofterrainspertile];
-    public int startofrangeoffirstterraintype;
+    private Hex[][] Deckoftiles;
+    private int startofrangeoffirstterraintype;
 
-    public Hex[][] tilecreator() {
-    //    Deckoftiles= Deckcreator();
+    public Deckdesigner() {
+        Deckoftiles = new Hex[numberoftotaltiles][numberofterrainspertile];
+        tilecreator();
+    }
+
+    private void tilecreator() {
+        //    Deckoftiles= Deckcreator();
         for (int i = 0; i < 48; i++)
             Deckoftiles[i][2]=new Hex('V');
         for (int i = 0; i < 12; i++)
@@ -27,7 +32,6 @@ public class Deckdesigner {
             Deckoftiles[i][0] =new Hex('D');
         startofrangeoffirstterraintype=36;
         secondvaluesetup();
-        return Deckoftiles;
     }
     /* For the most part the deck is always set up in the same way where it sets up the 12 tiles that begin with with first
     * type (like A) then it sets up three of the second value in secondvaluesetup
@@ -51,4 +55,8 @@ public class Deckdesigner {
         }
     }
 
- }
+    public Hex[][] getTile() {
+        return Deckoftiles;
+    }
+
+}

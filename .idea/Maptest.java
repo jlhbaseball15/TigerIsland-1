@@ -3,10 +3,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Set;
+
 
 /**
  * Created by dontf on 3/14/2017.
@@ -15,7 +14,7 @@ public class Maptest {
 
     private map gameBoard;
     private Hex hex[];
-    private char type[] = {'v', 'l', 'g'};
+    private char type[] = {'V', 'L', 'G'};
     private Point HexPoints[];
 
     @Before
@@ -42,7 +41,7 @@ public class Maptest {
     public void GettingMap() {
         gameBoard.TryToAddTile(hex, HexPoints);
         HashMap<Integer, HashMap<Integer, Hex>> currentBoard = gameBoard.getMap();
-        Assert.assertEquals('v', currentBoard.get(0).get(0).getTerrain());
+        Assert.assertEquals('V', currentBoard.get(0).get(0).getTerrain());
     }
 
     @Test

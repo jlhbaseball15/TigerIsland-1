@@ -4,7 +4,7 @@
 public class Hex {
     private int TileNumber;
     private int LevelNumber;
-    private char TerrainType; // j = jungle, r = rocky, l = lake, g = grasslands, v = volcano
+    private char TerrainType; // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
     private Pieces Occupied;
 
     public Hex(char Terrain) {
