@@ -11,7 +11,7 @@ import java.awt.*;
 public class CucumberGameBoardTest {
     private GameBoard board;
     private Deck deck;
-    private Hex[] tile;
+    private Tile tile;
     private Point[] tileLocations;
 
     @Given("^an empty board$")
@@ -26,7 +26,7 @@ public class CucumberGameBoardTest {
 
     @When("^a tile is placed$")
     public void placeTileOnBoard(){
-        board.TryToAddTile(tile, tileLocations);
+        board.TryToAddTile(tile.getHexes(), tileLocations);
     }
 
     @Then("^the tile is added to the board$")

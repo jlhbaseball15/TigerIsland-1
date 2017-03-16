@@ -6,18 +6,19 @@ import org.junit.Test;
  * Created by dontf on 3/16/2017.
  */
 public class DeckTest {
-    private Deck MyDeck;
+    private Deck deck;
 
     @Before
     public void CreatDeck() {
-        MyDeck = new Deck();
+        deck = new Deck();
     }
 
     @Test
     public void RecieveThreeHexes() {
-        Hex[] hex = MyDeck.getTile();
-        Assert.assertEquals('A', hex[0].getTerrain());
-        Assert.assertEquals('A', hex[1].getTerrain());
+        Tile tile = deck.getTile();
+        Hex[] hex = tile.getHexes();
+        Assert.assertEquals('G', hex[0].getTerrain());
+        Assert.assertEquals('G', hex[1].getTerrain());
         Assert.assertEquals('V', hex[2].getTerrain());
     }
 }
