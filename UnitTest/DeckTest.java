@@ -7,10 +7,13 @@ import org.junit.Test;
  */
 public class DeckTest {
     private Deck deck;
+    private Deck shuffleDeck;
 
     @Before
     public void CreatDeck() {
         deck = new Deck();
+        shuffledDeck = new Deck("JL GL");
+
     }
 
     @Test
