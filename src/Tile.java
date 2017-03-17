@@ -4,6 +4,7 @@ public class Tile {
     private Hex[] hexes;
     private int orientation; // Value: 0-5
 
+
     public Tile(char t1, char t2){
         hexes = new Hex[NUM_HEXES];
         hexes[0] = new Hex(t1);

@@ -2,18 +2,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by dontf on 3/16/2017.
- */
 public class DeckTest {
     private Deck deck;
-    private Deck shuffleDeck;
+    private Deck shuffledDeck;
 
     @Before
     public void CreatDeck() {
         deck = new Deck();
         shuffledDeck = new Deck("JL GL");
-
     }
 
     @Test
@@ -26,7 +22,7 @@ public class DeckTest {
     }
      @Test
     public void ShuffledRecieveThreeHexes() {
-        Tile tile = ShuffledDeck.getTile();
+        Tile tile = shuffledDeck.getTile();
         Hex[] hex = tile.getHexes();
         Assert.assertEquals('G', hex[0].getTerrain());
         Assert.assertEquals('L', hex[1].getTerrain());
