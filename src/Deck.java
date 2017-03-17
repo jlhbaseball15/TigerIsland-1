@@ -12,6 +12,8 @@ public class Deck {
             }
         }
     }
+
+    //for use later when tcp server pases us the shuffled deck order as a string
     public Deck(String unparsedDeck ){
         String[] parsedByTile =  unparsedDeck.split("\\s+");
         for(int i = 0; i < 48; i++){
