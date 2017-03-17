@@ -21,4 +21,12 @@ public class DeckTest {
         Assert.assertEquals('G', hex[1].getTerrain());
         Assert.assertEquals('V', hex[2].getTerrain());
     }
+     @Test
+    public void ShuffledRecieveThreeHexes() {
+        Tile tile = ShuffledDeck.getTile();
+        Hex[] hex = tile.getHexes();
+        Assert.assertEquals('G', hex[0].getTerrain());
+        Assert.assertEquals('L', hex[1].getTerrain());
+        Assert.assertEquals('V', hex[2].getTerrain());
+    }
 }
