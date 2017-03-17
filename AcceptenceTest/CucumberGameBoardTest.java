@@ -62,5 +62,19 @@ public class CucumberGameBoardTest {
     }
 
 
+    //given from above
 
+    @When("^The tile is placed away from other tiles$")
+    public void theTileIsPlacedAwayFromOtherTiles() {
+        tile = deck.getTile();
+        tileLocations[0] = new Point(3, 0);
+        tileLocations[1] = new Point(4, 0);
+        tileLocations[2] = new Point(4, 1);
+        isPlaced = board.TryToAddTile(tile, tileLocations);
+    }
+
+    @Then("^the tile is not added to the map$")
+    public void theTileIsNotAddedToTheMap() {
+        Assert.assertEquals(-4, isPlaced);
+    }
 }
