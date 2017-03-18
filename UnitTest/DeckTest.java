@@ -1,11 +1,16 @@
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import java.util.EmptyStackException;
 
 public class DeckTest {
     private Deck deck;
     private Deck shuffledDeck;
     private Deck DeckBecomesEmpty;
+    private Deck drawAfterEmptyDeck;
+
 
 
     @Before
@@ -13,6 +18,8 @@ public class DeckTest {
         deck = new Deck();
         shuffledDeck = new Deck("JL GL");
         DeckBecomesEmpty = new Deck("JG");
+        drawAfterEmptyDeck = new Deck("RR");
+
     }
 
     @Test
@@ -38,6 +45,16 @@ public class DeckTest {
         Assert.assertEquals('J', hex[0].getTerrain());
         Assert.assertEquals('G', hex[1].getTerrain());
         Assert.assertEquals('V', hex[2].getTerrain());
+    }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void drawFromEmptyDeck() {
+        Tile tile = drawAfterEmptyDeck.getTile();
+        exception.expect(EmptyStackException.class);
+        Tile SecondTile = drawAfterEmptyDeck.getTile();
     }
     
 }
