@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec2dc9de-71d2-4af1-b957-7b1dbe16e316" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UnitTest/TileTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AcceptenceTest/GameBoard.feature" afterPath="$PROJECT_DIR$/AcceptenceTest/GameBoard.feature" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GameBoard.java" afterPath="$PROJECT_DIR$/src/GameBoard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Tile.java" afterPath="$PROJECT_DIR$/src/Tile.java" />
     </list>
     <ignored path="$USER_HOME$/Eclipse/Map/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,18 +36,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameBoard.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameBoard.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GameBoard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#310#311#0" expanded="false" />
-                <element signature="e#394#395#0" expanded="false" />
-                <element signature="e#5313#5314#0" expanded="false" />
-                <element signature="e#5355#5356#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="-900">
+              <caret line="82" column="8" lean-forward="false" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -67,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TileTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TileTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UnitTest/TileTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="39" column="42" lean-forward="true" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+            <state relative-caret-position="127">
+              <caret line="10" column="50" lean-forward="true" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -165,10 +156,10 @@
         <option value="$PROJECT_DIR$/UnitTest/GameBoardTest.java" />
         <option value="$PROJECT_DIR$/AcceptenceTest/CucumberGameBoardTest.java" />
         <option value="$PROJECT_DIR$/UnitTest/DeckTest.java" />
-        <option value="$PROJECT_DIR$/src/GameBoard.java" />
         <option value="$PROJECT_DIR$/AcceptenceTest/GameBoard.feature" />
         <option value="$PROJECT_DIR$/src/Tile.java" />
         <option value="$PROJECT_DIR$/UnitTest/TileTest.java" />
+        <option value="$PROJECT_DIR$/src/GameBoard.java" />
       </list>
     </option>
   </component>
@@ -689,16 +680,17 @@
       <option name="project" value="LOCAL" />
       <updated>1489723965119</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added unit tests for Tile class">
+      <created>1489806355005</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1489806355005</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_Game - 2017.03.16 at 23h 55m 21s.xml">
-      <configuration name="All in Game" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_Game - 2017.03.17 at 00h 11m 54s.xml">
-      <configuration name="All in Game" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_in_Game - 2017.03.17 at 22h 35m 34s.xml">
       <configuration name="All in Game" configurationId="JUnit" />
     </history-entry>
@@ -723,6 +715,12 @@
     <history-entry file="All_in_Game - 2017.03.17 at 23h 02m 24s.xml">
       <configuration name="All in Game" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="All_in_Game - 2017.03.17 at 23h 28m 19s.xml">
+      <configuration name="All in Game" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_Game - 2017.03.17 at 23h 31m 22s.xml">
+      <configuration name="All in Game" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1280" height="774" extended-state="6" />
@@ -737,7 +735,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.50292826" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3288889" sideWeight="0.4956076" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3288889" sideWeight="0.4956076" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3288889" sideWeight="0.49707174" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -817,7 +815,8 @@
     <MESSAGE value="AcceptenceTest working" />
     <MESSAGE value="AcceptenceTest work&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;out/production/Game/Deck.class&#10;#&#9;out/test/Game/CucumberGameBoardTest.class&#10;#&#9;out/test/Game/Map.feature&#10;#&#9;test/CucumberGameBoardTest.java&#10;#&#9;test/Map.feature&#10;" />
     <MESSAGE value="20 Tests Passes, Ready for Dave" />
-    <option name="LAST_COMMIT_MESSAGE" value="20 Tests Passes, Ready for Dave" />
+    <MESSAGE value="Added unit tests for Tile class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added unit tests for Tile class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1058,20 +1057,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/CukesRunner.java" />
-    <entry file="file://$PROJECT_DIR$/src/GameBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#310#311#0" expanded="false" />
-            <element signature="e#394#395#0" expanded="false" />
-            <element signature="e#5313#5314#0" expanded="false" />
-            <element signature="e#5355#5356#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Deck.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -1144,11 +1129,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UnitTest/TileTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="39" column="42" lean-forward="true" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+        <state relative-caret-position="127">
+          <caret line="10" column="50" lean-forward="true" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameBoard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-900">
+          <caret line="82" column="8" lean-forward="false" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>

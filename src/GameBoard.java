@@ -46,12 +46,12 @@ public class GameBoard {
         int numberOfOverlap = 0;
 
         for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
+            if (BoardGame.containsKey(TileLocations[i].x) &&
+                BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
                 isOverlapped = true;
                 ++numberOfOverlap;
             }
         }
-
         if(!isOverlapped) {
             return false;
         }
@@ -59,11 +59,9 @@ public class GameBoard {
         if (numberOfOverlap < 3) {
             return true;
         }
-
         if (TileOnTopOfAnother()) {
             return true;
         }
-
         return false;
     }
 
@@ -72,7 +70,8 @@ public class GameBoard {
         int numberOfOverlap = 0;
 
         for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
+            if (BoardGame.containsKey(TileLocations[i].x) &&
+                BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
                 isOverlapped = true;
                 ++numberOfOverlap;
             }
@@ -81,16 +80,17 @@ public class GameBoard {
         if(!isOverlapped) {
             return false;
         }
+
         // Volcanoes must line up
-        boolean NoMatch = true;
+        boolean noMatch = true;
         for (int i = 0; i < tileSize; ++i) {
-            if ((BoardGame.get(TileLocations[i].x).get(TileLocations[i].y).getTerrain() == 'V' &&
-                    hexes[i].getTerrain() == 'V')) {
-                NoMatch = false;
+            if (BoardGame.get(TileLocations[i].x).get(TileLocations[i].y).getTerrain() == 'V' &&
+                hexes[i].getTerrain() == 'V') {
+                noMatch = false;
                 break;
             }
         }
-        return NoMatch;
+        return noMatch;
     }
 
     private boolean TilesOnDifferentLevels() {
@@ -98,7 +98,8 @@ public class GameBoard {
         int numberOfOverlap = 0;
 
         for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
+            if (BoardGame.containsKey(TileLocations[i].x) &&
+                BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
                 isOverlapped = true;
                 ++numberOfOverlap;
             }
@@ -107,11 +108,12 @@ public class GameBoard {
         if(!isOverlapped) {
             return false;
         }
+
         // over different leveled tiles
-        if (BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getLevel() !=
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getLevel() ||
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getLevel() !=
-                        BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getLevel()) {
+        int a = BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getLevel();
+        int b = BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getLevel();
+        int c = BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getLevel();
+        if (a != b || b != c){
             return true;
         }
         return false;
@@ -129,7 +131,6 @@ public class GameBoard {
             if (BoardGame.containsKey(x + 1) && BoardGame.get(x + 1).containsKey(y)) { return false; }
             if (BoardGame.containsKey(x + 1) && BoardGame.get(x + 1).containsKey(y + 1)) { return false; }
         }
-
         return true;
     }
 
@@ -139,14 +140,9 @@ public class GameBoard {
         int b = BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTileNum();
         int c = BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getTileNum();
 
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(c);
-
         if (a == b && b == c) {
             return true;
         }
-
         return false;
     }
 
