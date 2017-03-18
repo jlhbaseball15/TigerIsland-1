@@ -26,6 +26,6 @@ public class Tile {
     }
 
     public void rotateCounterClockwise(){
-        orientation = (orientation - 1) % 6;
+        if(--orientation < 0) orientation = 5;
     }
 }

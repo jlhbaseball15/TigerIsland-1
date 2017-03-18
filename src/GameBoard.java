@@ -1,9 +1,6 @@
 import java.awt.*;
 import java.util.HashMap;
 
-/**
- * Created by dontf on 3/14/2017.
- */
 public class GameBoard {
     private final int mapCapacity = 144;
     private final int tileSize = 3;
