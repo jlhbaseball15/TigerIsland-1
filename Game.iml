@@ -9,7 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/UnitTest" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/AcceptenceTest" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">

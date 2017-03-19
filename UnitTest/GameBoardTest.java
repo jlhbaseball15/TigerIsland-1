@@ -51,19 +51,25 @@ public class GameBoardTest {
         Assert.assertEquals(-1, gameBoard.TryToAddTile(tile, HexPoints));
     }
 
-//    @Test
-//    public void PlacingATileOnTopOfAnother() {
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//        hex[0].setTileNumber(1);
-//        hex[1].setTileNumber(1);
-//        hex[2].setTileNumber(1);
-//        Assert.assertEquals(-1, gameBoard.TryToAddTile(tile, HexPoints));
-//    }
+    @Test
+    public void PlacingATileOnTopOfAnother() {
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setTileNumber(1);
+        hex[1].setTileNumber(1);
+        hex[2].setTileNumber(1);
+        Assert.assertEquals(-1, gameBoard.TryToAddTile(tile, HexPoints));
+    }
 
     @Test
     public void PlacingASecondTileNextToFirstTile() {
         gameBoard.TryToAddTile(tile, HexPoints);
 
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
         hex[0].setLevel(1);
         hex[1].setLevel(1);
         hex[2].setLevel(1);
@@ -76,75 +82,89 @@ public class GameBoardTest {
         Assert.assertEquals(0, gameBoard.TryToAddTile(tile, HexPoints));
     }
 
-//    @Test
-//    public void PlacingTileOnTheSameLevels() {
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(1);
-//        hex[1].setLevel(1);
-//        hex[2].setLevel(1);
-//        hex[0].setTileNumber(1);
-//        hex[1].setTileNumber(1);
-//        hex[2].setTileNumber(1);
-//        HexPoints[0] = new Point (0,-2);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(2);
-//        hex[1].setLevel(2);
-//        hex[2].setLevel(2);
-//        hex[0].setTileNumber(2);
-//        hex[1].setTileNumber(2);
-//        hex[2].setTileNumber(2);
-//        HexPoints[0] = new Point (0,0);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        Assert.assertEquals(0, gameBoard.TryToAddTile(tile, HexPoints));
-//    }
+    @Test
+    public void PlacingTileOnTheSameLevels() { // also checks that volcanoes are aligned
+        gameBoard.TryToAddTile(tile, HexPoints);
 
-//    @Test
-//    public void PlacingTileOnUnevenLevels() {
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(1);
-//        hex[1].setLevel(1);
-//        hex[2].setLevel(1);
-//        hex[0].setTileNumber(1);
-//        hex[1].setTileNumber(1);
-//        hex[2].setTileNumber(1);
-//        HexPoints[0] = new Point (0,-2);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(2);
-//        hex[1].setLevel(2);
-//        hex[2].setLevel(2);
-//        hex[0].setTileNumber(2);
-//        hex[1].setTileNumber(2);
-//        hex[2].setTileNumber(2);
-//        HexPoints[0] = new Point (0,0);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(3);
-//        hex[1].setLevel(3);
-//        hex[2].setLevel(3);
-//        hex[0].setTileNumber(3);
-//        hex[1].setTileNumber(3);
-//        hex[2].setTileNumber(3);
-//        HexPoints[0] = new Point (0,-2);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        Assert.assertEquals(-2, gameBoard.TryToAddTile(tile, HexPoints));
-//    }
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(1);
+        hex[1].setLevel(1);
+        hex[2].setLevel(1);
+        hex[0].setTileNumber(1);
+        hex[1].setTileNumber(1);
+        hex[2].setTileNumber(1);
+        HexPoints[0] = new Point (0,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(2);
+        hex[1].setLevel(2);
+        hex[2].setLevel(2);
+        hex[0].setTileNumber(2);
+        hex[1].setTileNumber(2);
+        hex[2].setTileNumber(2);
+        HexPoints[0] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        Assert.assertEquals(0, gameBoard.TryToAddTile(tile, HexPoints));
+    }
+
+    @Test
+    public void PlacingTileOnUnevenLevels() {
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(1);
+        hex[1].setLevel(1);
+        hex[2].setLevel(1);
+        hex[0].setTileNumber(1);
+        hex[1].setTileNumber(1);
+        hex[2].setTileNumber(1);
+        HexPoints[0] = new Point (0,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(2);
+        hex[1].setLevel(2);
+        hex[2].setLevel(2);
+        hex[0].setTileNumber(2);
+        hex[1].setTileNumber(2);
+        hex[2].setTileNumber(2);
+        HexPoints[0] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(3);
+        hex[1].setLevel(3);
+        hex[2].setLevel(3);
+        hex[0].setTileNumber(3);
+        hex[1].setTileNumber(3);
+        hex[2].setTileNumber(3);
+        HexPoints[0] = new Point (0,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        Assert.assertEquals(-2, gameBoard.TryToAddTile(tile, HexPoints));
+    }
 
     @Test
     public void BoardNotEmptyAndPlacingTileByItself() {
         gameBoard.TryToAddTile(tile, HexPoints);
 
+        tile = deck.getTile();
+        hex = tile.getHexes();
         hex[0].setLevel(1);
         hex[1].setLevel(1);
         hex[2].setLevel(1);
@@ -158,30 +178,34 @@ public class GameBoardTest {
        Assert.assertEquals(-4, gameBoard.TryToAddTile(tile, HexPoints));
     }
 
-//    @Test
-//    public void PlacingTileOnEvenLevelsAndVolcanosDontOverLap() {
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(1);
-//        hex[1].setLevel(1);
-//        hex[2].setLevel(1);
-//        hex[0].setTileNumber(1);
-//        hex[1].setTileNumber(1);
-//        hex[2].setTileNumber(1);
-//        HexPoints[0] = new Point (0,-2);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[2] = new Point (1,-1);
-//        gameBoard.TryToAddTile(tile, HexPoints);
-//
-//        hex[0].setLevel(2);
-//        hex[1].setLevel(2);
-//        hex[2].setLevel(2);
-//        hex[0].setTileNumber(2);
-//        hex[1].setTileNumber(2);
-//        hex[2].setTileNumber(2);
-//        HexPoints[2] = new Point (0,0);
-//        HexPoints[1] = new Point (0,-1);
-//        HexPoints[0] = new Point (1,-1);
-//        Assert.assertEquals(-1, gameBoard.TryToAddTile(tile, HexPoints));
-//    }
+    @Test
+    public void PlacingTileOnEvenLevelsAndVolcanosDontOverLap() {
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(1);
+        hex[1].setLevel(1);
+        hex[2].setLevel(1);
+        hex[0].setTileNumber(1);
+        hex[1].setTileNumber(1);
+        hex[2].setTileNumber(1);
+        HexPoints[0] = new Point (0,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameBoard.TryToAddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hex[0].setLevel(2);
+        hex[1].setLevel(2);
+        hex[2].setLevel(2);
+        hex[0].setTileNumber(2);
+        hex[1].setTileNumber(2);
+        hex[2].setTileNumber(2);
+        HexPoints[2] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[0] = new Point (1,-1);
+        Assert.assertEquals(-3, gameBoard.TryToAddTile(tile, HexPoints));
+    }
 }

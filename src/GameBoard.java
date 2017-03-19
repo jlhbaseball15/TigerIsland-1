@@ -1,14 +1,12 @@
 import java.awt.*;
 import java.util.HashMap;
 
-/**
- * Created by dontf on 3/14/2017.
- */
 public class GameBoard {
     private final int mapCapacity = 144;
     private final int tileSize = 3;
 
     private HashMap<Integer, HashMap<Integer, Hex>> BoardGame;
+    private static int numberOfOverlappedTiles;
     private static Hex hexes[];
     private static Point TileLocations[];
 
@@ -20,50 +18,72 @@ public class GameBoard {
 
     public int TryToAddTile(Tile tile, Point TileHexPoints[]) {
 
+        numberOfOverlappedTiles = 0;
         hexes = tile.getHexes();
         TileLocations = TileHexPoints;
 
-        if(isEmpty()) {
-            AddTile();
+        if( !isEmpty() ) {
+            if (TheTileOverlapsAnother()) {
+                if (numberOfOverlappedTiles < 3) {
+                    return -1;
+                }
+                if (TileDirectlyOnTopOfAnother()) {
+                    return -1;
+                }
+                if (TilesOnDifferentLevels()) {
+                    return -2;
+                }
+                if (AddedTilesVolcanoIsNotOnAVolcano()) {
+                    return -3;
+                }
+            }
+            else {
+                if (NoAdjacentTiles()) {
+                    return -4;
+                }
+            }
         }
-        else {
-            if(TilesOverlapIncorrectly()) {
-                return -1;
-            }
-            if (TilesOnDifferentLevels()) {
-                return -2;
-            }
-            if (AddedTilesVolcanoIsNotOnAVolcano()) {
-                return -3;
-            }
-            if (NoAdjacentTiles()) {
-                return -4;
-            }
-            AddTile();
-        }
+
+        AddTile();
+
         return 0;
     }
 
-    private boolean TilesOverlapIncorrectly() {
+    private boolean TheTileOverlapsAnother() {
+        int x, y;
         boolean isOverlapped = false;
-        int numberOfOverlap = 0;
 
         for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
+            x = TileLocations[i].x;
+            y = TileLocations[i].y;
+
+            if (hasTileBelow(x, y)) {
                 isOverlapped = true;
-                ++numberOfOverlap;
+                ++numberOfOverlappedTiles;
             }
         }
 
-        if(!isOverlapped) {
-            return false;
-        }
-        // The tile is not flat
-        if (numberOfOverlap < 3) {
+        return isOverlapped;
+    }
+
+    private boolean TileDirectlyOnTopOfAnother() {
+        int Hex0_tileNum = retrieveTileNumFromHex(0);
+        int Hex1_tileNum = retrieveTileNumFromHex(1);
+        int Hex2_tileNum = retrieveTileNumFromHex(2);
+
+        if (Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum) {
             return true;
         }
 
-        if (TileOnTopOfAnother()) {
+        return false;
+    }
+
+    private boolean TilesOnDifferentLevels() {
+        int Hex0_LevelNum = retrieveLevelNumFromHex(0);
+        int Hex1_LevelNum = retrieveLevelNumFromHex(1);
+        int Hex2_LevelNum = retrieveLevelNumFromHex(2);
+
+        if (Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum) {
             return true;
         }
 
@@ -71,53 +91,16 @@ public class GameBoard {
     }
 
     private boolean AddedTilesVolcanoIsNotOnAVolcano() {
-        boolean isOverlapped = false;
-        int numberOfOverlap = 0;
-
-        for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
-                isOverlapped = true;
-                ++numberOfOverlap;
-            }
-        }
-
-        if(!isOverlapped) {
-            return false;
-        }
-        // Volcanoes must line up
         boolean NoMatch = true;
+
         for (int i = 0; i < tileSize; ++i) {
-            if ((BoardGame.get(TileLocations[i].x).get(TileLocations[i].y).getTerrain() == 'V' &&
-                    hexes[i].getTerrain() == 'V')) {
+            if ((retrieveTerrainFromHex(i)) == 'V' && hexes[i].getTerrain() == 'V') {
                 NoMatch = false;
                 break;
             }
         }
+
         return NoMatch;
-    }
-
-    private boolean TilesOnDifferentLevels() {
-        boolean isOverlapped = false;
-        int numberOfOverlap = 0;
-
-        for (int i = 0; i < tileSize; ++i) {
-            if (BoardGame.containsKey(TileLocations[i].x) && BoardGame.get(TileLocations[i].x).containsKey(TileLocations[i].y)) {
-                isOverlapped = true;
-                ++numberOfOverlap;
-            }
-        }
-
-        if(!isOverlapped) {
-            return false;
-        }
-        // over different leveled tiles
-        if (BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getLevel() !=
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getLevel() ||
-                BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getLevel() !=
-                        BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getLevel()) {
-            return true;
-        }
-        return false;
     }
 
     private boolean NoAdjacentTiles() {
@@ -125,44 +108,54 @@ public class GameBoard {
         for (int i = 0; i < tileSize; ++i) {
             x = TileLocations[i].x;
             y = TileLocations[i].y;
-            if (BoardGame.containsKey(x) && BoardGame.get(x).containsKey(y - 1)) { return false; }
-            if (BoardGame.containsKey(x) && BoardGame.get(x).containsKey(y + 1)) { return false; }
-            if (BoardGame.containsKey(x - 1) && BoardGame.get(x - 1).containsKey(y)) { return false; }
-            if (BoardGame.containsKey(x + 1) && BoardGame.get(x + 1).containsKey(y - 1)) { return false; }
-            if (BoardGame.containsKey(x + 1) && BoardGame.get(x + 1).containsKey(y)) { return false; }
-            if (BoardGame.containsKey(x + 1) && BoardGame.get(x + 1).containsKey(y + 1)) { return false; }
+
+            if (hasTileBelow(x, y - 1)) { return false; }
+            if (hasTileBelow(x, y + 1)) { return false; }
+            if (hasTileBelow(x - 1, y)) { return false; }
+            if (hasTileBelow(x + 1, y - 1)) { return false; }
+            if (hasTileBelow(x + 1, y)) { return false; }
+            if (hasTileBelow(x + 1, y + 1)) { return false; }
         }
 
         return true;
     }
 
-    private boolean TileOnTopOfAnother() {
-        // directly over another
-        int a = BoardGame.get(TileLocations[0].x).get(TileLocations[0].y).getTileNum();
-        int b = BoardGame.get(TileLocations[1].x).get(TileLocations[1].y).getTileNum();
-        int c = BoardGame.get(TileLocations[2].x).get(TileLocations[2].y).getTileNum();
-
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(c);
-
-        if (a == b && b == c) {
-            return true;
-        }
-
-        return false;
-    }
+     /*
+       Below Functions get values needed from the map container,
+       This is specific to the hashmap, and limits need changes
+       to the class if the storage container is changed
+     */
 
     private void AddTile(){
         for (int i = 0; i < tileSize; ++i) {
+            // if X coordinate is in map, add Y to internal hashmap
             if (BoardGame.containsKey(TileLocations[i].x)) {
                 BoardGame.get(TileLocations[i].x).put(TileLocations[i].y, hexes[i]);
             }
+            // if X coordinate is not in map, add X with a new hashmap as value
+            // add y to new has map
             else {
                 BoardGame.put(TileLocations[i].x, new HashMap<Integer, Hex>());
                 BoardGame.get(TileLocations[i].x).put(TileLocations[i].y, hexes[i]);
             }
         }
+    }
+
+    private boolean hasTileBelow(int hexXPoint, int hexYPoint) {
+        return BoardGame.containsKey(hexXPoint) &&
+                BoardGame.get(hexXPoint).containsKey(hexYPoint);
+    }
+
+    private int retrieveTileNumFromHex(int hexOfInterest) {
+        return BoardGame.get(TileLocations[hexOfInterest].x).get(TileLocations[hexOfInterest].y).getTileNum();
+    }
+
+    private int retrieveLevelNumFromHex(int hexOfInterest) {
+        return BoardGame.get(TileLocations[hexOfInterest].x).get(TileLocations[hexOfInterest].y).getLevel();
+    }
+
+    private int retrieveTerrainFromHex(int hexOfInterest) {
+        return BoardGame.get(TileLocations[hexOfInterest].x).get(TileLocations[hexOfInterest].y).getTerrain();
     }
 
     public boolean isEmpty() {
