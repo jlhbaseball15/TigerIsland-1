@@ -16,7 +16,13 @@ public class Deck {
     //for use later when tcp server pases us the shuffled deck order as a string
     public Deck(String unparsedDeck ){
         String[] parsedByTile =  unparsedDeck.split("\\s+");
-        for(String terrains : parsedByTile){
+        String[] parsedByTileReversed = new String[parsedByTile.length];
+        int reversedArrayIndex = 0;
+        for(int i = parsedByTile.length-1; i >= 0; i--){
+            parsedByTileReversed[reversedArrayIndex] = parsedByTile[i];
+            reversedArrayIndex++;
+        }
+        for(String terrains : parsedByTileReversed){
             deck.push(new Tile(terrains.charAt(0), terrains.charAt(1)));
         }    
     }
