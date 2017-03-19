@@ -109,15 +109,32 @@ public class GameBoard {
             x = TileLocations[i].x;
             y = TileLocations[i].y;
 
-            if (hasTileBelow(x, y - 1)) { return false; }
-            if (hasTileBelow(x, y + 1)) { return false; }
-            if (hasTileBelow(x - 1, y)) { return false; }
-            if (hasTileBelow(x + 1, y - 1)) { return false; }
-            if (hasTileBelow(x + 1, y)) { return false; }
-            if (hasTileBelow(x + 1, y + 1)) { return false; }
+            if (HasANeighbor(x, y)) return false;
         }
 
         return true;
+    }
+
+    private boolean HasANeighbor(int x, int y) {
+        if (hasTileBelow(x, y - 1)) {
+            return true;
+        }
+        if (hasTileBelow(x, y + 1)) {
+            return true;
+        }
+        if (hasTileBelow(x - 1, y)) {
+            return true;
+        }
+        if (hasTileBelow(x + 1, y - 1)) {
+            return true;
+        }
+        if (hasTileBelow(x + 1, y)) {
+            return true;
+        }
+        if (hasTileBelow(x + 1, y + 1)) {
+            return true;
+        }
+        return false;
     }
 
      /*
