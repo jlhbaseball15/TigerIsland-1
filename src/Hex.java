@@ -32,5 +32,5 @@ public class Hex {
 
     public void setLevel(int level) { LevelNumber = level; }
 
-    public void setTile(int tile) { TileNumber = tile; }
+    public void setTileNumber(int tile) { TileNumber = tile; }
 }
