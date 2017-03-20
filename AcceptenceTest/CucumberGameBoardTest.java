@@ -7,14 +7,15 @@ import java.awt.*;
 
 public class CucumberGameBoardTest {
     private GameBoard board;
+    private GameRules rules;
     private Deck deck;
     private Tile tile;
     private Point[] tileLocations;
-    private int isPlaced;
 
     @Given("^an empty board$")
     public void anemptyboard() {
         board = new GameBoard();
+        rules = new GameRules(board);
         deck = new Deck();
         tile = deck.getTile();
         tileLocations = new Point[3];
@@ -24,57 +25,80 @@ public class CucumberGameBoardTest {
     }
 
     @When("^a tile is placed$")
-    public void atileisplaced(){
-        board.TryToAddTile(tile, tileLocations);
+    public void atileisplaced() throws GameRulesException {
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        } catch (GameRulesException e) {
+            Assert.assertTrue(false);
+        }
     }
 
     @Then("^the tile is added on the board$")
     public void thetileisaddedontheboard() {
+        board.AddTile(tile, tileLocations);
         Assert.assertFalse(board.isEmpty());
     }
 
 
 
     @Given("^The board is not empty$")
-    public void theBoardIsNotEmpty() {
+    public void theBoardIsNotEmpty() throws GameRulesException {
         board = new GameBoard();
+        rules = new GameRules(board);
         deck = new Deck();
         tile = deck.getTile();
         tileLocations = new Point[3];
         tileLocations[0] = new Point(0, 0);
         tileLocations[1] = new Point(1, 0);
         tileLocations[2] = new Point(1, 1);
-        board.TryToAddTile(tile, tileLocations);
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        } catch (GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.AddTile(tile, tileLocations);
     }
 
     @When("^The tile is placed$")
-    public void theTileIsPlaced() {
+    public void theTileIsPlaced() throws GameRulesException {
         tile = deck.getTile();
         tileLocations[0] = new Point(0, -2);
         tileLocations[1] = new Point(1, -1);
         tileLocations[2] = new Point(1, -1);
-        isPlaced = board.TryToAddTile(tile, tileLocations);
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        } catch (GameRulesException e) {
+            Assert.assertTrue(false);
+        }
     }
 
     @Then("^the tile is added to the map$")
     public void theTileIsAddedToTheMap() {
-        Assert.assertEquals(0, isPlaced);
+        board.AddTile(tile, tileLocations);
     }
 
 
     //given from above
 
     @When("^The tile is placed away from other tiles$")
-    public void theTileIsPlacedAwayFromOtherTiles() {
+    public void theTileIsPlacedAwayFromOtherTiles() throws GameRulesException {
         tile = deck.getTile();
         tileLocations[0] = new Point(3, 0);
         tileLocations[1] = new Point(4, 0);
         tileLocations[2] = new Point(4, 1);
-        isPlaced = board.TryToAddTile(tile, tileLocations);
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("The Tile Is Not Adjacent To An Existing Tile", e.getMessage());
+        };
     }
 
     @Then("^the tile is not added to the map$")
-    public void theTileIsNotAddedToTheMap() {
-        Assert.assertEquals(-4, isPlaced);
+    public void theTileIsNotAddedToTheMap() throws GameRulesException{
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("The Tile Is Not Adjacent To An Existing Tile", e.getMessage());
+        };
     }
 }
