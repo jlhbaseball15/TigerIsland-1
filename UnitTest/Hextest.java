@@ -2,9 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by dontf on 3/14/2017.
- */
 public class Hextest {
 
     private int level;
@@ -29,20 +26,20 @@ public class Hextest {
         Assert.assertEquals(0, hex.getLevel());
         Assert.assertEquals(0, hex.getTileNum());
         Assert.assertEquals('V', hex.getTerrain());
-        Assert.assertEquals(Pieces.NO_ONE, hex.getPiece());
+        Assert.assertEquals(Pieces.NONE, hex.getPiece());
     }
 
     @Test
     public void setOccupiedValidTest() {
         Hex hex = new Hex(type);
-        hex.setOccupied(Pieces.PLAYER1MEEPLE);
-        Assert.assertEquals(Pieces.PLAYER1MEEPLE, hex.getPiece());
+        hex.setOccupied(Pieces.P1_VILLAGER, 1);
+        Assert.assertEquals(Pieces.P1_VILLAGER, hex.getPiece());
     }
 
     @Test
     public void setOccupiedInvalidTest() {
         Hex hex = new Hex(type);
-        hex.setOccupied(Pieces.NO_ONE);
-        Assert.assertEquals(Pieces.NO_ONE, hex.getPiece());
+        hex.setOccupied(Pieces.NONE, 0);
+        Assert.assertEquals(Pieces.NONE, hex.getPiece());
     }
 }

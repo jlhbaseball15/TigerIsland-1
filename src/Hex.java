@@ -6,12 +6,14 @@ public class Hex {
     private int LevelNumber;
     private char TerrainType; // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
     private Pieces Occupied;
+    private int numOfPeices;
 
     public Hex(char Terrain) {
         TileNumber = 0;
         LevelNumber = 0;
         TerrainType = Terrain;
-        Occupied = Pieces.NO_ONE;
+        Occupied = Pieces.NONE;
+        numOfPeices = 0;
     }
 
     public int getLevel() {
@@ -28,7 +30,10 @@ public class Hex {
 
     public Pieces getPiece() { return Occupied; }
 
-    public void setOccupied(Pieces occupied) { Occupied = occupied; }
+    public void setOccupied(Pieces occupied, int numofpeices) {
+        Occupied = occupied;
+        numOfPeices = numofpeices;
+    }
 
     public void setLevel(int level) { LevelNumber = level; }
 
