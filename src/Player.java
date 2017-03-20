@@ -7,10 +7,11 @@ public class Player {
     private int villagersRemaining;
     private int totorosRemaining;
 
-    public Player(){
+    public Player(String playername){
         score = 0;
         villagersRemaining = 20;
         totorosRemaining = 3;
+        playerName = playername;
     }
 
     public void MeepleBeingPlaced(int numPlaced){
@@ -21,5 +22,17 @@ public class Player {
         totorosRemaining = totorosRemaining -1;
         score = score+200;
     }
+
+    public int getScore(){
+        return score;
+    }
+
+    /*
+    public TilePlacement placetile(Tile tile){
+        //calls a funtion to decide what movement to do if our player
+        //return input from tcp sever if not our player
+        //returns a TilePlacement
+
+    }*/
 
 }
