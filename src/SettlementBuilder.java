@@ -21,7 +21,7 @@ public class SettlementBuilder {
         //upon checking add to hashmap and look to see if villager/totoro exits
         //if it does call another method that expands out from here and creates new settlement
         //every tile checked is added to same hashmap. new method has its own queue but only adds if
-        //adjacent tile contains ...
+        //adjacent tile contains ... notqueueable???
 
 
         //maybe not if i can sort points starting at top left could be easier to understand
