@@ -2,9 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by dontf on 3/14/2017.
- */
 public class Hextest {
 
     private int level;

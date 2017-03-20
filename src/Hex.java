@@ -1,6 +1,4 @@
-/**
- * Created by dontf on 3/14/2017.
- */
+
 public class Hex {
     private int TileNumber;
     private int LevelNumber;
