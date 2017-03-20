@@ -11,7 +11,7 @@ public class Hex {
         TileNumber = 0;
         LevelNumber = 0;
         TerrainType = Terrain;
-        Occupied = Pieces.NO_ONE;
+        Occupied = Pieces.NONE;
     }
 
     public int getLevel() {
