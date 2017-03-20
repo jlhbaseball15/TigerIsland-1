@@ -32,14 +32,14 @@ public class Hextest {
     @Test
     public void setOccupiedValidTest() {
         Hex hex = new Hex(type);
-        hex.setOccupied(Pieces.P1_VILLAGER);
+        hex.setOccupied(Pieces.P1_VILLAGER, 1);
         Assert.assertEquals(Pieces.P1_VILLAGER, hex.getPiece());
     }
 
     @Test
     public void setOccupiedInvalidTest() {
         Hex hex = new Hex(type);
-        hex.setOccupied(Pieces.NONE);
+        hex.setOccupied(Pieces.NONE, 0);
         Assert.assertEquals(Pieces.NONE, hex.getPiece());
     }
 }

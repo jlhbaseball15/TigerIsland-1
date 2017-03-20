@@ -15,9 +15,11 @@ public class Player {
 
     public void MeepleBeingPlaced(int numPlaced){
         villagersRemaining = villagersRemaining-numPlaced;
+        score = score + numPlaced*numPlaced;
     }
     public void totoroBeingPlaced(){
         totorosRemaining = totorosRemaining -1;
+        score = score+200;
     }
 
 }
