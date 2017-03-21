@@ -15,6 +15,11 @@ public class Deck {
 
     //for use later when tcp server pases us the shuffled deck order as a string
     public Deck(String unparsedDeck ){
+        createShuffledDeck(unparsedDeck);
+    }
+
+    public void createShuffledDeck( String unparsedDeck){
+        Stack<Tile> deck2 = new Stack<>();
         String[] parsedByTile =  unparsedDeck.split("\\s+");
         String[] parsedByTileReversed = new String[parsedByTile.length];
         int reversedArrayIndex = 0;
@@ -23,9 +28,12 @@ public class Deck {
             reversedArrayIndex++;
         }
         for(String terrains : parsedByTileReversed){
-            deck.push(new Tile(terrains.charAt(0), terrains.charAt(1)));
-        }    
+            deck2.push(new Tile(terrains.charAt(0), terrains.charAt(1)));
+        }
+        deck = deck2;
     }
+
+
 
     public Tile getTile() {
         return deck.pop();
