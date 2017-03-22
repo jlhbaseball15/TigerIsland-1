@@ -1,4 +1,7 @@
 workspace.xml
 *.class
 out
-.idea/workspace.xml
+/.idea
+/lib
+/UI
+Game.iml
