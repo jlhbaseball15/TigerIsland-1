@@ -34,7 +34,7 @@ public class GameView {
     private Deck deck;
     private Tile currentTile;
     HashMap<Point, Integer> currentBoard;
-    HashMap<Integer, HashMap<Integer, Hex>> testBoard;
+    HashMap<Point, Hex> testBoard;
 
     private JFrame mainFrame;
     private JTextField[] textFields;
@@ -218,14 +218,12 @@ public class GameView {
             //fill in hexes
             g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/2));
             testBoard = board.getMap();
-            for(Map.Entry<Integer, HashMap<Integer, Hex>> entry : testBoard.entrySet()) {
-                for(Map.Entry<Integer,Hex> entry2 : entry.getValue().entrySet()) {
-                    Point pt = new Point(entry.getKey(), entry2.getKey());
-                    int value = (int) entry2.getValue().getTerrain();
+            for(Map.Entry<Point, Hex> entry : testBoard.entrySet()) {
+                    Point pt = new Point(entry.getKey());
+                    int value = (int) entry.getValue().getTerrain();
                     int x = (int) pt.getX();
                     int y = (int) pt.getY();
                     HexView.fillHex(x, y, value, g2);
-                }
             }
 
             //fill in current tile
