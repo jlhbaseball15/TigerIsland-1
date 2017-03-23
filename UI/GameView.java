@@ -200,7 +200,6 @@ public class GameView {
             //HexView.drawHex(-1,0, g2);
 
             //draw grid
-            g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/3));
             for (int i=0; i < BSIZE; i++) {
                 for (int j=0; j < BSIZE; j++) {
                     HexView.drawHex(i, j, g2);
