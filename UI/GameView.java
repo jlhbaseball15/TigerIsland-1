@@ -32,9 +32,8 @@ public class GameView {
     private GameBoard board;
     private GameRules rules;
     private Deck deck;
-    private Tile currentTile;
-    HashMap<Point, Integer> currentBoard;
-    HashMap<Point, Hex> testBoard;
+    private Tile currentTil;
+    HashMap<Point, Hex> currentBoard;
 
     private JFrame mainFrame;
     private JTextField[] textFields;
@@ -46,10 +45,6 @@ public class GameView {
         deck = new Deck();
         rules = new GameRules(board);
         GAMEOVER = false;
-
-
-        //setup hashmap to contain currentBoard
-        currentBoard = new HashMap<Point, Integer>(BSIZE * BSIZE);
 
         //set HexLayout
         HexView.setLayout(new Point2D.Double(HEXSIZE, HEXSIZE), new Point2D.Double(SCREENSIZE_Width/2, SCREENSIZE_Height/2));
@@ -200,7 +195,6 @@ public class GameView {
             //HexView.drawHex(-1,0, g2);
 
             //draw grid
-            g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/3));
             for (int i=0; i < BSIZE; i++) {
                 for (int j=0; j < BSIZE; j++) {
                     HexView.drawHex(i, j, g2);
@@ -217,13 +211,12 @@ public class GameView {
 
             //fill in hexes
             g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/2));
-            testBoard = board.getMap();
-            for(Map.Entry<Point, Hex> entry : testBoard.entrySet()) {
-                    Point pt = new Point(entry.getKey());
-                    int value = (int) entry.getValue().getTerrain();
-                    int x = (int) pt.getX();
-                    int y = (int) pt.getY();
-                    HexView.fillHex(x, y, value, g2);
+
+            currentBoard = board.getMap();
+            for(Map.Entry<Point, Hex> entry : currentBoard.entrySet()) {
+                Point pt = entry.getKey();
+                HexView.fillHex((int)pt.getX(), (int)pt.getY(), entry.getValue(), g2);
+
             }
 
             //fill in current tile
@@ -232,9 +225,9 @@ public class GameView {
             //int xBox = SCREENSIZE_Width - SCREENSIZE_Width/8;
             //int yBox = SCREENSIZE_Height - SCREENSIZE_Height/6;
             //HexView.drawCurrentTile(currentTile, xBox, yBox, g2);
-            HexView.fillHex(7, 5, currentHexes[0].getTerrain(), g2);
-            HexView.fillHex(6, 6, currentHexes[1].getTerrain(), g2);
-            HexView.fillHex(7, 6, currentHexes[2].getTerrain(), g2);
+            HexView.fillHex(7, 5, currentHexes[0], g2);
+            HexView.fillHex(6, 6, currentHexes[1], g2);
+            HexView.fillHex(7, 6, currentHexes[2], g2);
 
 
         }
