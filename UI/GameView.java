@@ -32,7 +32,7 @@ public class GameView {
     private GameBoard board;
     private GameRules rules;
     private Deck deck;
-    private Tile currentTile;
+    private Tile currentTil;
     HashMap<Point, Hex> currentBoard;
 
     private JFrame mainFrame;
@@ -211,10 +211,12 @@ public class GameView {
 
             //fill in hexes
             g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/2));
+
             currentBoard = board.getMap();
             for(Map.Entry<Point, Hex> entry : currentBoard.entrySet()) {
                 Point pt = entry.getKey();
                 HexView.fillHex((int)pt.getX(), (int)pt.getY(), entry.getValue(), g2);
+
             }
 
             //fill in current tile
