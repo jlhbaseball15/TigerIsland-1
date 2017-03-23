@@ -210,7 +210,9 @@ public class HexView {
                            break;
         }
         g2.fillPolygon(poly);
-        g2.setColor(new Color(255,100,255));
-        g2.drawString(""+hexValue, pixelX, pixelY);
+        g2.setColor(Color.BLACK);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g2.drawString(""+hexValue, pixelX - 4, pixelY - 10);
+        g2.drawString(x0 + ", " + y0, pixelX - 8, pixelY + 10);
     }
 }
