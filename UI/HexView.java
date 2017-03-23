@@ -218,5 +218,6 @@ public class HexView {
         g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
         g2.setColor(Color.WHITE);
         g2.drawString(""+hex.getLevel(), pixelX - 4, pixelY - 25);
+
     }
 }
