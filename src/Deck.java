@@ -9,6 +9,8 @@ public class Deck {
         for(int i = 0; i < NUM_TERRAIN; i++){
             for(int j = 0; j < NUM_TERRAIN; j++){
                 deck.push(new Tile(terrain[i], terrain[j]));
+                deck.push(new Tile(terrain[i], terrain[j]));
+                deck.push(new Tile(terrain[i], terrain[j]));
             }
         }
     }
