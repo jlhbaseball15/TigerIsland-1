@@ -10,10 +10,11 @@ public class Hex {
 
     public Hex(char Terrain) {
         TileNumber = 0;
-        LevelNumber = 0;
+        LevelNumber = 1;
         TerrainType = Terrain;
         Occupied = Pieces.NONE;
         numOfPeices = 0;
+
     }
 
     public int getLevel() {

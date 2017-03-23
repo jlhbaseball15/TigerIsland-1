@@ -23,7 +23,7 @@ public class Hextest {
     @Test
     public void getTileTest() {
         Hex hex = new Hex(type);
-        Assert.assertEquals(0, hex.getLevel());
+        Assert.assertEquals(1, hex.getLevel());
         Assert.assertEquals(0, hex.getTileNum());
         Assert.assertEquals('V', hex.getTerrain());
         Assert.assertEquals(Pieces.NONE, hex.getPiece());
