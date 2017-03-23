@@ -21,12 +21,6 @@ public class GameRulesTest {
         tile = deck.getTile();
         hex = tile.getHexes();
         HexPoints = new Point [3];
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(0);
-        hex[1].setTileNumber(0);
-        hex[2].setTileNumber(0);
         HexPoints[0] = new Point (0,0);
         HexPoints[1] = new Point (1,0);
         HexPoints[2] = new Point (1,1);
@@ -65,9 +59,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         try {
             gameRules.TryToAddTile(tile, HexPoints);
             Assert.assertTrue(false);
@@ -85,12 +76,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         HexPoints[0] = new Point(0, -2);
         HexPoints[1] = new Point(0, -1);
         HexPoints[2] = new Point(1, -1);
@@ -109,12 +94,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         HexPoints[0] = new Point (0,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -123,12 +102,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(2);
-        hex[1].setLevel(2);
-        hex[2].setLevel(2);
-        hex[0].setTileNumber(2);
-        hex[1].setTileNumber(2);
-        hex[2].setTileNumber(2);
         HexPoints[0] = new Point (0,0);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -147,12 +120,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         HexPoints[0] = new Point (0,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -161,12 +128,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(2);
-        hex[1].setLevel(2);
-        hex[2].setLevel(2);
-        hex[0].setTileNumber(2);
-        hex[1].setTileNumber(2);
-        hex[2].setTileNumber(2);
         HexPoints[0] = new Point (0,0);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -175,12 +136,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(3);
-        hex[1].setLevel(3);
-        hex[2].setLevel(3);
-        hex[0].setTileNumber(3);
-        hex[1].setTileNumber(3);
-        hex[2].setTileNumber(3);
         HexPoints[0] = new Point (0,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -202,12 +157,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         HexPoints[0] = new Point (0,-2);
         HexPoints[1] = new Point (-1,-2);
         HexPoints[2] = new Point (0,-3);
@@ -229,12 +178,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(1);
-        hex[1].setLevel(1);
-        hex[2].setLevel(1);
-        hex[0].setTileNumber(1);
-        hex[1].setTileNumber(1);
-        hex[2].setTileNumber(1);
         HexPoints[0] = new Point (0,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
@@ -243,12 +186,6 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        hex[0].setLevel(2);
-        hex[1].setLevel(2);
-        hex[2].setLevel(2);
-        hex[0].setTileNumber(2);
-        hex[1].setTileNumber(2);
-        hex[2].setTileNumber(2);
         HexPoints[2] = new Point (0,0);
         HexPoints[1] = new Point (0,-1);
         HexPoints[0] = new Point (1,-1);
