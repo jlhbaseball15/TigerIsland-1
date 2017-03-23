@@ -32,8 +32,9 @@ public class GameView {
     private GameBoard board;
     private GameRules rules;
     private Deck deck;
-    private Tile currentTil;
+    private Tile currentTile;
     HashMap<Point, Hex> currentBoard;
+    private boolean isPlaced;
 
     private JFrame mainFrame;
     private JTextField[] textFields;
@@ -45,6 +46,7 @@ public class GameView {
         deck = new Deck();
         rules = new GameRules(board);
         GAMEOVER = false;
+        isPlaced = false;
 
         //set HexLayout
         HexView.setLayout(new Point2D.Double(HEXSIZE, HEXSIZE), new Point2D.Double(SCREENSIZE_Width/2, SCREENSIZE_Height/2));
@@ -72,8 +74,11 @@ public class GameView {
 
     void runGame() {
         while(GAMEOVER == false) {
-            Point[] userHexCoords = getUserInput();
-            placeTile(userHexCoords);
+            isPlaced = false;
+            while (!isPlaced) {
+                Point[] userHexCoords = getUserInput();
+                placeTile(userHexCoords);
+            }
             setCurrentTile();
             mainGamePanel.repaint();
         }
@@ -154,10 +159,11 @@ public class GameView {
     private void addTile(Tile tile, Point[] hexCoords) {
         try {
             rules.TryToAddTile(tile, hexCoords);
+            board.AddTile(tile, hexCoords);
+            isPlaced = true;
         } catch (GameRulesException e) {
             System.out.println(e);
         }
-        board.AddTile(tile, hexCoords);
     }
 
     private void createAndShowGUI() {
@@ -211,12 +217,10 @@ public class GameView {
 
             //fill in hexes
             g.setFont(new Font("TimesRoman", Font.PLAIN, HEXSIZE/2));
-
             currentBoard = board.getMap();
             for(Map.Entry<Point, Hex> entry : currentBoard.entrySet()) {
                 Point pt = entry.getKey();
                 HexView.fillHex((int)pt.getX(), (int)pt.getY(), entry.getValue(), g2);
-
             }
 
             //fill in current tile
