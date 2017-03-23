@@ -112,7 +112,7 @@ public class HexView {
         Hex[] currentHexes = tile.getHexes();
         int xHex = boxWidth;
         int yHex = boxHeight;
-        HexView.fillHex(xHex, yHex, currentHexes[0].getTerrain(), g2);
+        HexView.fillHex(xHex, yHex, currentHexes[0], g2);
     }
 
     public static HexCoords hexRound(FractionalHexCoords hexToRound) {
@@ -187,12 +187,12 @@ public class HexView {
         g2.drawString(x0 + ", " + y0, pixelX - 15, pixelY);
     }
 
-    public static void fillHex(int x0, int y0, int hexNumber, Graphics2D g2) {
-        char hexValue = (char) hexNumber;
-        HexCoords hex = buildHex(x0, y0);
-        Polygon poly = hexToPoly(hex);
-        int pixelX = (int) hex.center.getX();
-        int pixelY = (int) hex.center.getY();
+    public static void fillHex(int x0, int y0, Hex hex, Graphics2D g2) {
+        char hexValue = hex.getTerrain();
+        HexCoords builtHex = buildHex(x0, y0);
+        Polygon poly = hexToPoly(builtHex);
+        int pixelX = (int) builtHex.center.getX();
+        int pixelY = (int) builtHex.center.getY();
 
         // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
         switch(hexValue) {
@@ -210,7 +210,14 @@ public class HexView {
                            break;
         }
         g2.fillPolygon(poly);
-        g2.setColor(new Color(255,100,255));
-        g2.drawString(""+hexValue, pixelX, pixelY);
+        g2.setColor(Color.BLACK);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g2.drawString(""+hexValue, pixelX - 4, pixelY - 10);
+        g2.drawString(x0 + ", " + y0, pixelX - 8, pixelY + 10);
+
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+        g2.setColor(Color.WHITE);
+        g2.drawString(""+hex.getLevel(), pixelX - 4, pixelY - 25);
+
     }
 }
