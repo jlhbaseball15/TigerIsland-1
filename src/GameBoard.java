@@ -29,7 +29,7 @@ public class GameBoard {
         int tileSize = 3;
         for (int i = 0; i < tileSize; ++i) {
             if (hasTileInMap(TileLocations[i])) {
-                hexes[i].setLevel(retrieveLevelNumFromHex(i) + 1);
+                hexes[i].setLevel(retrieveLevelNumFromHex(TileLocations[i]) + 1);
             }
             hexes[i].setTileNumber(currentTile);
             BoardGame.put(TileLocations[i], hexes[i]);
@@ -46,16 +46,16 @@ public class GameBoard {
         return BoardGame.containsKey(point);
     }
 
-    public int retrieveTileNumFromHex(int hexOfInterest) {
-        return BoardGame.get(TileLocations[hexOfInterest]).getTileNum();
+    public int retrieveTileNumFromHex(Point hexOfInterest) {
+        return BoardGame.get(hexOfInterest).getTileNum();
     }
 
-    public int retrieveLevelNumFromHex(int hexOfInterest) {
-        return BoardGame.get(TileLocations[hexOfInterest]).getLevel();
+    public int retrieveLevelNumFromHex(Point hexOfInterest) {
+        return BoardGame.get(hexOfInterest).getLevel();
     }
 
-    public int retrieveTerrainFromHex(int hexOfInterest) {
-        return BoardGame.get(TileLocations[hexOfInterest]).getTerrain();
+    public int retrieveTerrainFromHex(Point hexOfInterest) {
+        return BoardGame.get(hexOfInterest).getTerrain();
     }
 
     public boolean isEmpty() {

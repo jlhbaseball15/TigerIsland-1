@@ -6,11 +6,13 @@ public class Player {
     private int score;
     private int villagersRemaining;
     private int totorosRemaining;
+    private int tigersRemaining;
 
     public Player(String playername){
         score = 0;
         villagersRemaining = 20;
         totorosRemaining = 3;
+        tigersRemaining = 2;
         playerName = playername;
     }
 
@@ -21,6 +23,11 @@ public class Player {
     public void totoroBeingPlaced(){
         totorosRemaining = totorosRemaining -1;
         score = score+200;
+    }
+
+    public void tigerBeingPlaced() {
+        tigersRemaining = tigersRemaining - 1;
+        score = score + 75;
     }
 
     public int getScore(){

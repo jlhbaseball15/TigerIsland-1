@@ -60,34 +60,28 @@ public class GameRules {
     }
 
     private boolean TileDirectlyOnTopOfAnother() {
-        int Hex0_tileNum = board.retrieveTileNumFromHex(0);
-        int Hex1_tileNum = board.retrieveTileNumFromHex(1);
-        int Hex2_tileNum = board.retrieveTileNumFromHex(2);
+        int Hex0_tileNum = board.retrieveTileNumFromHex(TileLocations[0]);
+        int Hex1_tileNum = board.retrieveTileNumFromHex(TileLocations[1]);
+        int Hex2_tileNum = board.retrieveTileNumFromHex(TileLocations[2]);
 
-        if (Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum) {
-            return true;
-        }
+        return Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum;
 
-        return false;
     }
 
     private boolean TilesOnDifferentLevels() {
-        int Hex0_LevelNum = board.retrieveLevelNumFromHex(0);
-        int Hex1_LevelNum = board.retrieveLevelNumFromHex(1);
-        int Hex2_LevelNum = board.retrieveLevelNumFromHex(2);
+        int Hex0_LevelNum = board.retrieveLevelNumFromHex(TileLocations[0]);
+        int Hex1_LevelNum = board.retrieveLevelNumFromHex(TileLocations[1]);
+        int Hex2_LevelNum = board.retrieveLevelNumFromHex(TileLocations[2]);
 
-        if (Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum) {
-            return true;
-        }
+        return Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum;
 
-        return false;
     }
 
     private boolean AddedTilesVolcanoIsNotOnAVolcano() {
         boolean NoMatch = true;
 
         for (int i = 0; i < tileSize; ++i) {
-            if ((board.retrieveTerrainFromHex(i)) == 'V' && hexes[i].getTerrain() == 'V') {
+            if ((board.retrieveTerrainFromHex(TileLocations[i])) == 'V' && hexes[i].getTerrain() == 'V') {
                 NoMatch = false;
                 break;
             }
