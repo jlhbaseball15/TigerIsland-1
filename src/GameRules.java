@@ -49,47 +49,24 @@ public class GameRules {
         int X0 = TileLocations[0].x;
         int Y0 = TileLocations[0].y;
         int AdjacentCount = 0;
-        boolean YisEven = (Y0 % 2 == 0);
-        if (YisEven) {
             if (TileLocations[1].equals(new Point(X0 + 1, Y0)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0))) {
-                ++AdjacentCount;
-            }
-            if (TileLocations[1].equals(new Point(X0 + 1, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0 + 1))) {
-                ++AdjacentCount;
-            }
-            if (TileLocations[1].equals(new Point(X0, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0, Y0 + 1))) {
-                ++AdjacentCount;
-            }
-            if (TileLocations[1].equals(new Point(X0 - 1, Y0)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0))) {
-                ++AdjacentCount;
-            }
-            if (TileLocations[1].equals(new Point(X0, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0, Y0 - 1))) {
                 ++AdjacentCount;
             }
             if (TileLocations[1].equals(new Point(X0 + 1, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0 - 1))) {
                 ++AdjacentCount;
             }
-        }
-        else {
             if (TileLocations[1].equals(new Point(X0, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0, Y0 + 1))) {
                 ++AdjacentCount;
             }
             if (TileLocations[1].equals(new Point(X0, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0, Y0 - 1))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0 + 1 , Y0)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0))) {
-                ++AdjacentCount;
-            }
             if (TileLocations[1].equals(new Point(X0 - 1, Y0)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0))) {
-                ++AdjacentCount;
-            }
-            if (TileLocations[1].equals(new Point(X0 - 1, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0 - 1))) {
                 ++AdjacentCount;
             }
             if (TileLocations[1].equals(new Point(X0 - 1, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0 + 1))) {
                 ++AdjacentCount;
             }
-        }
         return AdjacentCount != 2;
     }
 
@@ -153,9 +130,7 @@ public class GameRules {
     }
 
     private boolean HasANeighbor(int x, int y) {
-        boolean YisEven = (y % 2 == 0);
 
-        if (YisEven) {
             if (board.hasTileInMap(x, y - 1)) {
                 return true;
             }
@@ -165,7 +140,7 @@ public class GameRules {
             if (board.hasTileInMap(x - 1, y)) {
                 return true;
             }
-            if (board.hasTileInMap(x + 1, y - 1)) {
+            if (board.hasTileInMap(x - 1, y + 1)) {
                 return true;
             }
             if (board.hasTileInMap(x + 1, y)) {
@@ -175,28 +150,6 @@ public class GameRules {
                 return true;
             }
             return false;
-        }
-        else {
-            if (board.hasTileInMap(x, y - 1)) {
-                return true;
-            }
-            if (board.hasTileInMap(x, y + 1)) {
-                return true;
-            }
-            if (board.hasTileInMap(x - 1, y)) {
-                return true;
-            }
-            if (board.hasTileInMap(x - 1, y - 1)) {
-                return true;
-            }
-            if (board.hasTileInMap(x + 1, y)) {
-                return true;
-            }
-            if (board.hasTileInMap(x - 1, y + 1)) {
-                return true;
-            }
-            return false;
-        }
     }
 
 }

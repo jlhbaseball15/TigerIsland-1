@@ -23,7 +23,7 @@ public class GameRulesTest {
         HexPoints = new Point [3];
         HexPoints[0] = new Point (0,0);
         HexPoints[1] = new Point (1,0);
-        HexPoints[2] = new Point (1,1);
+        HexPoints[2] = new Point (0,1);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        HexPoints[0] = new Point(0, -2);
+        HexPoints[0] = new Point(1, -2);
         HexPoints[1] = new Point(0, -1);
         HexPoints[2] = new Point(1, -1);
         try {
@@ -121,7 +121,7 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        HexPoints[0] = new Point (0,-2);
+        HexPoints[0] = new Point (1,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
         gameRules.TryToAddTile(tile, HexPoints);
@@ -147,7 +147,7 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        HexPoints[0] = new Point (0,-2);
+        HexPoints[0] = new Point (1,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
         gameRules.TryToAddTile(tile, HexPoints);
@@ -163,7 +163,7 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        HexPoints[0] = new Point (0,-2);
+        HexPoints[0] = new Point (1,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
         try {
@@ -205,7 +205,7 @@ public class GameRulesTest {
 
         tile = deck.getTile();
         hex = tile.getHexes();
-        HexPoints[0] = new Point (0,-2);
+        HexPoints[0] = new Point (1,-2);
         HexPoints[1] = new Point (0,-1);
         HexPoints[2] = new Point (1,-1);
         gameRules.TryToAddTile(tile, HexPoints);
