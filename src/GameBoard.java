@@ -46,6 +46,10 @@ public class GameBoard {
         return BoardGame.containsKey(point);
     }
 
+    public Hex getHexAtPointP(Point P) {
+        return BoardGame.get(P);
+    }
+
     public int retrieveTileNumFromHex(Point hexOfInterest) {
         return BoardGame.get(hexOfInterest).getTileNum();
     }
