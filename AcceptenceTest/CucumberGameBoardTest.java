@@ -101,4 +101,26 @@ public class CucumberGameBoardTest {
             Assert.assertEquals("The Tile Is Not Adjacent To An Existing Tile", e.getMessage());
         };
     }
+
+    //given same as above
+    @When("^the tile is plaed in a nonempty spot")
+    public void theTileIsPlacedinaNonemptyspot() throws GameRulesException{
+        tile = deck.getTile();
+        tileLocations[0] = new Point(0, 0);
+        tileLocations[1] = new Point(1, 0);
+        tileLocations[2] = new Point(0, 1);
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("\"The Tile Is Not Sitting On Three Hexes\"", e.getMessage());
+        };
+    }
+    @Then("^the tile is not added to the map$")
+    public void theTileIsNotAddedduetonotbeinganemptyspot() throws GameRulesException{
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("The Tile Is Not Sitting On Three Hexes", e.getMessage());
+        };
+    }
 }
