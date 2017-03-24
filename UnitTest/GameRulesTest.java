@@ -225,4 +225,36 @@ public class GameRulesTest {
             Assert.assertArrayEquals(expectedMessage, actualMessage);
         };
     }
+
+    @Test
+    public void CannotPlaceOnTotoroOrTiger() throws GameRulesException{
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -2);
+        HexPoints[1] = new Point(0, -1);
+        HexPoints[2] = new Point(1, -1);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile.getHexes()[1].setOccupied(Pieces.P1_TIGER, 1);
+
+        System.out.println(tile.getHexes()[1].getPiece());
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+
+        try {
+            gameRules.TryToAddTile(tile, HexPoints);
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Tile's Cannot Be Placed On A Totoro or A Tiger".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
 }

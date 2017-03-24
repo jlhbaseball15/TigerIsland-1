@@ -51,12 +51,12 @@ public class GameRules {
 
     private boolean HexBelowHasTigerOrTotoro() {
         if (board.hasTileInMap(TileLocations[0]) && !board.getHexAtPointP(TileLocations[0]).canHexBeNuked()) {
-            return false;
+            return true;
         }
         if (board.hasTileInMap(TileLocations[1]) && !board.getHexAtPointP(TileLocations[1]).canHexBeNuked()) {
-            return false;
+            return true;
         }
-        return !(board.hasTileInMap(TileLocations[2]) && !board.getHexAtPointP(TileLocations[2]).canHexBeNuked());
+        return (board.hasTileInMap(TileLocations[2]) && !board.getHexAtPointP(TileLocations[2]).canHexBeNuked());
     }
 
     private boolean HexesNotAdjacent() {
