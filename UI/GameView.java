@@ -35,6 +35,8 @@ public class GameView {
     private Tile currentTile;
     HashMap<Point, Hex> currentBoard;
     private boolean isPlaced;
+    private Point Ps[]; // for mouse clicks
+    boolean picked1, picked2;
 
     private JFrame mainFrame;
     private JTextField[] textFields;
@@ -47,6 +49,9 @@ public class GameView {
         rules = new GameRules(board);
         GAMEOVER = false;
         isPlaced = false;
+        Ps = new Point[3];
+        picked1 = false;
+        picked2 = false;
 
         //set HexLayout
         HexView.setLayout(new Point2D.Double(HEXSIZE, HEXSIZE), new Point2D.Double(SCREENSIZE_Width/2, SCREENSIZE_Height/2));
@@ -75,10 +80,11 @@ public class GameView {
     void runGame() {
         while(GAMEOVER == false) {
             isPlaced = false;
-            while (!isPlaced) {
+//            while (!isPlaced) {
                 Point[] userHexCoords = getUserInput();
-                placeTile(userHexCoords);
-            }
+//                placeTile(userHexCoords);
+//            }
+            while (!isPlaced) { mainGamePanel.repaint(); }
             setCurrentTile();
             mainGamePanel.repaint();
         }
@@ -240,12 +246,22 @@ public class GameView {
                 int x = e.getX();
                 int y = e.getY();
 
+                if(!picked1) {
+                    Ps[0] = HexView.pixelToHex(e.getX(), e.getY());
+                    picked1 = true;
+                }
+                else if(!picked2) {
+                    Ps[1] = HexView.pixelToHex(e.getX(), e.getY());
+                    picked2 = true;
+                }
+                else {
+                    Ps[2] = HexView.pixelToHex(e.getX(), e.getY());
+                    picked1 = false;
+                    picked2 = false;
+                    addTile(currentTile, Ps);
+                }
 
-
-
-                Point p = HexView.pixelToHex(e.getX(), e.getY());
-
-                System.out.println("x: " + p.x + " y:" + p.y);
+                System.out.println("x: " + x + " y:" + y);
 
                 //What to do when a hexagon is clicked
                 //currentBoard.put(p, (int)'X');

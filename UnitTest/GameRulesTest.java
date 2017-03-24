@@ -27,6 +27,33 @@ public class GameRulesTest {
     }
 
     @Test
+    public void PlacingHexesNonAdjacentToEachOther() {
+        HexPoints[2] = new Point (0, 0);
+        try {
+            gameRules.TryToAddTile(tile, HexPoints);
+            Assert.assertTrue(false);
+        }catch (GameRulesException e) {
+            char expectedMessage[] = "The Hexes of a tile must be adjacent".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(5, -2);
+        HexPoints[1] = new Point(0, -1);
+        HexPoints[2] = new Point(-4, -1);
+        try {
+            gameRules.TryToAddTile(tile, HexPoints);
+            Assert.assertTrue(false);
+        }catch (GameRulesException e) {
+            char expectedMessage[] = "The Hexes of a tile must be adjacent".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
     public void PlaceFirstTile() throws GameRulesException {
         try {
             gameRules.TryToAddTile(tile, HexPoints);
@@ -40,7 +67,7 @@ public class GameRulesTest {
     public void PlacingATileThatIsNotFlat() throws GameRulesException {
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.AddTile(tile, HexPoints);
-        HexPoints[2] = new Point(-1, 1);
+        HexPoints[2] = new Point(1, -1);
        try {
            gameRules.TryToAddTile(tile, HexPoints);
            Assert.assertTrue(false);
