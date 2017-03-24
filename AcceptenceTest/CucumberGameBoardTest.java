@@ -63,7 +63,7 @@ public class CucumberGameBoardTest {
     public void theTileIsPlaced() throws GameRulesException {
         tile = deck.getTile();
         tileLocations[0] = new Point(0, -2);
-        tileLocations[1] = new Point(1, -1);
+        tileLocations[1] = new Point(1, -2);
         tileLocations[2] = new Point(1, -1);
         try {
             rules.TryToAddTile(tile, tileLocations);
