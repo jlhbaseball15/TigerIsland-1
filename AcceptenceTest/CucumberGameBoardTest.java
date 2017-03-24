@@ -21,7 +21,7 @@ public class CucumberGameBoardTest {
         tileLocations = new Point[3];
         tileLocations[0] = new Point(0,0);
         tileLocations[1] = new Point(1,0);
-        tileLocations[2] = new Point(0,1);
+        tileLocations[2] = new Point(1,1);
     }
 
     @When("^a tile is placed$")
@@ -50,7 +50,7 @@ public class CucumberGameBoardTest {
         tileLocations = new Point[3];
         tileLocations[0] = new Point(0, 0);
         tileLocations[1] = new Point(1, 0);
-        tileLocations[2] = new Point(0, 1);
+        tileLocations[2] = new Point(1, 1);
         try {
             rules.TryToAddTile(tile, tileLocations);
         } catch (GameRulesException e) {
@@ -63,8 +63,8 @@ public class CucumberGameBoardTest {
     public void theTileIsPlaced() throws GameRulesException {
         tile = deck.getTile();
         tileLocations[0] = new Point(0, -2);
-        tileLocations[1] = new Point(1, -2);
-        tileLocations[2] = new Point(0, -1);
+        tileLocations[1] = new Point(1, -1);
+        tileLocations[2] = new Point(1, -1);
         try {
             rules.TryToAddTile(tile, tileLocations);
         } catch (GameRulesException e) {
@@ -85,7 +85,7 @@ public class CucumberGameBoardTest {
         tile = deck.getTile();
         tileLocations[0] = new Point(3, 0);
         tileLocations[1] = new Point(4, 0);
-        tileLocations[2] = new Point(3, 1);
+        tileLocations[2] = new Point(4, 1);
         try {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
@@ -99,6 +99,28 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
             Assert.assertEquals("The Tile Is Not Adjacent To An Existing Tile", e.getMessage());
+        };
+    }
+
+    //given same as above
+    @When("^the tile is plaed in a nonempty spot")
+    public void theTileIsPlacedinaNonemptyspot() throws GameRulesException{
+        tile = deck.getTile();
+        tileLocations[0] = new Point(0, 0);
+        tileLocations[1] = new Point(1, 0);
+        tileLocations[2] = new Point(0, 1);
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("\"The Tile Is Not Sitting On Three Hexes\"", e.getMessage());
+        };
+    }
+    @Then("^the tile is not added to the map$")
+    public void theTileIsNotAddedduetonotbeinganemptyspot() throws GameRulesException{
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        }catch (GameRulesException e) {
+            Assert.assertEquals("The Tile Is Not Sitting On Three Hexes", e.getMessage());
         };
     }
 }
