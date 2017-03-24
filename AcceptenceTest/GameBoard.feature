@@ -14,3 +14,8 @@ Scenario: When a tile is placed flat on level one not adjacent to an existing ti
   Given The board is not empty
   When The tile is placed away from other tiles
   Then the tile is not added to the map
+
+  Scenario: Place a Tile onto the Map
+    Given The board is not empty
+    When the tile is plaed in a nonempty spot
+    Then the tile is not added to the map due to the Tile overhanging
