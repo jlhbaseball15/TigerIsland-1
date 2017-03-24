@@ -43,8 +43,6 @@ public class Hex {
     }
     public boolean canHexBeNuked(){ return isItNukable; }
 
-    public boolean canHexBeNuked(){ return isItNukable; }
-
     public void setLevel(int level) { LevelNumber = level; }
 
     public void setTileNumber(int tile) { TileNumber = tile; }
