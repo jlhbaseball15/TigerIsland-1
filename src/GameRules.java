@@ -43,6 +43,20 @@ public class GameRules {
                 }
             }
         }
+
+        if (HexBelowHasTigerOrTotoro()) {
+            throw new GameRulesException("Tile's Cannot Be Placed On A Totoro or A Tiger");
+        }
+    }
+
+    private boolean HexBelowHasTigerOrTotoro() {
+        if (board.hasTileInMap(TileLocations[0]) && !board.getHexAtPointP(TileLocations[0]).canHexBeNuked()) {
+            return true;
+        }
+        if (board.hasTileInMap(TileLocations[1]) && !board.getHexAtPointP(TileLocations[1]).canHexBeNuked()) {
+            return true;
+        }
+        return (board.hasTileInMap(TileLocations[2]) && !board.getHexAtPointP(TileLocations[2]).canHexBeNuked());
     }
 
     private boolean HexesNotAdjacent() {
