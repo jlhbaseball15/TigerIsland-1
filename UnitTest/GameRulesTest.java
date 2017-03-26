@@ -241,7 +241,6 @@ public class GameRulesTest {
 
         tile.getHexes()[1].setOccupied(Pieces.P1_TIGER, 1);
 
-        System.out.println(tile.getHexes()[1].getPiece());
         tile = deck.getTile();
         hex = tile.getHexes();
         HexPoints[0] = new Point (0,0);
