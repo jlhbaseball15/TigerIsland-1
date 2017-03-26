@@ -14,7 +14,6 @@ public class Hex {
         LevelNumber = 1;
         TerrainType = Terrain;
         Occupied = Pieces.NONE;
-        isItNukable = true;
         numOfPeices = 0;
         isItNukable = true;
 
@@ -41,8 +40,6 @@ public class Hex {
             isItNukable = false;
         }
     }
-    public boolean canHexBeNuked(){ return isItNukable; }
-
     public boolean canHexBeNuked(){ return isItNukable; }
 
     public void setLevel(int level) { LevelNumber = level; }

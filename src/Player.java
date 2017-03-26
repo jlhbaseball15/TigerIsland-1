@@ -16,18 +16,30 @@ public class Player {
         playerName = playername;
     }
 
-    public void MeepleBeingPlaced(int numPlaced){
-        villagersRemaining = villagersRemaining-numPlaced;
-        score = score + numPlaced*numPlaced;
+    public void villagersBeingPlaced(int numPlaced){
+        if(numPlaced <= villagersRemaining) {
+            villagersRemaining = villagersRemaining - numPlaced;
+            score = score + numPlaced * numPlaced;
+        }else{
+            throw new IndexOutOfBoundsException("tried to place more villagers than available.");
+        }
     }
     public void totoroBeingPlaced(){
-        totorosRemaining = totorosRemaining -1;
-        score = score+200;
+        if(1 <= totorosRemaining) {
+            totorosRemaining = totorosRemaining - 1;
+            score = score + 200;
+        }else{
+            throw new IndexOutOfBoundsException("tried to place more totoros than available.");
+        }
     }
 
     public void tigerBeingPlaced() {
-        tigersRemaining = tigersRemaining - 1;
-        score = score + 75;
+        if(1 <= tigersRemaining) {
+            tigersRemaining = tigersRemaining - 1;
+            score = score + 75;
+        }else{
+            throw new IndexOutOfBoundsException("tried to place more tigers than available.");
+        }
     }
 
     public int getScore(){
