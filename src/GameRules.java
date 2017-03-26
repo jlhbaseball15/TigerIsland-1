@@ -5,7 +5,7 @@ public class GameRules {
     private final int tileSize = 3;
     private static int numberOfOverlappedTiles;
     private static Hex hexes[];
-    private static Point TileLocations[];
+    private static Point tileLocations[];
     private GameBoard board;
 
     public GameRules(GameBoard board) {
@@ -16,7 +16,7 @@ public class GameRules {
 
         numberOfOverlappedTiles = 0;
         hexes = tile.getHexes();
-        TileLocations = TileHexPoints;
+        tileLocations = TileHexPoints;
 
         if (HexesNotAdjacent()) {
             throw new GameRulesException("The Hexes of a tile must be adjacent");
@@ -47,38 +47,64 @@ public class GameRules {
         if (HexBelowHasTigerOrTotoro()) {
             throw new GameRulesException("Tile's Cannot Be Placed On A Totoro or A Tiger");
         }
+
+        if (BelowSettlementIsDestroyed()) {
+            throw new GameRulesException("A settlement cannot be destroyed");
+        }
+    }
+
+    // holding function for settlements will check for valid tile placement
+    private boolean BelowSettlementIsDestroyed() {
+        Point hex0 = tileLocations[0];
+        Point hex1 = tileLocations[1];
+        Point hex2 = tileLocations[2];
+
+        if (board.hasTileInMap(hex0) && board.getHexAtPointP(hex0).getPiece() != Pieces.NONE) {
+            return true;
+        }
+        if (board.hasTileInMap(hex1) && board.getHexAtPointP(hex1).getPiece() != Pieces.NONE) {
+            return true;
+        }
+        if (board.hasTileInMap(hex2) && board.getHexAtPointP(hex2).getPiece() != Pieces.NONE) {
+            return true;
+        }
+
+        return false;
     }
 
     private boolean HexBelowHasTigerOrTotoro() {
-        if (board.hasTileInMap(TileLocations[0]) && !board.getHexAtPointP(TileLocations[0]).canHexBeNuked()) {
+        if (board.hasTileInMap(tileLocations[0]) && !board.getHexAtPointP(tileLocations[0]).canHexBeNuked()) {
             return true;
         }
-        if (board.hasTileInMap(TileLocations[1]) && !board.getHexAtPointP(TileLocations[1]).canHexBeNuked()) {
+        if (board.hasTileInMap(tileLocations[1]) && !board.getHexAtPointP(tileLocations[1]).canHexBeNuked()) {
             return true;
         }
-        return (board.hasTileInMap(TileLocations[2]) && !board.getHexAtPointP(TileLocations[2]).canHexBeNuked());
+        return (board.hasTileInMap(tileLocations[2]) && !board.getHexAtPointP(tileLocations[2]).canHexBeNuked());
     }
 
     private boolean HexesNotAdjacent() {
-        int X0 = TileLocations[0].x;
-        int Y0 = TileLocations[0].y;
+        int X0 = tileLocations[0].x;
+        int Y0 = tileLocations[0].y;
+        Point hex1 = tileLocations[1];
+        Point hex2 = tileLocations[2];
+
         int AdjacentCount = 0;
-            if (TileLocations[1].equals(new Point(X0 + 1, Y0)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0))) {
+            if (hex1.equals(new Point(X0 + 1, Y0)) ^ hex2.equals(new Point(X0 + 1, Y0))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0 + 1, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0 + 1, Y0 - 1))) {
+            if (hex1.equals(new Point(X0 + 1, Y0 - 1)) ^ hex2.equals(new Point(X0 + 1, Y0 - 1))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0, Y0 + 1))) {
+            if (hex1.equals(new Point(X0, Y0 + 1)) ^ hex2.equals(new Point(X0, Y0 + 1))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0, Y0 - 1)) ^ TileLocations[2].equals(new Point(X0, Y0 - 1))) {
+            if (hex1.equals(new Point(X0, Y0 - 1)) ^ hex2.equals(new Point(X0, Y0 - 1))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0 - 1, Y0)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0))) {
+            if (hex1.equals(new Point(X0 - 1, Y0)) ^ hex2.equals(new Point(X0 - 1, Y0))) {
                 ++AdjacentCount;
             }
-            if (TileLocations[1].equals(new Point(X0 - 1, Y0 + 1)) ^ TileLocations[2].equals(new Point(X0 - 1, Y0 + 1))) {
+            if (hex1.equals(new Point(X0 - 1, Y0 + 1)) ^ hex2.equals(new Point(X0 - 1, Y0 + 1))) {
                 ++AdjacentCount;
             }
         return AdjacentCount != 2;
@@ -89,7 +115,7 @@ public class GameRules {
         boolean isOverlapped = false;
 
         for (int i = 0; i < tileSize; ++i) {
-            Point p = TileLocations[i];
+            Point p = tileLocations[i];
 
             if (board.hasTileInMap(p)) {
                 isOverlapped = true;
@@ -101,18 +127,18 @@ public class GameRules {
     }
 
     private boolean TileDirectlyOnTopOfAnother() {
-        int Hex0_tileNum = board.retrieveTileNumFromHex(TileLocations[0]);
-        int Hex1_tileNum = board.retrieveTileNumFromHex(TileLocations[1]);
-        int Hex2_tileNum = board.retrieveTileNumFromHex(TileLocations[2]);
+        int Hex0_tileNum = board.retrieveTileNumFromHex(tileLocations[0]);
+        int Hex1_tileNum = board.retrieveTileNumFromHex(tileLocations[1]);
+        int Hex2_tileNum = board.retrieveTileNumFromHex(tileLocations[2]);
 
         return Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum;
 
     }
 
     private boolean TilesOnDifferentLevels() {
-        int Hex0_LevelNum = board.retrieveLevelNumFromHex(TileLocations[0]);
-        int Hex1_LevelNum = board.retrieveLevelNumFromHex(TileLocations[1]);
-        int Hex2_LevelNum = board.retrieveLevelNumFromHex(TileLocations[2]);
+        int Hex0_LevelNum = board.retrieveLevelNumFromHex(tileLocations[0]);
+        int Hex1_LevelNum = board.retrieveLevelNumFromHex(tileLocations[1]);
+        int Hex2_LevelNum = board.retrieveLevelNumFromHex(tileLocations[2]);
 
         return Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum;
 
@@ -122,7 +148,7 @@ public class GameRules {
         boolean NoMatch = true;
 
         for (int i = 0; i < tileSize; ++i) {
-            if ((board.retrieveTerrainFromHex(TileLocations[i])) == 'V' && hexes[i].getTerrain() == 'V') {
+            if ((board.retrieveTerrainFromHex(tileLocations[i])) == 'V' && hexes[i].getTerrain() == 'V') {
                 NoMatch = false;
                 break;
             }
@@ -134,8 +160,8 @@ public class GameRules {
     private boolean NoAdjacentTiles() {
         int x, y;
         for (int i = 0; i < tileSize; ++i) {
-            x = TileLocations[i].x;
-            y = TileLocations[i].y;
+            x = tileLocations[i].x;
+            y = tileLocations[i].y;
 
             if (HasANeighbor(x, y)) return false;
         }

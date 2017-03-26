@@ -11,16 +11,16 @@ public class GameBoardTest {
     private GameBoard gameBoard;
     private Deck deck;
     private Tile tile;
-    private Point HexPoints[];
+    private Point hexPoints[];
 
     @Before
     public void MapObject(){
         gameBoard = new GameBoard();
         deck = new Deck();
-        HexPoints = new Point[3];
-        HexPoints[0] = new Point(0,0);
-        HexPoints[1] = new Point(1,0);
-        HexPoints[2] = new Point(1,1);
+        hexPoints = new Point[3];
+        hexPoints[0] = new Point(0,0);
+        hexPoints[1] = new Point(1,0);
+        hexPoints[2] = new Point(1,1);
     }
 
     @Test
@@ -31,14 +31,14 @@ public class GameBoardTest {
     @Test
     public void MapIsNotEmpty() {
         tile = deck.getTile();
-        gameBoard.AddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, hexPoints);
         Assert.assertFalse(gameBoard.isEmpty());
     }
 
     @Test
     public void GettingMap() {
         tile = deck.getTile();
-        gameBoard.AddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, hexPoints);
        HashMap<Point, Hex> currentBoard = gameBoard.getMap();
         Assert.assertEquals('V', currentBoard.get(new Point(1,1)).getTerrain());
     }
@@ -46,31 +46,31 @@ public class GameBoardTest {
     @Test
     public void GettingTilesOnBoard() {
         tile = deck.getTile();
-        gameBoard.AddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, hexPoints);
 
         tile = deck.getTile();
-        HexPoints[0] = new Point(2,0);
-        HexPoints[1] = new Point(2,1);
-        HexPoints[2] = new Point(3,1);
-        gameBoard.AddTile(tile, HexPoints);
+        hexPoints[0] = new Point(2,0);
+        hexPoints[1] = new Point(2,1);
+        hexPoints[2] = new Point(3,1);
+        gameBoard.AddTile(tile, hexPoints);
 
         tile = deck.getTile();
-        HexPoints[0] = new Point(3,0);
-        HexPoints[1] = new Point(4,0);
-        HexPoints[2] = new Point(4,1);
-        gameBoard.AddTile(tile, HexPoints);
+        hexPoints[0] = new Point(3,0);
+        hexPoints[1] = new Point(4,0);
+        hexPoints[2] = new Point(4,1);
+        gameBoard.AddTile(tile, hexPoints);
 
         tile = deck.getTile();
-        HexPoints[0] = new Point(1,-2);
-        HexPoints[1] = new Point(2,-1);
-        HexPoints[2] = new Point(2,-2);
-        gameBoard.AddTile(tile, HexPoints);
+        hexPoints[0] = new Point(1,-2);
+        hexPoints[1] = new Point(2,-1);
+        hexPoints[2] = new Point(2,-2);
+        gameBoard.AddTile(tile, hexPoints);
 
         tile = deck.getTile();
-        HexPoints[0] = new Point(3,-2);
-        HexPoints[1] = new Point(3,-1);
-        HexPoints[2] = new Point(4,-1);
-        gameBoard.AddTile(tile, HexPoints);
+        hexPoints[0] = new Point(3,-2);
+        hexPoints[1] = new Point(3,-1);
+        hexPoints[2] = new Point(4,-1);
+        gameBoard.AddTile(tile, hexPoints);
 
         Vector<Tile> tileVector = gameBoard.getTilesOnBoard();
         Assert.assertTrue(tileVector.size() == 5);
@@ -100,5 +100,20 @@ public class GameBoardTest {
             isCorrect = true;
         }
         Assert.assertTrue(isCorrect);
+    }
+
+    @Test
+    public void ResetOccupationOnNuke() {
+        tile = deck.getTile();
+        tile.getHexes()[1].setOccupied(Pieces.P1_VILLAGER, 1);
+        gameBoard.AddTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hexPoints[0] = new Point(0,0);
+        hexPoints[1] = new Point(1,0);
+        hexPoints[2] = new Point(1,1);
+        gameBoard.AddTile(tile, hexPoints);
+
+        Assert.assertEquals(Pieces.NONE, gameBoard.getHexAtPointP(hexPoints[1]).getPiece());
     }
 }

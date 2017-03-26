@@ -57,6 +57,8 @@ public class Player {
     public int gettigersRemaining(){
         return tigersRemaining;
     }
+
+    public int getTotalPiecesRemaining() { return villagersRemaining + totorosRemaining + tigersRemaining; }
     /*
     public TilePlacement placetile(Tile tile){
         //calls a funtion to decide what movement to do if our player

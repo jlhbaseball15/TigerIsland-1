@@ -4,19 +4,19 @@ import java.util.Vector;
 
 public class GameBoard {
 
-    private HashMap<Point, Hex> BoardGame;
+    private HashMap<Point, Hex> boardGame;
     private Vector<Tile> tilesOnBoard;
-    private static Point TileLocations[];
+    private static Point tileLocations[];
     private Integer currentTile;
 
     public GameBoard() {
         int mapCapacity = 144;
         currentTile = 0;
         tilesOnBoard = new Vector<Tile>();
-        BoardGame = new HashMap<Point, Hex>(mapCapacity);
+        boardGame = new HashMap<Point, Hex>(mapCapacity);
     }
 
-    public HashMap getMap() { return BoardGame; }
+    public HashMap getMap() { return boardGame; }
 
     public Vector getTilesOnBoard() {
         return tilesOnBoard;
@@ -24,49 +24,50 @@ public class GameBoard {
 
     public void AddTile(Tile tile, Point hexPositions[]){
         Hex[] hexes = tile.getHexes();
-        TileLocations = hexPositions;
+        tileLocations = hexPositions;
 
         int tileSize = 3;
         for (int i = 0; i < tileSize; ++i) {
-            if (hasTileInMap(TileLocations[i])) {
-                hexes[i].setLevel(retrieveLevelNumFromHex(TileLocations[i]) + 1);
+            if (hasTileInMap(tileLocations[i])) {
+                hexes[i].setLevel(retrieveLevelNumFromHex(tileLocations[i]) + 1);
+                hexes[i].setOccupied(Pieces.NONE, 0);
             }
             hexes[i].setTileNumber(currentTile);
-            BoardGame.put(TileLocations[i], hexes[i]);
+            boardGame.put(tileLocations[i], hexes[i]);
         }
         tilesOnBoard.add(currentTile, tile);
         ++currentTile;
     }
 
     public boolean hasTileInMap(int hexXPoint, int hexYPoint) {
-        return BoardGame.containsKey(new Point(hexXPoint, hexYPoint));
+        return boardGame.containsKey(new Point(hexXPoint, hexYPoint));
     }
 
     public boolean hasTileInMap(Point point) {
-        return BoardGame.containsKey(point);
+        return boardGame.containsKey(point);
     }
 
     public Hex getHexAtPointP(Point P) {
-        return BoardGame.get(P);
+        return boardGame.get(P);
     }
 
     public int retrieveTileNumFromHex(Point hexOfInterest) {
-        return BoardGame.get(hexOfInterest).getTileNum();
+        return boardGame.get(hexOfInterest).getTileNum();
     }
 
     public int retrieveLevelNumFromHex(Point hexOfInterest) {
-        return BoardGame.get(hexOfInterest).getLevel();
+        return boardGame.get(hexOfInterest).getLevel();
     }
 
     public int retrieveTerrainFromHex(Point hexOfInterest) {
-        return BoardGame.get(hexOfInterest).getTerrain();
+        return boardGame.get(hexOfInterest).getTerrain();
     }
 
     public boolean isEmpty() {
-        return BoardGame.isEmpty();
+        return boardGame.isEmpty();
     }
 
-    public Integer size() { return BoardGame.size(); }
+    public Integer size() { return boardGame.size(); }
 
 }
 
