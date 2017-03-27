@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameRules {
 
@@ -7,9 +8,15 @@ public class GameRules {
     private static Hex hexes[];
     private static Point tileLocations[];
     private GameBoard board;
+    private ArrayList<Settlement> settlements;
 
     public GameRules(GameBoard board) {
         this.board = board;
+        settlements = new ArrayList<>();
+    }
+
+    public void setSettlements(ArrayList<Settlement> newSettlements) {
+        settlements = newSettlements;
     }
 
     public void TryToAddTile(Tile tile, Point TileHexPoints[]) throws GameRulesException{
@@ -48,7 +55,7 @@ public class GameRules {
             throw new GameRulesException("Tile's Cannot Be Placed On A Totoro or A Tiger");
         }
 
-        if (BelowSettlementIsDestroyed()) {
+        if (!settlements.isEmpty() && BelowSettlementIsDestroyed()) {
             throw new GameRulesException("A settlement cannot be destroyed");
         }
     }
@@ -59,14 +66,20 @@ public class GameRules {
         Point hex1 = tileLocations[1];
         Point hex2 = tileLocations[2];
 
-        if (board.hasTileInMap(hex0) && board.getHexAtPointP(hex0).getPiece() != Pieces.NONE) {
-            return true;
-        }
-        if (board.hasTileInMap(hex1) && board.getHexAtPointP(hex1).getPiece() != Pieces.NONE) {
-            return true;
-        }
-        if (board.hasTileInMap(hex2) && board.getHexAtPointP(hex2).getPiece() != Pieces.NONE) {
-            return true;
+        int size = 0;
+
+        for (Settlement settle: settlements) {
+            size = settle.getSettlement().size();
+            if (size == 1 && (settle.getSettlement().contains(hex0)
+                    || settle.getSettlement().contains(hex1)
+                    || settle.getSettlement().contains(hex2))) {
+                return true;
+            }
+            if (size == 2 && ((settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex1))
+                    || (settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex2))
+                    || (settle.getSettlement().contains(hex1) && settle.getSettlement().contains(hex2)))) {
+                return true;
+            }
         }
 
         return false;
