@@ -35,6 +35,8 @@ public class GameView {
     private Tile currentTile;
     HashMap<Point, Hex> currentBoard;
     private boolean isPlaced;
+    private Point hexLoc[];
+    private boolean firstHex, secondHex;
 
     private JFrame mainFrame;
     private JTextField[] textFields;
@@ -47,6 +49,9 @@ public class GameView {
         rules = new GameRules(board);
         GAMEOVER = false;
         isPlaced = false;
+        hexLoc = new Point[3];
+        firstHex = false;
+        secondHex = false;
 
         //set HexLayout
         HexView.setLayout(new Point2D.Double(HEXSIZE, HEXSIZE), new Point2D.Double(SCREENSIZE_Width/2, SCREENSIZE_Height/2));
@@ -75,11 +80,12 @@ public class GameView {
     void runGame() {
         while(GAMEOVER == false) {
             isPlaced = false;
+            Point[] userHexCoords = getUserInput();
+            placeTile(userHexCoords);
             while (!isPlaced) {
-                Point[] userHexCoords = getUserInput();
-                placeTile(userHexCoords);
+                mainGamePanel.repaint();
             }
-            setCurrentTile();
+            //setCurrentTile();
             mainGamePanel.repaint();
         }
     }
@@ -160,7 +166,7 @@ public class GameView {
         try {
             rules.TryToAddTile(tile, hexCoords);
             board.AddTile(tile, hexCoords);
-            isPlaced = true;
+           // isPlaced = true;
         } catch (GameRulesException e) {
             System.out.println(e);
         }
@@ -239,14 +245,37 @@ public class GameView {
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
+                Point p = HexView.pixelToHex(x, y);
 
-                Point p = HexView.pixelToHex(e.getX(), e.getY());
+                if(!firstHex){
+                    hexLoc[0] = p;
+                    firstHex = true;
+                    System.out.println("first");
+                }
+                else if(!secondHex) {
+                    hexLoc[1] = p;
+                    secondHex = true;
+                    System.out.println("second");
+                }
+                else {
+                    hexLoc[2] = p;
+                    firstHex = false;
+                    secondHex = false;
+                    System.out.println("third");
+                    try {
+                        rules.TryToAddTile(currentTile, hexLoc);
+                        addTile(currentTile, hexLoc);
+                        isPlaced = true;
+                        setCurrentTile();
+                    } catch (GameRulesException e1) {
+                        e1.printStackTrace();
+                    }
+                }
 
-                System.out.println("x: " + p.x + " y:" + p.y);
 
                 //What to do when a hexagon is clicked
                 //currentBoard.put(p, (int)'X');
-                //repaint();
+                repaint();
             }
         } // end of MyMouseListener
     } //end of DrawingPanel
