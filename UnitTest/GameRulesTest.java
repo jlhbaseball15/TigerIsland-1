@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GameRulesTest {
 
@@ -252,6 +253,43 @@ public class GameRulesTest {
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Tile's Cannot Be Placed On A Totoro or A Tiger".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void cannotDestroySettlement() throws  GameRulesException{
+        ArrayList<Settlement> settlementList = new ArrayList<>();
+        Settlement villages= new Settlement();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point (1,-2);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile.getHexes()[1].setOccupied(Pieces.P1_VILLAGER, 1);
+        villages.addPointToSettlement(HexPoints[1]);
+        settlementList.add(villages);
+        gameRules.setSettlements(settlementList);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point (0,0);
+        HexPoints[1] = new Point (0,-1);
+        HexPoints[2] = new Point (1,-1);
+
+        try {
+            gameRules.TryToAddTile(tile, HexPoints);
+            Assert.assertTrue(false);
+        } catch (GameRulesException e) {
+            char expectedMessage[] = "A settlement cannot be destroyed".toCharArray();
             char actualMessage[] = e.getMessage().toCharArray();
             Assert.assertArrayEquals(expectedMessage, actualMessage);
         };
