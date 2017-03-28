@@ -298,7 +298,8 @@ public class GameRulesTest {
     }
 
 
-    /* ---  build option test --- */
+    /* ---  build option test  --- */
+    /* ---  new_settlement  --- */
 
     @Test
     public void NewSettlementOnNonExistantHex () {
@@ -396,6 +397,8 @@ public class GameRulesTest {
             Assert.assertTrue(false);
         };
     }
+
+    /* ---  Expanding  --- */
 
     @Test
     public void ExpandOntoAnEmptyHex() {
@@ -639,6 +642,743 @@ public class GameRulesTest {
             Assert.assertFalse(expansionMap.contains(new Point(-2,-3)));
 
             Assert.assertEquals(10, gameRules.getVillagersCount());
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        };
+    }
+
+    /* ---  Placeing a Totoro  --- */
+
+    @Test
+    public void placingATotoroInSettlementWithSizeLessThanFive() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setSettlements(settlements);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(0, 0), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Size of settlement is not equal to or greater than 5".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroOnAVolcano() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(0, 1), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Can not build totoro on volcano".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroOnASettlementContainingATotoro() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -2)).setOccupied(Pieces.P1_TOTORO, 1);
+        settle.addPointToSettlement(new Point(2, -2));
+        settle.setTotoro();
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -3), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Can not build more than one totoros on one settlement".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroWithNoneRemainingForPlayerP1() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        player.totoroBeingPlaced();
+        player.totoroBeingPlaced();
+        player.totoroBeingPlaced();
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -2), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Has played all Totoro pieces".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroAwayFromSettlement() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -3), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Must build Totoro next to the Settlement".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroInAValidPlace() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -2), 'L');
+            Assert.assertTrue(true);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        };
+    }
+
+    /* ---  Placing a Tiger  --- */
+
+    @Test
+    public void placeTigerBelowLevelThree() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Level of hex must be three or greater".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placeTigerOnAVolcano() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        gameBoard.getHexAtPointP(new Point(0, 1)).setLevel(3);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 1), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Can not build tiger on volcano".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placeATigerOnASettlementWithATiger() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setLevel(3);
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_TIGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+        settle.setTiger();
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setLevel(3);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(1, -1), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Can not build more than one tiger on one settlement".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placeTigerWithNoTigersRemaining() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setLevel(5);
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        player.tigerBeingPlaced();
+        player.tigerBeingPlaced();
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Has played all Tiger pieces".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placeTigerAwayFromTheSettlement() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setLevel(5);
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, -1), 'L');
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Must build Tiger next to the Settlement".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void PlacingATigerInAValidSpot() throws GameRulesException {
+        Player player = new Player("Bob");
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.AddTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setLevel(10);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0), 'L');
+            Assert.assertTrue(true);
         } catch(GameRulesException e) {
             Assert.assertTrue(false);
         };

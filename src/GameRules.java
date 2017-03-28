@@ -21,6 +21,7 @@ public class GameRules {
     public GameRules(GameBoard board) {
         this.board = board;
         settlements = new ArrayList<>();
+        chosenSettlement = new Settlement();
     }
 
     public void setSettlements(ArrayList<Settlement> newSettlements) {
@@ -29,6 +30,10 @@ public class GameRules {
 
     public int getVillagersCount() {
         return villagersCount;
+    }
+
+    public void setChosenSettlement(Settlement settle) {
+        chosenSettlement = settle;
     }
 
     public void TryToAddTile(Tile tile, Point TileHexPoints[]) throws GameRulesException{
@@ -230,31 +235,31 @@ public class GameRules {
 
         if(checksizeofsettlement())
             throw new GameRulesException("Size of settlement is not equal to or greater than 5");
-        if(isonvolcano(Hexlocation))
+        if(isOnVolcano(Hexlocation))
             throw new GameRulesException("Can not build totoro on volcano");
-        if(Settlementhasatororo()){
+        if(settlementHasATororo()){
             throw new GameRulesException("Can not build more than one totoros on one settlement");
         }
-        if(Playerdoesnothaveremainingtotoropieces()){
-            throw new GameRulesException("Has played all Totoro pieces ");
+        if(playerDoesNotHaveRemainingTotoroPieces()){
+            throw new GameRulesException("Has played all Totoro pieces");
         }
-        if(!Selectedhexisnotnexttosettlement(Hexlocation)){
+        if(!selectedHexIsNotNextToSettlement(Hexlocation)){
             throw new GameRulesException("Must build Totoro next to the Settlement");
         }
     }
 
     public void tryToAddTiger(Point Hexlocation) throws GameRulesException{
-        if(checklevelofhex(Hexlocation))
+        if(checkLevelOfHex(Hexlocation))
             throw new GameRulesException("Level of hex must be three or greater");
-        if(isonvolcano(Hexlocation))
+        if(isOnVolcano(Hexlocation))
             throw new GameRulesException("Can not build tiger on volcano");
-        if(Settlementhasatiger()){
+        if(settlementHasATiger()){
             throw new GameRulesException("Can not build more than one tiger on one settlement");
         }
-        if(Playerdoesnothaveremainingtigerpieces()){
-            throw new GameRulesException("Has played all Tiger pieces ");
+        if(playerDoesNotHaveRemainingTigerPieces()){
+            throw new GameRulesException("Has played all Tiger pieces");
         }
-        if(!Selectedhexisnotnexttosettlement(Hexlocation)){
+        if(!selectedHexIsNotNextToSettlement(Hexlocation)){
             throw new GameRulesException("Must build Tiger next to the Settlement");
         }
     }
@@ -412,24 +417,25 @@ public class GameRules {
         return islessthanfive;
     }
 
-    private boolean isonvolcano(Point location){
+    private boolean isOnVolcano(Point location){
         boolean isterraintypevolcano = false;
         char terrainofhex = board.retrieveTerrainFromHex(location);
-        if(terrainofhex=='V');
+        if(terrainofhex=='V')
         isterraintypevolcano=true;
+
         return isterraintypevolcano;
 
     }
 
-    private boolean Playerdoesnothaveremainingtotoropieces(){
+    private boolean playerDoesNotHaveRemainingTotoroPieces(){
         int totorosremaining=CurrentPlayer.gettotorosRemaining();
         boolean hasnototoros=false;
-        if(totorosremaining>0)
+        if(totorosremaining<=0)
             hasnototoros=true;
         return hasnototoros;
     }
 
-    private boolean Selectedhexisnotnexttosettlement(Point Hexlocation){
+    private boolean selectedHexIsNotNextToSettlement(Point Hexlocation){
         boolean hexisnexttosettlement=false;
         int x = Hexlocation.x;
         int y = Hexlocation.y;
@@ -468,7 +474,7 @@ public class GameRules {
         return hexisnexttosettlement;
     }
 
-    private boolean Settlementhasatororo(){
+    private boolean settlementHasATororo(){
         boolean totoroexists=false;
         if(chosenSettlement.containsTotoro())
             totoroexists=true;
@@ -476,7 +482,7 @@ public class GameRules {
         return totoroexists;
     }
 
-    private boolean checklevelofhex(Point Hexlocation){
+    private boolean checkLevelOfHex(Point Hexlocation){
         boolean levelofhexislessthanthree=false;
         int hexlevel =board.retrieveLevelNumFromHex(Hexlocation);
         if(hexlevel<3)
@@ -484,17 +490,17 @@ public class GameRules {
         return levelofhexislessthanthree;
     }
 
-    private boolean Settlementhasatiger(){
+    private boolean settlementHasATiger(){
         boolean tigerexists=false;
         if(chosenSettlement.containsTiger())
             tigerexists=true;
         return tigerexists;
     }
 
-    private boolean Playerdoesnothaveremainingtigerpieces(){
+    private boolean playerDoesNotHaveRemainingTigerPieces(){
         int tigerremain=CurrentPlayer.gettigersRemaining();
         boolean hasnotigers=false;
-        if(tigerremain>0)
+        if(tigerremain<=0)
             hasnotigers=true;
         return hasnotigers;
 
