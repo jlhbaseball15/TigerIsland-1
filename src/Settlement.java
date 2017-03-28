@@ -3,8 +3,12 @@ import java.util.ArrayList;
 
 public class Settlement {
     private ArrayList<Point> pointsInSettlement;
+    private boolean containsTotoro;
+    private boolean containsTiger;
 
     public Settlement(){
+        containsTotoro = false;
+        containsTiger = false;
         pointsInSettlement = new ArrayList<>();
     }
 
@@ -20,6 +24,14 @@ public class Settlement {
         }
         return false;
     }
+
+    public boolean containsTotoro(){ return containsTotoro; }
+
+    public boolean containsTiger(){ return containsTiger; }
+
+    public void setTiger(){ containsTiger = true; }
+
+    public void setTotoro(){ containsTotoro = true; }
 
     public ArrayList<Point> getSettlement(){
         return pointsInSettlement;
