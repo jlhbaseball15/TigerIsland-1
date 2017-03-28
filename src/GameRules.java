@@ -238,7 +238,7 @@ public class GameRules {
         if (board.hasTileInMap(x + 1, y)) {
             return true;
         }
-        if (board.hasTileInMap(x + 1, y + 1)) {
+        if (board.hasTileInMap(x + 1, y - 1)) {
             return true;
         }
         return false;
