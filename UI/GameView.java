@@ -165,7 +165,7 @@ public class GameView {
     private void addTile(Tile tile, Point[] hexCoords) {
         try {
             rules.TryToAddTile(tile, hexCoords);
-            board.AddTile(tile, hexCoords);
+            board.addTile(tile, hexCoords);
            // isPlaced = true;
         } catch (GameRulesException e) {
             System.out.println(e);

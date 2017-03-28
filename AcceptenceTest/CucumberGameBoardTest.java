@@ -35,7 +35,7 @@ public class CucumberGameBoardTest {
 
     @Then("^the tile is added on the board$")
     public void thetileisaddedontheboard() {
-        board.AddTile(tile, tileLocations);
+        board.addTile(tile, tileLocations);
         Assert.assertFalse(board.isEmpty());
     }
 
@@ -56,7 +56,7 @@ public class CucumberGameBoardTest {
         } catch (GameRulesException e) {
             Assert.assertTrue(false);
         }
-        board.AddTile(tile, tileLocations);
+        board.addTile(tile, tileLocations);
     }
 
     @When("^The tile is placed$")
@@ -74,7 +74,7 @@ public class CucumberGameBoardTest {
 
     @Then("^the tile is added to the map$")
     public void theTileIsAddedToTheMap() {
-        board.AddTile(tile, tileLocations);
+        board.addTile(tile, tileLocations);
     }
 
 

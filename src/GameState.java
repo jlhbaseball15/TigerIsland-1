@@ -40,7 +40,7 @@ public class GameState {
                     // player must select where to place tile
                     try {
                         gameRules.TryToAddTile(tile, tilePlacement);
-                        gameboard.AddTile(tile, tilePlacement);
+                        gameboard.addTile(tile, tilePlacement);
                         tilePlaced = true;
                     } catch(GameRulesException e) {
                         System.out.println("Illegal Tile Placement Choose Another Spot");
@@ -75,7 +75,7 @@ public class GameState {
                     // player must select where to place tile
                     try {
                         gameRules.TryToAddTile(tile, tilePlacement);
-                        gameboard.AddTile(tile, tilePlacement);
+                        gameboard.addTile(tile, tilePlacement);
                         tilePlaced = true;
                     } catch(GameRulesException e) {
                         System.out.println("Illegal Tile Placement Choose Another Spot");
