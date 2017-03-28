@@ -270,38 +270,37 @@ public class GameRules {
         int x = Hexlocation.x;
         int y = Hexlocation.y;
         Point holdervalue=new Point();
+        
         holdervalue.x=x+1;
         holdervalue.y=y;
         if(chosenSettlement.contains(holdervalue));
             hexisnexttosettlement=true;
+        
         holdervalue.x=x;
         holdervalue.y=y+1;
         if(chosenSettlement.contains(holdervalue));
           hexisnexttosettlement=true;
+        
         holdervalue.x=x-1;
         holdervalue.y=y;
         if(chosenSettlement.contains(holdervalue));
              hexisnexttosettlement=true;
+        
         holdervalue.x=x;
         holdervalue.y=y-1;
         if(chosenSettlement.contains(holdervalue));
              hexisnexttosettlement=true;
-        holdervalue.x=x+1;
-        holdervalue.y=y+1;
-        if(chosenSettlement.contains(holdervalue));
-            hexisnexttosettlement=true;
+        
         holdervalue.x=x+1;
         holdervalue.y=y-1;
         if(chosenSettlement.contains(holdervalue));
             hexisnexttosettlement=true;
+        
         holdervalue.x=x-1;
         holdervalue.y=y+1;
         if(chosenSettlement.contains(holdervalue));
             hexisnexttosettlement=true;
-        holdervalue.x=x-1;
-        holdervalue.y=y-1;
-        if(chosenSettlement.contains(holdervalue));
-            hexisnexttosettlement=true;
+        
         return hexisnexttosettlement;
     }
     private boolean Settlementhasatororo(){
