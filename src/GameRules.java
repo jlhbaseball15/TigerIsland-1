@@ -4,8 +4,6 @@ import java.util.ArrayList;
 public class GameRules {
 
     private final int tileSize = 3;
-    private final int settlementsizefortotoro=5;
-    private final int hexlevelfortiger=3;
 
     private static int numberOfOverlappedTiles;
     private static Hex hexes[];
@@ -28,13 +26,16 @@ public class GameRules {
         settlements = newSettlements;
     }
 
+    public void setChosenSettlement(Settlement settle) {
+        chosenSettlement = settle;
+    }
+
     public int getVillagersCount() {
         return villagersCount;
     }
 
-    public void setChosenSettlement(Settlement settle) {
-        chosenSettlement = settle;
-    }
+
+    /* ---  Tile Addition Checks  --- */
 
     public void TryToAddTile(Tile tile, Point TileHexPoints[]) throws GameRulesException{
 
@@ -77,6 +78,150 @@ public class GameRules {
         }
 
     }
+
+    private boolean BelowSettlementIsDestroyed() {
+        Point hex0 = tileLocations[0];
+        Point hex1 = tileLocations[1];
+        Point hex2 = tileLocations[2];
+
+        int size = 0;
+
+        for (Settlement settle: settlements) {
+            size = settle.getSettlement().size();
+            if (size == 1 && (settle.getSettlement().contains(hex0)
+                    || settle.getSettlement().contains(hex1)
+                    || settle.getSettlement().contains(hex2))) {
+                return true;
+            }
+            if (size == 2 && ((settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex1))
+                    || (settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex2))
+                    || (settle.getSettlement().contains(hex1) && settle.getSettlement().contains(hex2)))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean HexBelowHasTigerOrTotoro() {
+        if (board.hasTileInMap(tileLocations[0]) && !board.getHexAtPointP(tileLocations[0]).canHexBeNuked()) {
+            return true;
+        }
+        if (board.hasTileInMap(tileLocations[1]) && !board.getHexAtPointP(tileLocations[1]).canHexBeNuked()) {
+            return true;
+        }
+        return (board.hasTileInMap(tileLocations[2]) && !board.getHexAtPointP(tileLocations[2]).canHexBeNuked());
+    }
+
+    private boolean HexesNotAdjacent() {
+        int X0 = tileLocations[0].x;
+        int Y0 = tileLocations[0].y;
+        Point hex1 = tileLocations[1];
+        Point hex2 = tileLocations[2];
+
+        int AdjacentCount = 0;
+        if (hex1.equals(new Point(X0 + 1, Y0)) ^ hex2.equals(new Point(X0 + 1, Y0))) {
+            ++AdjacentCount;
+        }
+        if (hex1.equals(new Point(X0 + 1, Y0 - 1)) ^ hex2.equals(new Point(X0 + 1, Y0 - 1))) {
+            ++AdjacentCount;
+        }
+        if (hex1.equals(new Point(X0, Y0 + 1)) ^ hex2.equals(new Point(X0, Y0 + 1))) {
+            ++AdjacentCount;
+        }
+        if (hex1.equals(new Point(X0, Y0 - 1)) ^ hex2.equals(new Point(X0, Y0 - 1))) {
+            ++AdjacentCount;
+        }
+        if (hex1.equals(new Point(X0 - 1, Y0)) ^ hex2.equals(new Point(X0 - 1, Y0))) {
+            ++AdjacentCount;
+        }
+        if (hex1.equals(new Point(X0 - 1, Y0 + 1)) ^ hex2.equals(new Point(X0 - 1, Y0 + 1))) {
+            ++AdjacentCount;
+        }
+        return AdjacentCount != 2;
+    }
+
+    private boolean TheTileOverlapsAnother() {
+        int x, y;
+        boolean isOverlapped = false;
+
+        for (int i = 0; i < tileSize; ++i) {
+            Point p = tileLocations[i];
+
+            if (board.hasTileInMap(p)) {
+                isOverlapped = true;
+                ++numberOfOverlappedTiles;
+            }
+        }
+
+        return isOverlapped;
+    }
+
+    private boolean TileDirectlyOnTopOfAnother() {
+        int Hex0_tileNum = board.retrieveTileNumFromHex(tileLocations[0]);
+        int Hex1_tileNum = board.retrieveTileNumFromHex(tileLocations[1]);
+        int Hex2_tileNum = board.retrieveTileNumFromHex(tileLocations[2]);
+
+        return Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum;
+
+    }
+
+    private boolean TilesOnDifferentLevels() {
+        int Hex0_LevelNum = board.retrieveLevelNumFromHex(tileLocations[0]);
+        int Hex1_LevelNum = board.retrieveLevelNumFromHex(tileLocations[1]);
+        int Hex2_LevelNum = board.retrieveLevelNumFromHex(tileLocations[2]);
+
+        return Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum;
+
+    }
+
+    private boolean AddedTilesVolcanoIsNotOnAVolcano() {
+        boolean NoMatch = true;
+
+        for (int i = 0; i < tileSize; ++i) {
+            if ((board.retrieveTerrainFromHex(tileLocations[i])) == 'V' && hexes[i].getTerrain() == 'V') {
+                NoMatch = false;
+                break;
+            }
+        }
+
+        return NoMatch;
+    }
+
+    private boolean NoAdjacentTiles() {
+        int x, y;
+        for (int i = 0; i < tileSize; ++i) {
+            x = tileLocations[i].x;
+            y = tileLocations[i].y;
+
+            if (HasANeighbor(x, y)) return false;
+        }
+
+        return true;
+    }
+
+    private boolean HasANeighbor(int x, int y) {
+
+        if (board.hasTileInMap(x, y - 1)) {
+            return true;
+        }
+        if (board.hasTileInMap(x, y + 1)) {
+            return true;
+        }
+        if (board.hasTileInMap(x - 1, y)) {
+            return true;
+        }
+        if (board.hasTileInMap(x - 1, y + 1)) {
+            return true;
+        }
+        if (board.hasTileInMap(x + 1, y)) {
+            return true;
+        }
+        return board.hasTileInMap(x + 1, y - 1);
+    }
+
+
+    /* ---  Build Addition Checks  --- */
 
     public ArrayList<Point> tryToBuild(Player playerBuilding, BuildOptions build, Point buildLocation, char terrain)
             throws GameRulesException{
@@ -233,7 +378,7 @@ public class GameRules {
 
     public void tryToAddTotoro(Point Hexlocation) throws GameRulesException{
 
-        if(checksizeofsettlement())
+        if(checkSizeOfSettlement())
             throw new GameRulesException("Size of settlement is not equal to or greater than 5");
         if(isOnVolcano(Hexlocation))
             throw new GameRulesException("Can not build totoro on volcano");
@@ -243,7 +388,7 @@ public class GameRules {
         if(playerDoesNotHaveRemainingTotoroPieces()){
             throw new GameRulesException("Has played all Totoro pieces");
         }
-        if(!selectedHexIsNotNextToSettlement(Hexlocation)){
+        if(selectedHexIsNotNextToSettlement(Hexlocation)){
             throw new GameRulesException("Must build Totoro next to the Settlement");
         }
     }
@@ -259,250 +404,91 @@ public class GameRules {
         if(playerDoesNotHaveRemainingTigerPieces()){
             throw new GameRulesException("Has played all Tiger pieces");
         }
-        if(!selectedHexIsNotNextToSettlement(Hexlocation)){
+        if(selectedHexIsNotNextToSettlement(Hexlocation)){
             throw new GameRulesException("Must build Tiger next to the Settlement");
         }
     }
 
-    // holding function for settlements will check for valid tile placement
-    private boolean BelowSettlementIsDestroyed() {
-        Point hex0 = tileLocations[0];
-        Point hex1 = tileLocations[1];
-        Point hex2 = tileLocations[2];
+    private boolean checkSizeOfSettlement(){
+        int settlementSizeForTotoro = 5;
+        int sizeOfSettlement = chosenSettlement.getSettlement().size();
 
-        int size = 0;
-
-        for (Settlement settle: settlements) {
-            size = settle.getSettlement().size();
-            if (size == 1 && (settle.getSettlement().contains(hex0)
-                    || settle.getSettlement().contains(hex1)
-                    || settle.getSettlement().contains(hex2))) {
-                return true;
-            }
-            if (size == 2 && ((settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex1))
-                    || (settle.getSettlement().contains(hex0) && settle.getSettlement().contains(hex2))
-                    || (settle.getSettlement().contains(hex1) && settle.getSettlement().contains(hex2)))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean HexBelowHasTigerOrTotoro() {
-        if (board.hasTileInMap(tileLocations[0]) && !board.getHexAtPointP(tileLocations[0]).canHexBeNuked()) {
-            return true;
-        }
-        if (board.hasTileInMap(tileLocations[1]) && !board.getHexAtPointP(tileLocations[1]).canHexBeNuked()) {
-            return true;
-        }
-        return (board.hasTileInMap(tileLocations[2]) && !board.getHexAtPointP(tileLocations[2]).canHexBeNuked());
-    }
-
-    private boolean HexesNotAdjacent() {
-        int X0 = tileLocations[0].x;
-        int Y0 = tileLocations[0].y;
-        Point hex1 = tileLocations[1];
-        Point hex2 = tileLocations[2];
-
-        int AdjacentCount = 0;
-        if (hex1.equals(new Point(X0 + 1, Y0)) ^ hex2.equals(new Point(X0 + 1, Y0))) {
-            ++AdjacentCount;
-        }
-        if (hex1.equals(new Point(X0 + 1, Y0 - 1)) ^ hex2.equals(new Point(X0 + 1, Y0 - 1))) {
-            ++AdjacentCount;
-        }
-        if (hex1.equals(new Point(X0, Y0 + 1)) ^ hex2.equals(new Point(X0, Y0 + 1))) {
-            ++AdjacentCount;
-        }
-        if (hex1.equals(new Point(X0, Y0 - 1)) ^ hex2.equals(new Point(X0, Y0 - 1))) {
-            ++AdjacentCount;
-        }
-        if (hex1.equals(new Point(X0 - 1, Y0)) ^ hex2.equals(new Point(X0 - 1, Y0))) {
-            ++AdjacentCount;
-        }
-        if (hex1.equals(new Point(X0 - 1, Y0 + 1)) ^ hex2.equals(new Point(X0 - 1, Y0 + 1))) {
-            ++AdjacentCount;
-        }
-        return AdjacentCount != 2;
-    }
-
-    private boolean TheTileOverlapsAnother() {
-        int x, y;
-        boolean isOverlapped = false;
-
-        for (int i = 0; i < tileSize; ++i) {
-            Point p = tileLocations[i];
-
-            if (board.hasTileInMap(p)) {
-                isOverlapped = true;
-                ++numberOfOverlappedTiles;
-            }
-        }
-
-        return isOverlapped;
-    }
-
-    private boolean TileDirectlyOnTopOfAnother() {
-        int Hex0_tileNum = board.retrieveTileNumFromHex(tileLocations[0]);
-        int Hex1_tileNum = board.retrieveTileNumFromHex(tileLocations[1]);
-        int Hex2_tileNum = board.retrieveTileNumFromHex(tileLocations[2]);
-
-        return Hex0_tileNum == Hex1_tileNum && Hex1_tileNum == Hex2_tileNum;
-
-    }
-
-    private boolean TilesOnDifferentLevels() {
-        int Hex0_LevelNum = board.retrieveLevelNumFromHex(tileLocations[0]);
-        int Hex1_LevelNum = board.retrieveLevelNumFromHex(tileLocations[1]);
-        int Hex2_LevelNum = board.retrieveLevelNumFromHex(tileLocations[2]);
-
-        return Hex0_LevelNum != Hex1_LevelNum || Hex1_LevelNum != Hex2_LevelNum;
-
-    }
-
-    private boolean AddedTilesVolcanoIsNotOnAVolcano() {
-        boolean NoMatch = true;
-
-        for (int i = 0; i < tileSize; ++i) {
-            if ((board.retrieveTerrainFromHex(tileLocations[i])) == 'V' && hexes[i].getTerrain() == 'V') {
-                NoMatch = false;
-                break;
-            }
-        }
-
-        return NoMatch;
-    }
-
-    private boolean NoAdjacentTiles() {
-        int x, y;
-        for (int i = 0; i < tileSize; ++i) {
-            x = tileLocations[i].x;
-            y = tileLocations[i].y;
-
-            if (HasANeighbor(x, y)) return false;
-        }
-
-        return true;
-    }
-
-    private boolean HasANeighbor(int x, int y) {
-
-        if (board.hasTileInMap(x, y - 1)) {
-            return true;
-        }
-        if (board.hasTileInMap(x, y + 1)) {
-            return true;
-        }
-        if (board.hasTileInMap(x - 1, y)) {
-            return true;
-        }
-        if (board.hasTileInMap(x - 1, y + 1)) {
-            return true;
-        }
-        if (board.hasTileInMap(x + 1, y)) {
-            return true;
-        }
-        if (board.hasTileInMap(x + 1, y - 1)) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checksizeofsettlement(){
-        boolean islessthanfive=false;
-        int sizeofsettlement = chosenSettlement.getSettlement().size();
-        if(sizeofsettlement<settlementsizefortotoro)
-            islessthanfive=true;
-        return islessthanfive;
+        return (sizeOfSettlement < settlementSizeForTotoro);
     }
 
     private boolean isOnVolcano(Point location){
-        boolean isterraintypevolcano = false;
-        char terrainofhex = board.retrieveTerrainFromHex(location);
-        if(terrainofhex=='V')
-        isterraintypevolcano=true;
+        char terrainOfHex = board.retrieveTerrainFromHex(location);
 
-        return isterraintypevolcano;
-
+        return (terrainOfHex == 'V');
     }
 
     private boolean playerDoesNotHaveRemainingTotoroPieces(){
-        int totorosremaining=CurrentPlayer.gettotorosRemaining();
-        boolean hasnototoros=false;
-        if(totorosremaining<=0)
-            hasnototoros=true;
-        return hasnototoros;
+        int totorosRemaining = CurrentPlayer.gettotorosRemaining();
+
+        return (totorosRemaining <= 0);
     }
 
     private boolean selectedHexIsNotNextToSettlement(Point Hexlocation){
-        boolean hexisnexttosettlement=false;
+        boolean hexIsNotNextToSettlement = true;
+
         int x = Hexlocation.x;
         int y = Hexlocation.y;
-        Point holdervalue=new Point();
+
+        Point holderValue = new Point();
         
-        holdervalue.x=x+1;
-        holdervalue.y=y;
-        if(chosenSettlement.contains(holdervalue))
-            hexisnexttosettlement=true;
+        holderValue.x = x + 1;
+        holderValue.y = y;
+        if(chosenSettlement.contains(holderValue))
+            hexIsNotNextToSettlement = false;
         
-        holdervalue.x=x;
-        holdervalue.y=y+1;
-        if(chosenSettlement.contains(holdervalue))
-          hexisnexttosettlement=true;
+        holderValue.x = x;
+        holderValue.y = y + 1;
+        if(chosenSettlement.contains(holderValue))
+          hexIsNotNextToSettlement = false;
         
-        holdervalue.x=x-1;
-        holdervalue.y=y;
-        if(chosenSettlement.contains(holdervalue))
-             hexisnexttosettlement=true;
+        holderValue.x = x - 1;
+        holderValue.y = y;
+        if(chosenSettlement.contains(holderValue))
+             hexIsNotNextToSettlement = false;
         
-        holdervalue.x=x;
-        holdervalue.y=y-1;
-        if(chosenSettlement.contains(holdervalue))
-             hexisnexttosettlement=true;
+        holderValue.x = x;
+        holderValue.y = y - 1;
+        if(chosenSettlement.contains(holderValue))
+             hexIsNotNextToSettlement = false;
         
-        holdervalue.x=x+1;
-        holdervalue.y=y-1;
-        if(chosenSettlement.contains(holdervalue))
-            hexisnexttosettlement=true;
+        holderValue.x = x + 1;
+        holderValue.y = y - 1;
+        if(chosenSettlement.contains(holderValue))
+            hexIsNotNextToSettlement = false;
         
-        holdervalue.x=x-1;
-        holdervalue.y=y+1;
-        if(chosenSettlement.contains(holdervalue))
-            hexisnexttosettlement=true;
+        holderValue.x=x-1;
+        holderValue.y=y+1;
+        if(chosenSettlement.contains(holderValue))
+            hexIsNotNextToSettlement = false;
         
-        return hexisnexttosettlement;
+        return hexIsNotNextToSettlement;
     }
 
     private boolean settlementHasATororo(){
-        boolean totoroexists=false;
-        if(chosenSettlement.containsTotoro())
-            totoroexists=true;
 
-        return totoroexists;
+        return (chosenSettlement.containsTotoro());
     }
 
     private boolean checkLevelOfHex(Point Hexlocation){
-        boolean levelofhexislessthanthree=false;
-        int hexlevel =board.retrieveLevelNumFromHex(Hexlocation);
-        if(hexlevel<3)
-            levelofhexislessthanthree=true;
-        return levelofhexislessthanthree;
+        int hexLevel = board.retrieveLevelNumFromHex(Hexlocation);
+        int minLevelForTiger = 3;
+
+        return (hexLevel < minLevelForTiger);
     }
 
     private boolean settlementHasATiger(){
-        boolean tigerexists=false;
-        if(chosenSettlement.containsTiger())
-            tigerexists=true;
-        return tigerexists;
+
+        return (chosenSettlement.containsTiger());
     }
 
     private boolean playerDoesNotHaveRemainingTigerPieces(){
-        int tigerremain=CurrentPlayer.gettigersRemaining();
-        boolean hasnotigers=false;
-        if(tigerremain<=0)
-            hasnotigers=true;
-        return hasnotigers;
+        int tigerRemain = CurrentPlayer.gettigersRemaining();
 
+        return (tigerRemain <= 0);
     }
 }
