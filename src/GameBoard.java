@@ -51,6 +51,10 @@ public class GameBoard {
         return boardGame.get(P);
     }
 
+    public Hex getHexAtPointP(int x, int y) {
+        return boardGame.get(new Point(x, y));
+    }
+
     public int retrieveTileNumFromHex(Point hexOfInterest) {
         return boardGame.get(hexOfInterest).getTileNum();
     }
@@ -59,7 +63,7 @@ public class GameBoard {
         return boardGame.get(hexOfInterest).getLevel();
     }
 
-    public int retrieveTerrainFromHex(Point hexOfInterest) {
+    public char retrieveTerrainFromHex(Point hexOfInterest) {
         return boardGame.get(hexOfInterest).getTerrain();
     }
 
