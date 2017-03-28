@@ -1,19 +1,33 @@
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class SettlementBuilder {
-    private Settlement[] player1Settlements; //TODO:ARRAYLIST
-    private Settlement[] player2Settlements;
+    private ArrayList<Settlement> player1Settlements;
+    private ArrayList<Settlement> player2Settlements;
 
-    //Queue visitNext
+    private Queue<Point> visitNext;    //Queue visitNext
     //Hashmap visited
+    //Hashmap alreadyInSettlement
 
     public SettlementBuilder(){
-
+        player1Settlements = new ArrayList<>();
+        player2Settlements = new ArrayList<>();
+        visitNext = new LinkedList<Point>();
     }
 
     public void calculateSettlements(GameBoard board){
         //Start at (0,0) and radiate out finding all pieces on the board
         if(board.isEmpty()) {
             throw new ArrayIndexOutOfBoundsException(); //BoardEmptyException;
+        }
+
+        visitNext.add(new Point(0, 0));
+
+        while(!visitNext.isEmpty()){
+            //add all neighbors of current point to queue as long as not visited
+
         }
 
         //add 0,0 to queue, then call method to check all surrounding tiles
@@ -23,20 +37,14 @@ public class SettlementBuilder {
         //every tile checked is added to same hashmap. new method has its own queue but only adds if
         //adjacent tile contains ... notqueueable???
 
-
-        //maybe not if i can sort points starting at top left could be easier to understand
-        //go though and get all points, sort into array from top left to bottom right
-        //iterate through. first add point to new settlement. then next points look for adjacent
-        //points (?left and above?) if exist in a settlement (hash) add to it. otherwise create new
-        //continue until end of array...
     }
 
-    public void getPlayer1Settlements(){
-
+    public ArrayList<Settlement> getPlayer1Settlements(){
+        return player1Settlements;
     }
 
-    public void getPlayer2Settlements(){
-
+    public ArrayList<Settlement> getPlayer2Settlements(){
+        return player2Settlements;
     }
 
 }
