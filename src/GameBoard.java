@@ -7,7 +7,7 @@ public class GameBoard {
     private HashMap<Point, Hex> boardGame;
     private Vector<Tile> tilesOnBoard;
     private static Point tileLocations[];
-    private Integer currentTile;
+    private int currentTile;
 
     public GameBoard() {
         int mapCapacity = 144;
@@ -22,7 +22,7 @@ public class GameBoard {
         return tilesOnBoard;
     }
 
-    public void AddTile(Tile tile, Point hexPositions[]){
+    public void addTile(Tile tile, Point hexPositions[]){
         Hex[] hexes = tile.getHexes();
         tileLocations = hexPositions;
 
@@ -37,6 +37,10 @@ public class GameBoard {
         }
         tilesOnBoard.add(currentTile, tile);
         ++currentTile;
+    }
+
+    public void building(BuildOptions build) {
+
     }
 
     public boolean hasTileInMap(int hexXPoint, int hexYPoint) {
@@ -71,7 +75,7 @@ public class GameBoard {
         return boardGame.isEmpty();
     }
 
-    public Integer size() { return boardGame.size(); }
+    public int size() { return boardGame.size(); }
 
 }
 

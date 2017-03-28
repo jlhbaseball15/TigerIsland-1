@@ -223,7 +223,7 @@ public class GameRules {
 
     /* ---  Build Addition Checks  --- */
 
-    public ArrayList<Point> tryToBuild(Player playerBuilding, BuildOptions build, Point buildLocation, char terrain)
+    public ArrayList<Point> tryToBuild(Player playerBuilding, BuildOptions build, Point buildLocation)
             throws GameRulesException{
 
         CurrentPlayer = playerBuilding;
@@ -232,7 +232,7 @@ public class GameRules {
             cannotBuildNewSettlementHere(buildLocation);
         }
         else if (build == BuildOptions.EXPAND) {
-            return cannotExpand(playerBuilding, terrain, buildLocation);
+            return cannotExpand(board.getHexAtPointP(buildLocation).getTerrain());
         }
         else if (build == BuildOptions.TOTORO_SANCTUARY) {
             tryToAddTotoro(buildLocation);
@@ -244,52 +244,33 @@ public class GameRules {
         return new ArrayList<Point>();
     }
 
-    private ArrayList<Point> cannotExpand(Player playerBuilding, char terrain, Point buildLocation) throws GameRulesException{
-        Settlement expanding = new Settlement();
-        boolean canExpand = false;
+    private ArrayList<Point> cannotExpand(char terrain) throws GameRulesException{
         ArrayList<Point> expansionMap = new ArrayList<>();
         ArrayList<Point> expansionQ = new ArrayList<>();
         villagersCount = 0;
 
-        if (!board.hasTileInMap(buildLocation)) {
-            throw new GameRulesException("Cannot Expand From An Empty Hex");
-        }
-        else if (terrain == 'V') {
+        if (terrain == 'V') {
             throw new GameRulesException("Cannot Expand Onto Volcanoes");
         }
 
-        // getting the settlement to expand
-        for(Settlement settle: settlements) {
-            if (settle.contains(buildLocation)) {
-                expanding = settle;
-                canExpand = true;
-                break;
-            }
+        for (Point p : chosenSettlement.getSettlement()) {
+            villagersCount = checkNeighboringHexes(terrain, expansionMap, expansionQ, villagersCount, p);
         }
-        if (canExpand) {
-            Hex Hexp;
-            for (Point p : expanding.getSettlement()) {
-                Hexp = board.getHexAtPointP(p);
 
-                villagersCount = checkNeighboringHexes(terrain, expansionMap, expansionQ, villagersCount, p);
-            }
-            while (!expansionQ.isEmpty()) {
-
-                villagersCount = checkNeighboringHexes(terrain, expansionMap, expansionQ, villagersCount, expansionQ.get(0));
-                expansionQ.remove(0);
-            }
-
-            if(villagersCount > playerBuilding.getvillagersRemaining()) {
-                throw new GameRulesException("Player Does Not Have Enough Villagers");
-            }
-            if (expansionMap.isEmpty()) {
-                throw new GameRulesException("No Hexes With Given Terrain Type To Expand To");
-            }
-            return expansionMap;
+        while (!expansionQ.isEmpty()) {
+            villagersCount = checkNeighboringHexes(terrain, expansionMap, expansionQ, villagersCount, expansionQ.get(0));
+            expansionQ.remove(0);
         }
-        else {
-            throw new GameRulesException("Cannot Expand From Non-Settlement");
+
+        if(villagersCount > CurrentPlayer.getvillagersRemaining()) {
+            throw new GameRulesException("Player Does Not Have Enough Villagers");
         }
+
+        if (expansionMap.isEmpty()) {
+            throw new GameRulesException("No Hexes With Given Terrain Type To Expand To");
+        }
+
+        return expansionMap;
     }
 
     private int checkNeighboringHexes(char terrain, ArrayList<Point> expansionMap, ArrayList<Point> expansionQ,
