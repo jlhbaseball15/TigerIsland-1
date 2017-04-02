@@ -303,7 +303,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnNonExistantHex () {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         try {
             gameRules.tryToBuildNewSettlement(player, new Point(0, 0));
             Assert.assertTrue(false);
@@ -316,7 +316,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnVolcano() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
@@ -332,7 +332,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnOccupiedHex() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
@@ -350,7 +350,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementWithNoVillagers() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
@@ -368,7 +368,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementAboveLevelOne() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
@@ -386,7 +386,7 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementInValidLocation() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
@@ -402,7 +402,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpandOntoVolcanoes() {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -425,7 +425,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpandWithoutEnoughVillagers() {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -458,7 +458,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionReturnsEmptyList() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -505,7 +505,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionIsValidForOneTile() {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -530,7 +530,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionIsValidForManyTiles() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -634,7 +634,7 @@ public class GameRulesTest {
 
     @Test
     public void placingATotoroInSettlementWithSizeLessThanFive() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -659,7 +659,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroOnAVolcano() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -761,7 +761,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroOnASettlementContainingATotoro() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -868,7 +868,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroWithNoneRemainingForPlayerP1() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -975,7 +975,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroAwayFromSettlement() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1078,7 +1078,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroOnOccupiedHex() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1181,7 +1181,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroInAValidPlace() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1286,7 +1286,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerBelowLevelThree() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1312,7 +1312,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerOnAVolcano() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1340,7 +1340,7 @@ public class GameRulesTest {
 
     @Test
     public void placeATigerOnASettlementWithATiger() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1381,7 +1381,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerWithNoTigersRemaining() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1412,7 +1412,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerAwayFromTheSettlement() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1448,7 +1448,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerOnAnOccupiedHex() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1485,7 +1485,7 @@ public class GameRulesTest {
 
     @Test
     public void PlacingATigerInAValidSpot() throws GameRulesException {
-        Player player = new Player("Bob", true);
+        Player player = new Player("Bob");
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 

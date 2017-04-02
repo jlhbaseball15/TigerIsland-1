@@ -3,15 +3,13 @@
  */
 public class Player {
     private String playerName;
-    private boolean isPlayer1;
     private int score;
     private int villagersRemaining;
     private int totorosRemaining;
     private int tigersRemaining;
 
-    public Player(String playername, boolean isP1){
+    public Player(String playername){
         score = 0;
-        isPlayer1 = isP1;
         villagersRemaining = 20;
         totorosRemaining = 3;
         tigersRemaining = 2;
@@ -62,9 +60,6 @@ public class Player {
 
     public int getTotalPiecesRemaining() { return villagersRemaining + totorosRemaining + tigersRemaining; }
 
-    public boolean getPlayerNumber() {
-        return isPlayer1;
-    }
     /*
     public TilePlacement placetile(Tile tile){
         //calls a funtion to decide what movement to do if our player

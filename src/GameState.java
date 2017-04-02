@@ -14,8 +14,8 @@ public class GameState {
 
     public GameState(String nameOfPlayerWhoGoesFirst, String nameOfPlayerWhoGoessecond, Deck deck){
         mainDeck = deck;
-        firstPlayer = new Player(nameOfPlayerWhoGoesFirst, true);
-        secondPlayer = new Player(nameOfPlayerWhoGoessecond, false);
+        firstPlayer = new Player(nameOfPlayerWhoGoesFirst);
+        secondPlayer = new Player(nameOfPlayerWhoGoessecond);
         cardsRemaining = TOTALCARDS;
         gameboard = new GameBoard();
         gameRules = new GameRules(gameboard);

@@ -120,7 +120,7 @@ public class GameBoardTest {
 
     @Test
     public void buildingNewSettlement() {
-        Player p1 = new Player("Bob", true);
+        Player p1 = new Player("Bob");
         tile = deck.getTile();
 
         hexPoints[0] = new Point(0, 0);
@@ -140,7 +140,7 @@ public class GameBoardTest {
         ArrayList<Settlement> settlements = new ArrayList<>();
         Hex hex[] = new Hex[3];
 
-        Player p1 = new Player("Bob", true);
+        Player p1 = new Player("Bob");
         tile = deck.getTile();
 
         hexPoints[0] = new Point(0, 0);
@@ -235,7 +235,7 @@ public class GameBoardTest {
 
     @Test
     public void BuildingATotoroSanctuary() {
-        Player p2 = new Player("Bob", false);
+        Player p2 = new Player("Bob");
         Tile tile = deck.getTile();
         gameBoard.addTile(tile, hexPoints);
 
@@ -246,7 +246,7 @@ public class GameBoardTest {
 
     @Test
     public void BuildingATigerSanctuary() {
-        Player p1 = new Player("Bob", true);
+        Player p1 = new Player("Bob");
         Tile tile = deck.getTile();
         gameBoard.addTile(tile, hexPoints);
 
