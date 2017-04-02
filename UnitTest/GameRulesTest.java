@@ -303,9 +303,9 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnNonExistantHex () {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, new Point(0, 0));
+            gameRules.tryToBuildNewSettlement(player, new Point(0, 0));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Cannot Build On An Empty Hex".toCharArray();
@@ -316,12 +316,12 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnVolcano() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, HexPoints[2]);
+            gameRules.tryToBuildNewSettlement(player, HexPoints[2]);
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Cannot Build On A Volcano".toCharArray();
@@ -332,14 +332,14 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementOnOccupiedHex() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
         gameBoard.getHexAtPointP(HexPoints[0]).setOccupied(Pieces.P1_VILLAGER, 1);
 
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, HexPoints[0]);
+            gameRules.tryToBuildNewSettlement(player, HexPoints[0]);
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Cannot Build On An Occupied Hex".toCharArray();
@@ -350,14 +350,14 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementWithNoVillagers() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
         player.villagersBeingPlaced(20);
 
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, HexPoints[0]);
+            gameRules.tryToBuildNewSettlement(player, HexPoints[0]);
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Player Does Not Have Enough Villagers".toCharArray();
@@ -368,14 +368,14 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementAboveLevelOne() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
         gameBoard.getHexAtPointP(HexPoints[0]).setLevel(3);
 
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, HexPoints[0]);
+            gameRules.tryToBuildNewSettlement(player, HexPoints[0]);
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Cannot Build New Settlement Above Level One".toCharArray();
@@ -386,12 +386,12 @@ public class GameRulesTest {
 
     @Test
     public void NewSettlementInValidLocation() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         gameRules.TryToAddTile(tile, HexPoints);
         gameBoard.addTile(tile, HexPoints);
 
         try {
-            gameRules.tryToBuild(player, BuildOptions.NEW_SETTLEMENT, HexPoints[0]);
+            gameRules.tryToBuildNewSettlement(player, HexPoints[0]);
             Assert.assertTrue(true);
         } catch(GameRulesException e) {
             Assert.assertTrue(false);
@@ -402,7 +402,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpandOntoVolcanoes() {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -414,7 +414,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.EXPAND, HexPoints[2]);
+            gameRules.tryToExpand(player, 'V');
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Cannot Expand Onto Volcanoes".toCharArray();
@@ -425,7 +425,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpandWithoutEnoughVillagers() {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -446,7 +446,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.EXPAND, new Point(0, -1));
+            gameRules.tryToExpand(player, 'G');
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Player Does Not Have Enough Villagers".toCharArray();
@@ -458,7 +458,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionReturnsEmptyList() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -494,7 +494,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.EXPAND, new Point(3, -3));
+            gameRules.tryToExpand(player, 'L');
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "No Hexes With Given Terrain Type To Expand To".toCharArray();
@@ -505,7 +505,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionIsValidForOneTile() {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
         gameBoard.addTile(tile, HexPoints);
@@ -519,7 +519,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            expansionMap = gameRules.tryToBuild(player, BuildOptions.EXPAND, HexPoints[0]);
+            expansionMap = gameRules.tryToExpand(player, 'G');
             Assert.assertTrue(expansionMap.contains(new Point(0,0)));
             Assert.assertEquals(1, gameRules.getVillagersCount());
             Assert.assertTrue(true);
@@ -530,7 +530,7 @@ public class GameRulesTest {
 
     @Test
     public void ExpansionIsValidForManyTiles() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -611,7 +611,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            expansionMap = gameRules.tryToBuild(player, BuildOptions.EXPAND, new Point(0, 0));
+            expansionMap = gameRules.tryToExpand(player, 'G');
 
             Assert.assertTrue(expansionMap.contains(new Point(0,0)));
             Assert.assertTrue(expansionMap.contains(new Point(0,-1)));
@@ -634,7 +634,7 @@ public class GameRulesTest {
 
     @Test
     public void placingATotoroInSettlementWithSizeLessThanFive() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -648,7 +648,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(0, 0));
+            gameRules.tryToAddTotoro(player, new Point(0, 0));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Size of settlement is not equal to or greater than 5".toCharArray();
@@ -659,7 +659,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroOnAVolcano() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -750,7 +750,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(0, 1));
+            gameRules.tryToAddTotoro(player, new Point(0, 1));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Can not build totoro on volcano".toCharArray();
@@ -761,7 +761,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroOnASettlementContainingATotoro() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -857,7 +857,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -3));
+            gameRules.tryToAddTotoro(player, new Point(2, -3));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Can not build more than one totoros on one settlement".toCharArray();
@@ -868,7 +868,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroWithNoneRemainingForPlayerP1() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -964,7 +964,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -2));
+            gameRules.tryToAddTotoro(player, new Point(2, -2));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Has played all Totoro pieces".toCharArray();
@@ -975,7 +975,7 @@ public class GameRulesTest {
 
     @Test
     public void placingTotoroAwayFromSettlement() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1067,7 +1067,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -3));
+            gameRules.tryToAddTotoro(player, new Point(2, -3));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Must build Totoro next to the Settlement".toCharArray();
@@ -1077,8 +1077,8 @@ public class GameRulesTest {
     }
 
     @Test
-    public void placingTotoroInAValidPlace() throws GameRulesException {
-        Player player = new Player("Bob");
+    public void placingTotoroOnOccupiedHex() throws GameRulesException {
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1170,18 +1170,123 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TOTORO_SANCTUARY, new Point(2, -2));
+            gameRules.tryToAddTotoro(player, new Point(2, -1));
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Cannot Build On An Occupied Hex".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
+    public void placingTotoroInAValidPlace() throws GameRulesException {
+        Player player = new Player("Bob", true);
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -1);
+        HexPoints[1] = new Point(2, -2);
+        HexPoints[2] = new Point(3, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -3);
+        HexPoints[2] = new Point(3, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(1, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(-1, -3);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(-2, -3);
+        HexPoints[1] = new Point(-2, -4);
+        HexPoints[2] = new Point(-1, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -3);
+        HexPoints[1] = new Point(1, -4);
+        HexPoints[2] = new Point(0, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(2, -3);
+        HexPoints[1] = new Point(3, -4);
+        HexPoints[2] = new Point(2, -4);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(0, -1));
+
+        gameBoard.getHexAtPointP(new Point(1, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, -1));
+
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(2, -1));
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToAddTotoro(player, new Point(2, -2));
             Assert.assertTrue(true);
         } catch(GameRulesException e) {
             Assert.assertTrue(false);
         };
     }
 
+
+
     /* ---  Placing a Tiger  --- */
 
     @Test
     public void placeTigerBelowLevelThree() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1196,7 +1301,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0));
+            gameRules.tryToAddTiger(player, new Point(0, 0));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Level of hex must be three or greater".toCharArray();
@@ -1207,7 +1312,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerOnAVolcano() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1224,7 +1329,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 1));
+            gameRules.tryToAddTiger(player, new Point(0, 1));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Can not build tiger on volcano".toCharArray();
@@ -1235,7 +1340,7 @@ public class GameRulesTest {
 
     @Test
     public void placeATigerOnASettlementWithATiger() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1265,7 +1370,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(1, -1));
+            gameRules.tryToAddTiger(player, new Point(1, -1));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Can not build more than one tiger on one settlement".toCharArray();
@@ -1276,7 +1381,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerWithNoTigersRemaining() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1296,7 +1401,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0));
+            gameRules.tryToAddTiger(player, new Point(0, 0));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Has played all Tiger pieces".toCharArray();
@@ -1307,7 +1412,7 @@ public class GameRulesTest {
 
     @Test
     public void placeTigerAwayFromTheSettlement() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1332,7 +1437,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, -1));
+            gameRules.tryToAddTiger(player, new Point(0, -1));
             Assert.assertTrue(false);
         } catch(GameRulesException e) {
             char expectedMessage[] = "Must build Tiger next to the Settlement".toCharArray();
@@ -1342,8 +1447,45 @@ public class GameRulesTest {
     }
 
     @Test
+    public void placeTigerOnAnOccupiedHex() throws GameRulesException {
+        Player player = new Player("Bob", true);
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        HexPoints[0] = new Point(0, -1);
+        HexPoints[1] = new Point(1, -1);
+        HexPoints[2] = new Point(1, -2);
+        gameRules.TryToAddTile(tile, HexPoints);
+        gameBoard.addTile(tile, HexPoints);
+
+        gameBoard.getHexAtPointP(new Point(1, 0)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(new Point(1, 0));
+
+        gameBoard.getHexAtPointP(new Point(0, 0)).setLevel(5);
+        gameBoard.getHexAtPointP(0, 0).setOccupied(Pieces.P1_VILLAGER, 5);
+
+        settlements.add(settle);
+        gameRules.setSettlements(settlements);
+
+        try {
+            gameRules.setChosenSettlement(settle);
+            gameRules.tryToAddTiger(player, new Point(0, 0));
+            Assert.assertTrue(false);
+        } catch(GameRulesException e) {
+            char expectedMessage[] = "Cannot Build On An Occupied Hex".toCharArray();
+            char actualMessage[] = e.getMessage().toCharArray();
+            Assert.assertArrayEquals(expectedMessage, actualMessage);
+        };
+    }
+
+    @Test
     public void PlacingATigerInAValidSpot() throws GameRulesException {
-        Player player = new Player("Bob");
+        Player player = new Player("Bob", true);
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -1360,7 +1502,7 @@ public class GameRulesTest {
 
         try {
             gameRules.setChosenSettlement(settle);
-            gameRules.tryToBuild(player, BuildOptions.TIGER_PLAYGROUND, new Point(0, 0));
+            gameRules.tryToAddTiger(player, new Point(0, 0));
             Assert.assertTrue(true);
         } catch(GameRulesException e) {
             Assert.assertTrue(false);

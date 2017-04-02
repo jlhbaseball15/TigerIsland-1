@@ -33,6 +33,10 @@ public class Hex {
 
     public Pieces getPiece() { return Occupied; }
 
+    public int getNumOfPeices() {
+        return numOfPeices;
+    }
+
     public void setOccupied(Pieces occupied, int numofpeices) {
         Occupied = occupied;
         numOfPeices = numofpeices;
