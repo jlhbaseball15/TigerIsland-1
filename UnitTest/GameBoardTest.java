@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -115,5 +116,142 @@ public class GameBoardTest {
         gameBoard.addTile(tile, hexPoints);
 
         Assert.assertEquals(Pieces.NONE, gameBoard.getHexAtPointP(hexPoints[1]).getPiece());
+    }
+
+    @Test
+    public void buildingNewSettlement() {
+        Player p1 = new Player("Bob");
+        tile = deck.getTile();
+
+        hexPoints[0] = new Point(0, 0);
+        hexPoints[1] = new Point(1, 0);
+        hexPoints[2] = new Point(0, 1);
+        gameBoard.addTile(tile, hexPoints);
+
+        gameBoard.addVillagerToBoard(true, new Point(1, 0));
+        Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(1, 0)).getPiece());
+        Assert.assertEquals(1, gameBoard.getHexAtPointP(new Point(1, 0)).getNumOfPeices());
+    }
+
+    @Test
+    public void expandingASettlement() {
+        GameRules rules = new GameRules(gameBoard);
+        Settlement settle = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+        Hex hex[] = new Hex[3];
+
+        Player p1 = new Player("Bob");
+        tile = deck.getTile();
+
+        hexPoints[0] = new Point(0, 0);
+        hexPoints[1] = new Point(1, 0);
+        hexPoints[2] = new Point(0, 1);
+        gameBoard.addTile(tile, hexPoints);
+
+        gameBoard.getHexAtPointP(hexPoints[1]).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle.addPointToSettlement(hexPoints[1]);
+        settlements.add(settle);
+        rules.setSettlements(settlements);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(0, -1);
+        hexPoints[1] = new Point(1, -1);
+        hexPoints[2] = new Point(1, -2);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(2, -1);
+        hexPoints[1] = new Point(2, -2);
+        hexPoints[2] = new Point(3, -2);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(2, -3);
+        hexPoints[1] = new Point(3, -3);
+        hexPoints[2] = new Point(3, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(1, -3);
+        hexPoints[1] = new Point(1, -4);
+        hexPoints[2] = new Point(2, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(0, -3);
+        hexPoints[1] = new Point(-1, -3);
+        hexPoints[2] = new Point(0, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(-2, -3);
+        hexPoints[1] = new Point(-2, -4);
+        hexPoints[2] = new Point(-1, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(0, -3);
+        hexPoints[1] = new Point(1, -4);
+        hexPoints[2] = new Point(0, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = deck.getTile();
+        hex = tile.getHexes();
+        hexPoints[0] = new Point(2, -3);
+        hexPoints[1] = new Point(3, -4);
+        hexPoints[2] = new Point(2, -4);
+        gameBoard.addTile(tile, hexPoints);
+
+        // done adding tiles //
+        ArrayList<Point> expansionMap;
+
+        try {
+            rules.setChosenSettlement(settle);
+            expansionMap = rules.tryToExpand(p1, 'G');
+            gameBoard.expandSettlement(true, expansionMap);
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(0,0)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(0,-1)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(1,-1)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(2,-1)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(2,-2)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(2,-3)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(1,-3)).getPiece());
+            Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(0,-3)).getPiece());
+
+            Assert.assertEquals(2, gameBoard.getHexAtPointP(new Point(2,-3)).getNumOfPeices());
+            Assert.assertEquals(1, gameBoard.getHexAtPointP(new Point(0,0)).getNumOfPeices());
+
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        };
+    }
+
+    @Test
+    public void BuildingATotoroSanctuary() {
+        Player p2 = new Player("Bob");
+        Tile tile = deck.getTile();
+        gameBoard.addTile(tile, hexPoints);
+
+        gameBoard.addTotoroToBoard(false, new Point(0, 0));
+
+        Assert.assertEquals(Pieces.P2_TOTORO, gameBoard.getHexAtPointP(0, 0).getPiece());
+    }
+
+    @Test
+    public void BuildingATigerSanctuary() {
+        Player p1 = new Player("Bob");
+        Tile tile = deck.getTile();
+        gameBoard.addTile(tile, hexPoints);
+
+        gameBoard.addTigerToBoard(true, new Point(0, 0));
+
+        Assert.assertEquals(Pieces.P1_TIGER, gameBoard.getHexAtPointP(0, 0).getPiece());
     }
 }

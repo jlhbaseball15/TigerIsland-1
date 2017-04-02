@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -39,9 +40,43 @@ public class GameBoard {
         ++currentTile;
     }
 
-    public void building(BuildOptions build) {
-
+    public void addVillagerToBoard(boolean playerNumber, Point buildLocation) {
+        Hex currentHex = getHexAtPointP(buildLocation);
+        if (playerNumber) {
+            currentHex.setOccupied(Pieces.P1_VILLAGER, currentHex.getLevel());
+        }
+        else {
+            currentHex.setOccupied(Pieces.P2_VILLAGER, currentHex.getLevel());
+        }
     }
+
+    public void expandSettlement(boolean playerNumber, ArrayList<Point> expansionList) {
+        for (Point p: expansionList) {
+            addVillagerToBoard(playerNumber, p);
+        }
+    }
+
+    public void addTigerToBoard(boolean playerNumber, Point buildLocation) {
+        Hex currentHex = getHexAtPointP(buildLocation);
+        if (playerNumber) {
+            currentHex.setOccupied(Pieces.P1_TIGER, currentHex.getLevel());
+        }
+        else {
+            currentHex.setOccupied(Pieces.P2_TIGER, currentHex.getLevel());
+        }
+    }
+
+    public void addTotoroToBoard(boolean playerNumber, Point buildLocation) {
+        Hex currentHex = getHexAtPointP(buildLocation);
+        if (playerNumber) {
+            currentHex.setOccupied(Pieces.P1_TOTORO, currentHex.getLevel());
+        }
+        else {
+            currentHex.setOccupied(Pieces.P2_TOTORO, currentHex.getLevel());
+        }
+    }
+
+
 
     public boolean hasTileInMap(int hexXPoint, int hexYPoint) {
         return boardGame.containsKey(new Point(hexXPoint, hexYPoint));
