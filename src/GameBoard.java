@@ -59,20 +59,20 @@ public class GameBoard {
     public void addTigerToBoard(boolean playerNumber, Point buildLocation) {
         Hex currentHex = getHexAtPointP(buildLocation);
         if (playerNumber) {
-            currentHex.setOccupied(Pieces.P1_TIGER, currentHex.getLevel());
+            currentHex.setOccupied(Pieces.P1_TIGER, 1);
         }
         else {
-            currentHex.setOccupied(Pieces.P2_TIGER, currentHex.getLevel());
+            currentHex.setOccupied(Pieces.P2_TIGER, 1);
         }
     }
 
     public void addTotoroToBoard(boolean playerNumber, Point buildLocation) {
         Hex currentHex = getHexAtPointP(buildLocation);
         if (playerNumber) {
-            currentHex.setOccupied(Pieces.P1_TOTORO, currentHex.getLevel());
+            currentHex.setOccupied(Pieces.P1_TOTORO, 1);
         }
         else {
-            currentHex.setOccupied(Pieces.P2_TOTORO, currentHex.getLevel());
+            currentHex.setOccupied(Pieces.P2_TOTORO, 1);
         }
     }
 
