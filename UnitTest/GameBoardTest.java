@@ -44,6 +44,17 @@ public class GameBoardTest {
     }
 
     @Test
+    public void addingAStartTileToBoard() {
+        gameBoard.addStartingTile();
+
+        Assert.assertEquals('V', gameBoard.getHexAtPointP(new Point(0, 0)).getTerrain());
+        Assert.assertEquals('J', gameBoard.getHexAtPointP(new Point(0, -1)).getTerrain());
+        Assert.assertEquals('L', gameBoard.getHexAtPointP(new Point(1, -1)).getTerrain());
+        Assert.assertEquals('G', gameBoard.getHexAtPointP(new Point(0, 1)).getTerrain());
+        Assert.assertEquals('R', gameBoard.getHexAtPointP(new Point(-1, 1)).getTerrain());
+    }
+
+    @Test
     public void NoHashConflicts() {
         Point hexLoc[] = new Point[3];
         Point temp[] = new Point[3];

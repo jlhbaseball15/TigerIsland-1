@@ -16,7 +16,7 @@ public class GameBoard {
 
     public HashMap getMap() { return boardGame; }
 
-    public void addStartingTile() throws GameRulesException {
+    public void addStartingTile() {
         Hex hex[] = new Hex [5];
         hex[0] = new Hex('V');
         hex[1] = new Hex('J');
