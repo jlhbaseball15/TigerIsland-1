@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class GameBoardTest {
 
@@ -45,36 +44,14 @@ public class GameBoardTest {
     }
 
     @Test
-    public void GettingTilesOnBoard() {
-        tile = deck.getTile();
-        gameBoard.addTile(tile, hexPoints);
+    public void addingAStartTileToBoard() {
+        gameBoard.addStartingTile();
 
-        tile = deck.getTile();
-        hexPoints[0] = new Point(2,0);
-        hexPoints[1] = new Point(2,1);
-        hexPoints[2] = new Point(3,1);
-        gameBoard.addTile(tile, hexPoints);
-
-        tile = deck.getTile();
-        hexPoints[0] = new Point(3,0);
-        hexPoints[1] = new Point(4,0);
-        hexPoints[2] = new Point(4,1);
-        gameBoard.addTile(tile, hexPoints);
-
-        tile = deck.getTile();
-        hexPoints[0] = new Point(1,-2);
-        hexPoints[1] = new Point(2,-1);
-        hexPoints[2] = new Point(2,-2);
-        gameBoard.addTile(tile, hexPoints);
-
-        tile = deck.getTile();
-        hexPoints[0] = new Point(3,-2);
-        hexPoints[1] = new Point(3,-1);
-        hexPoints[2] = new Point(4,-1);
-        gameBoard.addTile(tile, hexPoints);
-
-        Vector<Tile> tileVector = gameBoard.getTilesOnBoard();
-        Assert.assertTrue(tileVector.size() == 5);
+        Assert.assertEquals('V', gameBoard.getHexAtPointP(new Point(0, 0)).getTerrain());
+        Assert.assertEquals('J', gameBoard.getHexAtPointP(new Point(0, -1)).getTerrain());
+        Assert.assertEquals('L', gameBoard.getHexAtPointP(new Point(1, -1)).getTerrain());
+        Assert.assertEquals('G', gameBoard.getHexAtPointP(new Point(0, 1)).getTerrain());
+        Assert.assertEquals('R', gameBoard.getHexAtPointP(new Point(-1, 1)).getTerrain());
     }
 
     @Test
