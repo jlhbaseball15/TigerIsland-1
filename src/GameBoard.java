@@ -1,26 +1,42 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class GameBoard {
 
     private HashMap<Point, Hex> boardGame;
-    private Vector<Tile> tilesOnBoard;
     private static Point tileLocations[];
     private int currentTile;
 
     public GameBoard() {
         int mapCapacity = 144;
         currentTile = 0;
-        tilesOnBoard = new Vector<Tile>();
         boardGame = new HashMap<Point, Hex>(mapCapacity);
     }
 
     public HashMap getMap() { return boardGame; }
 
-    public Vector getTilesOnBoard() {
-        return tilesOnBoard;
+    public void addStartingTile() throws GameRulesException {
+        Hex hex[] = new Hex [5];
+        hex[0] = new Hex('V');
+        hex[1] = new Hex('J');
+        hex[2] = new Hex('L');
+        hex[3] = new Hex('G');
+        hex[4] = new Hex('R');
+
+        hex[0].setTileNumber(currentTile);
+        hex[1].setTileNumber(currentTile);
+        hex[2].setTileNumber(currentTile);
+        hex[3].setTileNumber(currentTile);
+        hex[4].setTileNumber(currentTile);
+
+        boardGame.put(new Point(0, 0), hex[0]); // Volcano Center
+        boardGame.put(new Point(0, -1), hex[1]); // Jungle Top Left
+        boardGame.put(new Point(1, -1), hex[2]); // Lake Top Right
+        boardGame.put(new Point(0, 1), hex[3]); // Grasslands Bottom Right
+        boardGame.put(new Point(-1, 1), hex[4]); // Rocky Bottom Left
+
+        ++currentTile;
     }
 
     public void addTile(Tile tile, Point hexPositions[]){
@@ -36,7 +52,6 @@ public class GameBoard {
             hexes[i].setTileNumber(currentTile);
             boardGame.put(tileLocations[i], hexes[i]);
         }
-        tilesOnBoard.add(currentTile, tile);
         ++currentTile;
     }
 
