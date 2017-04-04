@@ -21,6 +21,8 @@ public class Tile {
         return orientation;
     }
 
+    public void setOrientation(int orientation) { this.orientation = orientation; }
+
     public void rotateClockwise(){
         orientation = (orientation + 1) % 6;
     }
