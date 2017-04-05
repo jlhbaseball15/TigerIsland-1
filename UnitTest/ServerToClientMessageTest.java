@@ -1,5 +1,5 @@
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.awt.*;
@@ -9,13 +9,13 @@ import java.awt.*;
  */
 public class ServerToClientMessageTest {
 
-    private Message mess;
-    private GameState game;
-    private ServerToClientMessageAdaptor StoC;
+    private static Message mess;
+    private static GameState game;
+    private static ServerToClientMessageAdaptor StoC;
 
 
-    @Before
-    public void settup() {
+    @BeforeClass
+    public static void settup() {
         game = new GameState("Bob", "Alice", new Deck());
         StoC = new ServerToClientMessageAdaptor(game);
     }
