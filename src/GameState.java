@@ -12,6 +12,34 @@ public class GameState {
     private GameBoard gameboard;
     private GameRules gameRules;
 
+    private Message bothInMessage;
+    private Message activeInMessage;
+    private Message outMessage;
+
+    public Message getActiveInMessage() {
+        return activeInMessage;
+    }
+
+    public void setActiveInMessage(Message inMessage) {
+        activeInMessage = inMessage;
+    }
+
+    public Message getBothInMessage() {
+        return bothInMessage;
+    }
+
+    public void setBothInMessage(Message inMessage) {
+        bothInMessage = inMessage;
+    }
+
+    public Message getOutMessage() {
+        return outMessage;
+    }
+
+    public void setOutMessage(Message outMessage) {
+        this.outMessage = outMessage;
+    }
+
     public GameState(String nameOfPlayerWhoGoesFirst, String nameOfPlayerWhoGoessecond, Deck deck){
         mainDeck = deck;
         firstPlayer = new Player(nameOfPlayerWhoGoesFirst);
@@ -115,9 +143,6 @@ public class GameState {
 
             // end of turn check card and piece status;
             if(cardsRemaining <= 0) {
-                break;
-            }
-            else if(firstPlayer.getTotalPiecesRemaining() <= 0) {
                 break;
             }
 
