@@ -7,13 +7,11 @@ public class ServerToClientMessageAdaptor {
 
     private String inputMessage;
     private Message message;
-    private GameState gameX;
 
     private static int currentPosition;
     private static double decimalPosition;
 
-    public ServerToClientMessageAdaptor(GameState game) {
-        gameX = game;
+    public ServerToClientMessageAdaptor() {
         inputMessage = "";
         currentPosition = 0;
         decimalPosition = 0;
@@ -48,8 +46,6 @@ public class ServerToClientMessageAdaptor {
         getTileTerrain(T1_T2);
         message.setTile(new Tile(T1_T2[0], T1_T2[1]));
 
-        gameX.setActiveInMessage(message);
-
         return message;
     }
 
@@ -72,7 +68,6 @@ public class ServerToClientMessageAdaptor {
             message.isGameOver = true;
         }
 
-        gameX.setBothInMessage(message);
         return message;
     }
 
