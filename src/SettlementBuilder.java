@@ -45,9 +45,11 @@ public class SettlementBuilder {
 
         while(!visitNext.isEmpty()){
             Point currentPoint = visitNext.remove();
-            settlement.addPointToSettlement(currentPoint);
+            if (!settlement.contains(currentPoint)) {
+                settlement.addPointToSettlement(currentPoint);
+            }
             pointsInSettlements.put(currentPoint, true);
-            
+
             //add all neighbors of current point to queue as long as not visited and has piece of same player
             addNeighborsToQueue(currentPoint, visitNext, visited, board);
 
@@ -80,6 +82,7 @@ public class SettlementBuilder {
 
         for(Point p : neighbors){
             Hex hex = board.getHexAtPointP(p);
+            if (hex == null) { continue; }
             if(hex.getPiece() != Pieces.NONE && isPlayer1Piece(hex) == isPlayer1){
                 if(!visited.containsKey(p)){
                     visitNext.add(p);

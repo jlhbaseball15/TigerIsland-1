@@ -6,18 +6,16 @@ import java.awt.*;
 public class ClientToServerMessageAdaptor {
     private String outputMessage;
     private Message message;
-    private GameState gameX;
 
-    public ClientToServerMessageAdaptor(GameState game) {
+    public ClientToServerMessageAdaptor() {
         outputMessage = "";
-        gameX = game;
         message = new Message();
     }
 
-    public String translate() {
-        message = gameX.getOutMessage();
+    public String translate(Message message) {
+        this.message = message;
 
-        outputMessage = "GAME " + gameX.getOutMessage().getGID() + " MOVE " + gameX.getOutMessage().getMove() + " PLACE ";
+        outputMessage = "GAME " + message.getGID() + " MOVE " + message.getMove() + " PLACE ";
 
         outputMessage += addTileToMessage();
 

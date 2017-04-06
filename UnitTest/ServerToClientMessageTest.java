@@ -10,14 +10,12 @@ import java.awt.*;
 public class ServerToClientMessageTest {
 
     private static Message mess;
-    private static GameState game;
     private static ServerToClientMessageAdaptor StoC;
 
 
     @BeforeClass
     public static void settup() {
-        game = new GameState("Bob", "Alice", new Deck());
-        StoC = new ServerToClientMessageAdaptor(game);
+        StoC = new ServerToClientMessageAdaptor();
     }
 
     @Test

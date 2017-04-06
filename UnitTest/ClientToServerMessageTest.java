@@ -9,13 +9,11 @@ import java.awt.*;
  */
 public class ClientToServerMessageTest {
 
-    private static GameState game;
     private static ClientToServerMessageAdaptor CtoS;
 
     @BeforeClass
     public static void settup() {
-        game = new GameState("Bob", "Alice", new Deck());
-        CtoS = new ClientToServerMessageAdaptor(game);
+        CtoS = new ClientToServerMessageAdaptor();
     }
 
     @Test
@@ -33,10 +31,8 @@ public class ClientToServerMessageTest {
         m.setBuild(BuildOptions.NEW_SETTLEMENT);
         m.setBuildPoint(new Point(4, 5));
 
-        game.setOutMessage(m);
-
         expectedOutput = "GAME 124 MOVE 6 PLACE LAKE+GRASS AT 0 0 0 4 FOUND SETTLEMENT AT 4 -9 5";
-        actualOutput = CtoS.translate();
+        actualOutput = CtoS.translate(m);
 
         Assert.assertTrue(actualOutput.equals(expectedOutput));
     }
@@ -57,10 +53,8 @@ public class ClientToServerMessageTest {
         m.setBuildPoint(new Point(3, 2));
         m.setTerrain('L');
 
-        game.setOutMessage(m);
-
         expectedOutput = "GAME 124 MOVE 6 PLACE GRASS+GRASS AT 1 -1 0 4 EXPAND SETTLEMENT AT 3 -5 2 LAKE";
-        actualOutput = CtoS.translate();
+        actualOutput = CtoS.translate(m);
 
         Assert.assertTrue(actualOutput.equals(expectedOutput));
     }
@@ -80,10 +74,8 @@ public class ClientToServerMessageTest {
         m.setBuild(BuildOptions.TOTORO_SANCTUARY);
         m.setBuildPoint(new Point(4, 5));
 
-        game.setOutMessage(m);
-
         expectedOutput = "GAME 124 MOVE 6 PLACE LAKE+GRASS AT 0 0 0 4 BUILD TOTORO SANCTUARY AT 4 -9 5";
-        actualOutput = CtoS.translate();
+        actualOutput = CtoS.translate(m);
 
         Assert.assertTrue(actualOutput.equals(expectedOutput));
     }
@@ -103,10 +95,8 @@ public class ClientToServerMessageTest {
         m.setBuild(BuildOptions.TIGER_PLAYGROUND);
         m.setBuildPoint(new Point(4, 5));
 
-        game.setOutMessage(m);
-
         expectedOutput = "GAME 126 MOVE 3 PLACE LAKE+GRASS AT 0 0 0 4 BUILD TIGER PLAYGROUND AT 4 -9 5";
-        actualOutput = CtoS.translate();
+        actualOutput = CtoS.translate(m);
 
         Assert.assertTrue(actualOutput.equals(expectedOutput));
     }
@@ -126,10 +116,8 @@ public class ClientToServerMessageTest {
         m.setBuild(BuildOptions.NOOP);
         m.setBuildPoint(new Point(4, 5));
 
-        game.setOutMessage(m);
-
         expectedOutput = "GAME 124 MOVE 6 PLACE LAKE+GRASS AT 0 0 0 4 UNABLE TO BUILD";
-        actualOutput = CtoS.translate();
+        actualOutput = CtoS.translate(m);
 
         Assert.assertTrue(actualOutput.equals(expectedOutput));
     }
