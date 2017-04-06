@@ -59,23 +59,9 @@ public class GameView {
 
         //set up board here
         board.addStartingTile();
-//        Tile tile1 = deck.getTile();
-//        Tile tile2 = deck.getTile();
-//        Point[] hexCoords1 = {new Point(0,0), new Point(1,0), new Point(0,1)};
-//        Point[] hexCoords2 = {new Point(1, -1), new Point(0, -1), new Point(1, -2)};
-//        addTile(tile1, hexCoords1);
-//        addTile(tile2, hexCoords2);
 
         //get current Tile
         currentTile = deck.getTile();
-
-
-
-        /*
-        currentBoard.put(new Point(0,0), (int)'A');
-        currentBoard.put(new Point(0,1), (int)'Q');
-        currentBoard.put(new Point(1,0), -(int)'B');
-        */
     }
 
     void runGame() {
@@ -83,6 +69,7 @@ public class GameView {
             isPlaced = false;
             Point[] userHexCoords = getUserInput();
             placeTile(userHexCoords);
+            setCurrentTile();
             while (!isPlaced) {
                 mainGamePanel.repaint();
             }
@@ -167,7 +154,7 @@ public class GameView {
         try {
             rules.TryToAddTile(tile, hexCoords);
             board.addTile(tile, hexCoords);
-           // isPlaced = true;
+           isPlaced = true;
         } catch (GameRulesException e) {
             System.out.println(e);
         }

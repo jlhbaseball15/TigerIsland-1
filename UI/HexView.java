@@ -209,15 +209,23 @@ public class HexView {
             default : g2.setColor(Color.BLACK);
                            break;
         }
+
+        //draw tile
         g2.fillPolygon(poly);
+
+        //draw coord location
         g2.setColor(Color.BLACK);
         g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
         g2.drawString(""+hexValue, pixelX - 4, pixelY - 10);
         g2.drawString(x0 + ", " + y0, pixelX - 8, pixelY + 10);
 
+        //draw hex level
         g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
         g2.setColor(Color.WHITE);
         g2.drawString(""+hex.getLevel(), pixelX - 4, pixelY - 25);
 
+        //setting piece on tile
+        g2.setColor(Color.darkGray);
+        g2.fillOval(pixelX + 15, pixelY - 10, 10, 10);
     }
 }
