@@ -91,8 +91,6 @@ public class GameBoard {
         }
     }
 
-
-
     public boolean hasTileInMap(int hexXPoint, int hexYPoint) {
         return boardGame.containsKey(new Point(hexXPoint, hexYPoint));
     }

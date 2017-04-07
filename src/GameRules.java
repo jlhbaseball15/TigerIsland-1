@@ -26,10 +26,6 @@ public class GameRules {
         settlements = newSettlements;
     }
 
-    public void setChosenSettlement(Settlement settle) {
-        chosenSettlement = settle;
-    }
-
     public int getVillagersCount() {
         return villagersCount;
     }
@@ -223,13 +219,20 @@ public class GameRules {
 
     /* ---  Build Addition Checks  --- */
 
-    public ArrayList<Point> tryToExpand(Player player, char terrain) throws GameRulesException{
+    public ArrayList<Point> tryToExpand(Player player, char terrain, Point expansionSettlement) throws GameRulesException{
         ArrayList<Point> expansionMap = new ArrayList<>();
         ArrayList<Point> expansionQ = new ArrayList<>();
         villagersCount = 0;
 
         if (terrain == 'V') {
             throw new GameRulesException("Cannot Expand Onto Volcanoes");
+        }
+
+        for (Settlement s: settlements) {
+            if (s.contains(expansionSettlement)) {
+                chosenSettlement = s;
+                break;
+            }
         }
 
         for (Point p : chosenSettlement.getSettlement()) {
@@ -336,12 +339,19 @@ public class GameRules {
         }
     }
 
-    public void tryToAddTotoro(Player player, Point Hexlocation) throws GameRulesException{
+    public void tryToAddTotoro(Player player, Point buildLocation, Point settlement) throws GameRulesException{
         CurrentPlayer = player;
+
+        for (Settlement s: settlements) {
+            if (s.contains(settlement)) {
+                chosenSettlement = s;
+                break;
+            }
+        }
 
         if(checkSizeOfSettlement())
             throw new GameRulesException("Size of settlement is not equal to or greater than 5");
-        if(isOnVolcano(Hexlocation))
+        if(isOnVolcano(buildLocation))
             throw new GameRulesException("Can not build totoro on volcano");
         if(settlementHasATororo()){
             throw new GameRulesException("Can not build more than one totoros on one settlement");
@@ -349,20 +359,27 @@ public class GameRules {
         if(playerDoesNotHaveRemainingTotoroPieces()){
             throw new GameRulesException("Has played all Totoro pieces");
         }
-        if(selectedHexIsNotNextToSettlement(Hexlocation)){
+        if(selectedHexIsNotNextToSettlement(buildLocation)){
             throw new GameRulesException("Must build Totoro next to the Settlement");
         }
-        if(hexIsOccupied(Hexlocation)) {
+        if(hexIsOccupied(buildLocation)) {
             throw new GameRulesException("Cannot Build On An Occupied Hex");
         }
     }
 
-    public void tryToAddTiger(Player player, Point Hexlocation) throws GameRulesException{
+    public void tryToAddTiger(Player player, Point buildPoint, Point settlement) throws GameRulesException{
         CurrentPlayer = player;
 
-        if(checkLevelOfHex(Hexlocation))
+        for (Settlement s: settlements) {
+            if (s.contains(settlement)) {
+                chosenSettlement = s;
+                break;
+            }
+        }
+
+        if(checkLevelOfHex(buildPoint))
             throw new GameRulesException("Level of hex must be three or greater");
-        if(isOnVolcano(Hexlocation))
+        if(isOnVolcano(buildPoint))
             throw new GameRulesException("Can not build tiger on volcano");
         if(settlementHasATiger()){
             throw new GameRulesException("Can not build more than one tiger on one settlement");
@@ -370,10 +387,10 @@ public class GameRules {
         if(playerDoesNotHaveRemainingTigerPieces()){
             throw new GameRulesException("Has played all Tiger pieces");
         }
-        if(selectedHexIsNotNextToSettlement(Hexlocation)){
+        if(selectedHexIsNotNextToSettlement(buildPoint)){
             throw new GameRulesException("Must build Tiger next to the Settlement");
         }
-        if(hexIsOccupied(Hexlocation)) {
+        if(hexIsOccupied(buildPoint)) {
             throw new GameRulesException("Cannot Build On An Occupied Hex");
         }
     }

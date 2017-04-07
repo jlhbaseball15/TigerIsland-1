@@ -180,7 +180,6 @@ public class CucumberGameBoardTest {
         p[2] = new Point(0, 0);
 
         rules.setSettlements(settlements.getPlayer1Settlements());
-        rules.setChosenSettlement(settlements.getPlayer1Settlements().get(0));
 
         try {
             rules.TryToAddTile(tile, p);
@@ -223,7 +222,6 @@ public class CucumberGameBoardTest {
         p[2] = new Point(0, 0);
 
         rules.setSettlements(settlements.getPlayer1Settlements());
-        rules.setChosenSettlement(settlements.getPlayer1Settlements().get(0));
 
         try {
             rules.TryToAddTile(tile, p);
