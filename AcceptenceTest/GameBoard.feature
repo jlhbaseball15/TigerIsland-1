@@ -31,3 +31,4 @@ Scenario: Placing a tile on top of a settlement that wont be destroyed and elimi
   And At least one of the covered hexes is occupied, but will not be destroyed
   When The tile is placed on that spot
   Then The tile is added to the board
+  
