@@ -190,8 +190,7 @@ public class GameBoardTest {
         ArrayList<Point> expansionMap;
 
         try {
-            rules.setChosenSettlement(settle);
-            expansionMap = rules.tryToExpand(p1, 'G');
+            expansionMap = rules.tryToExpand(p1, 'G', new Point(1, 0));
             gameBoard.expandSettlement(true, expansionMap);
             Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(0,0)).getPiece());
             Assert.assertEquals(Pieces.P1_VILLAGER, gameBoard.getHexAtPointP(new Point(0,-1)).getPiece());
