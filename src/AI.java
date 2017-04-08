@@ -16,10 +16,13 @@ public class AI {
     private int smallestXcord;
     private int smallestYcord;
     private Player ourPlayer;
+    int whenToPlacetotoro;
 
 
-    public AI(GameBoard gameboard){
-        this.gameboard = gameboard;
+
+    public AI(boolean areWeFirst){
+        gameboard =  new GameBoard();
+        gameboard.addStartingTile();
         lastTilePlacedLocations = new Point[3];
         biggestXcord = 1;
         biggestYcord = 1;
@@ -27,6 +30,7 @@ public class AI {
         smallestYcord = -1;
         ourPlayer = new Player("ourPlayer");
         settlementBuilder = new SettlementBuilder();
+        whenToPlacetotoro = 0;
     }
 
     public void decideTilePlacement(Tile tile){
@@ -59,9 +63,7 @@ public class AI {
         }
     }
 
-    public Point[] rotate(Point point, int rotation){
-        int x = (int)point.getX();
-        int y = (int)point.getY();
+    public Point[] rotate(int x, int y, int rotation){
         Point rotatedPlacement[] = new Point[3];
         if(rotation == 1){
             rotatedPlacement[0] = new Point(x,y-1);
@@ -114,7 +116,9 @@ public class AI {
     }
 
     public void oppoentsTilePlacement(Tile tile, Point location, int rotation){
-        Point tileLocation[] = rotate(location,rotation);
+        int x = (int)location.getX();
+        int y = (int)location.getY();
+        Point tileLocation[] = rotate(x,y,rotation);
         gameboard.addTile(tile, tileLocation);
 
         lastTilePlacedLocations[0] = tileLocation[0];
@@ -125,40 +129,43 @@ public class AI {
     }
 
     public void decideBuildType(){
-        int whenToPlacetotoro = 0;
         Pieces piece = Pieces.NONE;
         BuildOptions decidedBuildOptions = BuildOptions.NOOP;
         if((whenToPlacetotoro >= 5) && (ourPlayer.gettotorosRemaining() > 0)){
             decidedBuildOptions = BuildOptions.TOTORO_SANCTUARY;
             piece = Pieces.P1_TOTORO;
             whenToPlacetotoro = 0;
+        }else {
+            if ((whenToPlacetotoro < 5) && (ourPlayer.getvillagersRemaining() > 0)) {
+                decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
+                piece = Pieces.P1_TOTORO;
+            }
+            whenToPlacetotoro++;
+            performBuild(decidedBuildOptions, lastTilePlacedLocations[0], piece);
         }
-        if((whenToPlacetotoro < 5) && (ourPlayer.getvillagersRemaining() > 0)){
-            decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
-            piece = Pieces.P1_TOTORO;
-        }
-        whenToPlacetotoro++;
-        performBuild(decidedBuildOptions, lastTilePlacedLocations[0], piece );
-
     }
 
     public void performBuild(BuildOptions buildtype, Point location, Pieces pieceType){
 
         if(buildtype == BuildOptions.NEW_SETTLEMENT) {
-            gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
+
             try {
+
+                gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
                 settlementBuilder.calculateSettlements(gameboard);
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.TOTORO_SANCTUARY) {
-            gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
             try {
+
+                gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
                 settlementBuilder.calculateSettlements(gameboard);
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.TIGER_PLAYGROUND) {
-            gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
             try {
+
+                gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
                 settlementBuilder.calculateSettlements(gameboard);
             }catch(GameRulesException e){}
         }
