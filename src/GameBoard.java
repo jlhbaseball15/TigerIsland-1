@@ -132,37 +132,58 @@ public class GameBoard {
         int x = Location.x;
         int y = Location.y;
         rotatedPlacement[2] = new Point(x,y);
-        if(rotation == 1){
+
+        if(rotation == 0){
             rotatedPlacement[0] = new Point(x,y-1);
             rotatedPlacement[1] = new Point(x+1,y-1);
         }
-        else if (rotation == 2){
+        else if (rotation == 1){
             rotatedPlacement[0] = new Point(x+1,y-1);
             rotatedPlacement[1] = new Point(x+1,y);
         }
-        else if(rotation == 3){
+        else if(rotation == 2){
             rotatedPlacement[0] = new Point(x+1,y);
             rotatedPlacement[1] = new Point(x,y+1);
         }
-        else if(rotation == 4){
+        else if(rotation == 3){
             rotatedPlacement[0] = new Point(x,y+1);
             rotatedPlacement[1] = new Point(x-1,y+1);
-
         }
-        else if(rotation == 5){
+        else if(rotation == 4){
             rotatedPlacement[0] = new Point(x-1,y+1);
             rotatedPlacement[1] = new Point(x-1,y);
         }
-        else if(rotation == 6){
+        else if(rotation == 5){
             rotatedPlacement[0] = new Point(x-1,y);
             rotatedPlacement[1] = new Point(x,y-1);
         }
-        SetLastTileOrientation(rotation);
         return rotatedPlacement;
     }
-    public int getLastTileOrientation(){return orientation;}
-    private void SetLastTileOrientation(int orientation){this.orientation=orientation;}
 
+    public int findOrientation(Point[] locations){
+        Point p1 = locations[0];
+        Point p2 = locations[1];
+        Point p3 = locations[2];
+
+        if (p1.x == p3.x && p1.y == p3.y - 1 && p2.x == p3.x + 1 && p2.y == p3.y - 1) {
+            return 0;
+        }
+        else if (p1.x == p3.x + 1 && p1.y == p3.y - 1 && p2.x == p3.x + 1 && p2.y == p3.y) {
+            return 1;
+        }
+        else if (p1.x == p3.x + 1 && p1.y == p3.y && p2.x == p3.x && p2.y == p3.y + 1) {
+            return 2;
+        }
+        else if (p1.x == p3.x && p1.y == p3.y + 1 && p2.x == p3.x - 1 && p2.y == p3.y + 1) {
+            return 3;
+        }
+        else if (p1.x == p3.x - 1 && p1.y == p3.y + 1 && p2.x == p3.x - 1 && p2.y == p3.y) {
+            return 4;
+        }
+        else {// p1.x == p3.x - 1 && p1.y == p3.y && p2.x == p3.x && p2.y == p3.y - 1
+            return 5;
+        }
+    }
 
 }
 

@@ -90,7 +90,42 @@ public class AI implements Runnable{
             }
         }
         else {
+            while(true) {
 
+                while (inMessages.isEmpty()) {  // my opponents move, hope he/she lost!
+                }
+
+                mIN = inMessages.remove();
+
+                if(mIN.getIsGameOver()) {
+                    break;
+                }
+
+                oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+
+                while (inMessages.isEmpty()) {  // wait for my turn
+                }
+
+                mIN = inMessages.remove();
+
+                mOUT = new Message();
+                mOUT.setMove(mIN.getMove());
+                mOUT.setGID(mIN.getGID());
+
+                decideTilePlacement(mIN.getTile());
+                decideBuildType();
+
+                outMessage.add(mOUT);
+
+                while (inMessages.isEmpty()) {} // did server think my move was valid?
+
+                mIN = inMessages.remove();
+
+                if(mIN.getIsGameOver()) {
+                    break;
+                }
+            }
         }
     }
 
@@ -107,7 +142,7 @@ public class AI implements Runnable{
                     gameboard.addTile(tile, tilePlacement);
                     mOUT.setTile(tile);
                     mOUT.setTilePoint(tilePlacement[2]);
-        // add tile orientation            mOUT.setOrientation(gameboard.);
+                    mOUT.setOrientation(gameboard.findOrientation(tilePlacement));
                     tilePlaced = true;
                 } catch(GameRulesException e) {
                     tilePlaced = false;
@@ -124,41 +159,6 @@ public class AI implements Runnable{
                 break;
             }
         }
-    }
-
-    public Point[] rotate(int x, int y, int rotation){
-        Point rotatedPlacement[] = new Point[3];
-        if(rotation == 0){
-            rotatedPlacement[0] = new Point(x,y-1);
-            rotatedPlacement[1] = new Point(x+1,y-1);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        if(rotation == 1){
-            rotatedPlacement[0] = new Point(x+1,y-1);
-            rotatedPlacement[1] = new Point(x+1,y);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        if(rotation == 2){
-            rotatedPlacement[0] = new Point(x+1,y);
-            rotatedPlacement[1] = new Point(x,y+1);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        if(rotation == 3){
-            rotatedPlacement[0] = new Point(x,y+1);
-            rotatedPlacement[1] = new Point(x-1,y+1);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        if(rotation == 4){
-            rotatedPlacement[0] = new Point(x-1,y+1);
-            rotatedPlacement[1] = new Point(x-1,y);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        if(rotation == 5){
-            rotatedPlacement[0] = new Point(x-1,y);
-            rotatedPlacement[1] = new Point(x,y-1);
-            rotatedPlacement[2] = new Point(x,y);
-        }
-        return rotatedPlacement;
     }
 
     public void maxAndMinCord(){
@@ -181,7 +181,7 @@ public class AI implements Runnable{
     public void oppoentsTilePlacement(Tile tile, Point location, int rotation){
         int x = (int)location.getX();
         int y = (int)location.getY();
-        Point tileLocation[] = rotate(x,y,rotation);
+        Point tileLocation[] = gameboard.rotate(location, rotation);
         gameboard.addTile(tile, tileLocation);
 
         lastTilePlacedLocations[0] = tileLocation[0];
