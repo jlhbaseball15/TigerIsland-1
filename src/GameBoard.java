@@ -127,4 +127,39 @@ public class GameBoard {
 
 }
 
+public Point[] rotate(Point Location, int rotation){
+        Point rotatedPlacement[] = new Point[3];
+        int x = Location.x;
+        int y = Location.y;
+        rotatedPlacement[2] = new Point(x,y);
+        if(rotation == 1){
+            rotatedPlacement[0] = new Point(x,y-1);
+            rotatedPlacement[1] = new Point(x+1,y-1);
+        }
+        else if (rotation == 2){
+            rotatedPlacement[0] = new Point(x+1,y-1);
+            rotatedPlacement[1] = new Point(x+1,y);
+        }
+        else if(rotation == 3){
+            rotatedPlacement[0] = new Point(x+1,y);
+            rotatedPlacement[1] = new Point(x,y+1);
+        }
+        else if(rotation == 4){
+            rotatedPlacement[0] = new Point(x,y+1);
+            rotatedPlacement[1] = new Point(x-1,y+1);
+
+        }
+        else if(rotation == 5){
+            rotatedPlacement[0] = new Point(x-1,y+1);
+            rotatedPlacement[1] = new Point(x-1,y);
+        }
+        else if(rotation == 6){
+            rotatedPlacement[0] = new Point(x-1,y);
+            rotatedPlacement[1] = new Point(x,y-1);
+        }
+        SetLastTileOrientation(rotation);
+        return rotatedPlacement;
+    }
+    public int getLastTileOrientation(){return orientation;}
+    private void SetLastTileOrientation(int orientation){this.orientation=orientation;}
 
