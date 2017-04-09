@@ -7,6 +7,8 @@ public class GameBoard {
     private HashMap<Point, Hex> boardGame;
     private static Point tileLocations[];
     private int currentTile;
+    private Point LastTile= new Point();
+    private int orientation;
 
     public GameBoard() {
         int mapCapacity = 144;
@@ -130,6 +132,7 @@ public class GameBoard {
         int x = Location.x;
         int y = Location.y;
         rotatedPlacement[2] = new Point(x,y);
+
         if(rotation == 0){
             rotatedPlacement[0] = new Point(x,y-1);
             rotatedPlacement[1] = new Point(x+1,y-1);
@@ -145,7 +148,6 @@ public class GameBoard {
         else if(rotation == 3){
             rotatedPlacement[0] = new Point(x,y+1);
             rotatedPlacement[1] = new Point(x-1,y+1);
-
         }
         else if(rotation == 4){
             rotatedPlacement[0] = new Point(x-1,y+1);
