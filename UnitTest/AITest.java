@@ -3,9 +3,8 @@
  */
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import java.io.*;
+
 import java.awt.*;
 public class AITest {
     private Tile tile0;
