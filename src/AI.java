@@ -57,11 +57,14 @@ public class AI implements Runnable{
 
                 mIN = inMessages.remove();
 
+                mOUT = new Message();
                 mOUT.setMove(mIN.getMove());
                 mOUT.setGID(mIN.getGID());
 
                 decideTilePlacement(mIN.getTile());
-                decideBuildType(); // need to setup message!!!
+                decideBuildType();
+
+                outMessage.add(mOUT);
 
                 while (inMessages.isEmpty()) {} // did server think my move was valid?
 
