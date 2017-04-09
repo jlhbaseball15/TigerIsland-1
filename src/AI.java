@@ -31,16 +31,31 @@ public class AI implements Runnable{
         gameboard.addStartingTile();
         isFirst = areWeFirst;
         lastTilePlacedLocations = new Point[3];
-        biggestXcord = 1;
-        biggestYcord = 1;
-        smallestXcord = -1;
-        smallestYcord = -1;
+        biggestXcord = 3;
+        biggestYcord = 3;
+        smallestXcord = -3;
+        smallestYcord = -3;
         ourPlayer = new Player("ourPlayer");
         settlementBuilder = new SettlementBuilder();
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
         inMessages = in;
         outMessage = out;
+    }
+
+    public AI(boolean areWeFirst){
+        gameboard =  new GameBoard();
+        gameboard.addStartingTile();
+        isFirst = areWeFirst;
+        lastTilePlacedLocations = new Point[3];
+        biggestXcord = 3;
+        biggestYcord = 3;
+        smallestXcord = -3;
+        smallestYcord = -3;
+        ourPlayer = new Player("ourPlayer");
+        settlementBuilder = new SettlementBuilder();
+        whenToPlacetotoro = 0;
+        gamerules = new GameRules(gameboard);
     }
 
     public Message removeOutMessage() {
@@ -132,8 +147,8 @@ public class AI implements Runnable{
     public void decideTilePlacement(Tile tile){
         boolean tilePlaced = false;
         tilePlacement = new Point[3];
-        for (int vertical = -1; vertical < biggestYcord; vertical++) {
-            for (int horizontal = smallestXcord; horizontal < biggestXcord; horizontal++) {
+        for (int vertical = 0; vertical < biggestYcord+3; vertical++) {
+            for (int horizontal = smallestXcord-3; horizontal < biggestXcord+3; horizontal++) {
                 tilePlacement[0] = new Point(horizontal,vertical-1);
                 tilePlacement[1] = new Point(horizontal+1,vertical-1);
                 tilePlacement[2] = new Point(horizontal,vertical);
@@ -163,16 +178,16 @@ public class AI implements Runnable{
 
     public void maxAndMinCord(){
         for(Point point:lastTilePlacedLocations){
-            if((int)point.getX() > biggestXcord){
+            if((int)point.getX() >= biggestXcord){
                 biggestXcord = (int)point.getX() + 3;
             }
-            if((int)point.getX() < smallestXcord){
+            if((int)point.getX() <= smallestXcord){
                 smallestXcord = (int)point.getX() - 3;
             }
-            if((int)point.getY() > biggestYcord){
+            if((int)point.getY() >= biggestYcord){
                 biggestYcord = (int)point.getY() + 3;
             }
-            if((int)point.getY() < smallestYcord){
+            if((int)point.getY() <= smallestYcord){
                 smallestYcord = (int)point.getY() - 3;
             }
         }
@@ -295,6 +310,15 @@ public class AI implements Runnable{
         if(buildtype == BuildOptions.NOOP) {
             // The Game should have ended... Why am I here
         }
+
+    }
+
+    public GameBoard returnGameBoard(){
+        return gameboard;
+    }
+
+    public Point[] getlastTilePlacedLocations(){
+        return lastTilePlacedLocations;
     }
 
 }
