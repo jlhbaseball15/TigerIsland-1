@@ -37,8 +37,8 @@ public class AI {
         gamerules = new GameRules(gameboard);
         boolean tilePlaced = false;
         tilePlacement = new Point[3];
-        for (int horizontal = smallestXcord; horizontal < biggestXcord; horizontal++) {
-            for (int vertical = smallestYcord; vertical < biggestYcord; vertical++) {
+        for (int vertical = -1; vertical < biggestYcord; vertical++) {
+            for (int horizontal = smallestXcord; horizontal < biggestXcord; horizontal++) {
                 tilePlacement[0] = new Point(horizontal,vertical-1);
                 tilePlacement[1] = new Point(horizontal+1,vertical-1);
                 tilePlacement[2] = new Point(horizontal,vertical);
