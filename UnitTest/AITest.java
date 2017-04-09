@@ -91,7 +91,7 @@ public class AITest {
 
         Point point = new Point(-3,0);
         tile2 = new Tile('G','J');
-        ourAI.oppoentsTilePlacement(tile2,point,4);
+        ourAI.oppoentsTilePlacement(tile2,point,3);
 
         for(Point point2:ourAI.getlastTilePlacedLocations()) {
             System.out.println(point2.getX() +" "+ point2.getY());
@@ -109,7 +109,7 @@ public class AITest {
 
         Point point = new Point(-4,0);
         tile2 = new Tile('G','J');
-        ourAI.oppoentsTilePlacement(tile2,point,1);
+        ourAI.oppoentsTilePlacement(tile2,point,0);
 
         tile = new Tile('R','J');
         ourAI.decideTilePlacement(tile);
