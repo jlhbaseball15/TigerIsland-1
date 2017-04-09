@@ -185,7 +185,6 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, p);
             Assert.assertTrue(false);
         } catch (GameRulesException e) {
-            System.out.println(e.getMessage());
             char [] expected = "A settlement cannot be destroyed".toCharArray();
             char [] actual = e.getMessage().toCharArray();
 
