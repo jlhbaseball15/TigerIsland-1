@@ -22,9 +22,9 @@ public class OrientationTest {
         Point spot = new Point(0,0);
         Point[] result = gameboard.rotate(spot,orientation);
         Assert.assertEquals(0,result[0].x);
-       Assert.assertEquals(-1,result[0].y);
+        Assert.assertEquals(-1,result[0].y);
         Assert.assertEquals(1,result[1].x);
-       Assert.assertEquals(-1,result[1].y);
+        Assert.assertEquals(-1,result[1].y);
         Assert.assertEquals(0,result[2].x);
         Assert.assertEquals(0,result[2].y);
     }
@@ -39,7 +39,7 @@ public class OrientationTest {
         Assert.assertEquals(1,result[1].x);
         Assert.assertEquals(0,result[1].y);
         Assert.assertEquals(0,result[2].x);
-       Assert.assertEquals(0,result[2].y);
+        Assert.assertEquals(0,result[2].y);
     }
     @Test
     public void testorientation3(){

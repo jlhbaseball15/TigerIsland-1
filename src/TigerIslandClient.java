@@ -47,20 +47,21 @@ public class TigerIslandClient{
 	}
 
 	private static void authProtocol(PrintWriter writer, BufferedReader reader) throws IOException{
-		reader.readLine(); //WELCOME TO ANOTHER EDITION OF THUNDERDOME!
+		System.out.println(reader.readLine()); //WELCOME TO ANOTHER EDITION OF THUNDERDOME!
 		writer.println("ENTER THUNDERDOME " + tournamentPassword);
-		reader.readLine(); //TWO SHALL ENTER, ONE SHALL LEAVE
+		System.out.println(reader.readLine()); //TWO SHALL ENTER, ONE SHALL LEAVE
 		writer.println("I AM " + username + " " + password);
-		reader.readLine(); //WAIT FOR THE TOURNAMENT TO BEGIN <pid>
+		System.out.println(reader.readLine()); //WAIT FOR THE TOURNAMENT TO BEGIN <pid>
 	}
 
 	private static void challengeProtocol(PrintWriter writer, BufferedReader reader) throws IOException {
 		while (true){
-			reader.readLine(); //NEW CHALLENGE <cid> YOU WILL PLAY <rounds> MATCH(ES)
+			System.out.println(reader.readLine()); //NEW CHALLENGE <cid> YOU WILL PLAY <rounds> MATCH(ES)
 
 			roundProtocol(writer, reader);
 
 			String message = reader.readLine();
+			System.out.println(message);
 			if (message.equals("END OF CHALLENGES"))
 				break;
 		}
@@ -68,18 +69,21 @@ public class TigerIslandClient{
 
 	private static void roundProtocol(PrintWriter writer, BufferedReader reader) throws IOException{
 		while(true){
-			reader.readLine(); //BEGIN ROUND <rid> OF <rounds>
+			System.out.println(reader.readLine()); //BEGIN ROUND <rid> OF <rounds>
 
 			matchProtocol(writer, reader);
 
 			String message = reader.readLine(); //END OF ROUND <rid> OF <rounds>
+			System.out.println(message);
 			if(message.split(" ").length == 6)
 				break;
 		}
 	}
 
 	private static void matchProtocol(PrintWriter writer, BufferedReader reader) throws IOException{
-		reader.readLine(); //NEW MATCH BEGINNING NOW YOUR OPPONENT IS PLAYER <pid>
+		System.out.println(reader.readLine()); //NEW MATCH BEGINNING NOW YOUR OPPONENT IS PLAYER <pid>
+
+		p1InMessages.clear(); p2InMessages.clear(); p1OutMessages.clear(); p2OutMessages.clear();
 
 		aiP1 = new Thread(new AI(true, p1InMessages, p1OutMessages));
 		aiP2 = new Thread(new AI(false, p2InMessages, p2OutMessages));
@@ -89,13 +93,14 @@ public class TigerIslandClient{
 
 		moveProtocol(writer, reader);
 
-		reader.readLine(); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
-		reader.readLine(); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
+		System.out.println(reader.readLine()); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
+		System.out.println(reader.readLine()); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
 	}
 
 	private static void moveProtocol(PrintWriter writer, BufferedReader reader) throws IOException{
 		//MAKE YOUR MOVE IN GAME <gid> WITHIN <time move > SECONDS: MOVE <#> PLACE <tile>
 		String message = reader.readLine();
+		System.out.println(message);
 		p1InMessages.add(s2c.translate(message));
 		message = message.split(" ")[5];  //Game I just made a move in
 
@@ -115,9 +120,12 @@ public class TigerIslandClient{
 			p2InMessages.add(s2c.translate(m1));
 			p1InMessages.add(s2c.translate(m2));
 		}
+		System.out.println(m1);
+		System.out.println(m2);
 
 		//make move other game
 		message = reader.readLine();
+		System.out.println(message);
 		p2InMessages.add(s2c.translate(message));
 		message = message.split(" ")[5];
 
@@ -136,5 +144,7 @@ public class TigerIslandClient{
 			p2InMessages.add(s2c.translate(m1));
 			p1InMessages.add(s2c.translate(m2));
 		}
+		System.out.println(m1);
+		System.out.println(m2);
 	}
 }
