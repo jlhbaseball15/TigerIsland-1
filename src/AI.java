@@ -211,6 +211,9 @@ public class AI implements Runnable{
                 gamerules.tryToBuildNewSettlement(ourPlayer, location);
                 gameboard.addVillagerToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                mOUT.setBuild(BuildOptions.NEW_SETTLEMENT);
+                mOUT.setBuildPoint(location);
                 return true;
             }catch(GameRulesException e){
                 return false;
@@ -219,8 +222,11 @@ public class AI implements Runnable{
         if(buildtype == BuildOptions.TOTORO_SANCTUARY) {
             try {
                 gamerules.tryToAddTotoro(ourPlayer, location, new Point(location.x+1, location.y));
-                gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
+                gameboard.addTotoroToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                mOUT.setBuild(BuildOptions.TOTORO_SANCTUARY);
+                mOUT.setBuildPoint(location);
                 return true;
             }catch(GameRulesException e){
                 return false;
@@ -229,8 +235,11 @@ public class AI implements Runnable{
         if(buildtype == BuildOptions.TIGER_PLAYGROUND) {
             try {
                 gamerules.tryToAddTiger(ourPlayer, location, new Point(location.x + 1, location.y));
-                gameboard.getHexAtPointP(location).setOccupied(pieceType, 1);
+                gameboard.addTigerToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                mOUT.setBuild(BuildOptions.TIGER_PLAYGROUND);
+                mOUT.setBuildPoint(location);
                 return true;
             }catch(GameRulesException e){
                 return false;
@@ -240,7 +249,7 @@ public class AI implements Runnable{
             return false;  // we are not expanding as of now
         }
         if(buildtype == BuildOptions.NOOP) {
-            mOUT.setBuild(BuildOptions.NOOP);
+            mOUT.setBuild(BuildOptions.NOOP); // last resort
             return true;
         }
         return false;
@@ -252,18 +261,21 @@ public class AI implements Runnable{
             gameboard.addVillagerToBoard(false, location);
             try {
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.TOTORO_SANCTUARY) {
             gameboard.addTotoroToBoard(false, location);
             try {
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.TIGER_PLAYGROUND) {
             gameboard.addTigerToBoard(false, location);
             try {
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.EXPAND) {
@@ -272,6 +284,7 @@ public class AI implements Runnable{
                 expansion = gamerules.tryToExpand(new Player("Bob"), terrain, location);
                 gameboard.expandSettlement(false, expansion);
                 settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
             }catch(GameRulesException e){}
         }
         if(buildtype == BuildOptions.NOOP) {
