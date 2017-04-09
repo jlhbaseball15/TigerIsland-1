@@ -4,7 +4,6 @@ import java.net.*;
 public class TigerIslandClient{
 	private static String tournamentPassword, username, password;
 	private static AI aiP1, aiP2;
-	//private static Thread senderT, receiverT;
 
 	public static void main(String[] args){
 
@@ -24,17 +23,10 @@ public class TigerIslandClient{
 				PrintWriter    writer = new PrintWriter(socket.getOutputStream(), true);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		){
-			//while (true){
-				authProtocol(writer, reader);
-				challengeProtocol(writer, reader);
 
-				//aiP1 = new AI(true);
-				//aiP2 = new AI(false);
-				//senderT = new Thread(new SenderThread(writer));
-				//receiverT = new Thread(new ReceiverThread(reader));
+			authProtocol(writer, reader);
+			challengeProtocol(writer, reader);
 
-
-			//}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
