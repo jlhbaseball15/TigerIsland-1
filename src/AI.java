@@ -9,8 +9,8 @@ import java.util.*;
 public class AI implements Runnable{
     private static GameBoard gameboard;
     private static GameRules gamerules;
-    private Queue<Message> inMessages = new LinkedList<Message>();
-    private Queue<Message> outMessage = new LinkedList<Message>();
+    private Queue<Message> inMessages;
+    private Queue<Message> outMessage;
     private Message mIN = new Message();
     private Message mOUT = new Message();
     private Point tilePlacement[];
@@ -26,7 +26,7 @@ public class AI implements Runnable{
 
 
 
-    public AI(boolean areWeFirst){
+    public AI(boolean areWeFirst, Queue<Message> in, Queue<Message> out){
         gameboard =  new GameBoard();
         gameboard.addStartingTile();
         isFirst = areWeFirst;
@@ -39,6 +39,8 @@ public class AI implements Runnable{
         settlementBuilder = new SettlementBuilder();
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
+        inMessages = in;
+        outMessage = out;
     }
 
     public Message removeOutMessage() {
