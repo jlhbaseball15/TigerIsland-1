@@ -58,8 +58,8 @@ public class ServerToClientMessageAdaptor {
         length = getNumLength();
         message.setMove(Integer.parseInt(inputMessage.substring(currentPosition - length, currentPosition)));
 
-        length = getNumLength();
-        message.setPID(inputMessage.substring(currentPosition - length, currentPosition));
+        length = getPIDLength();
+        message.setPID(inputMessage.substring(currentPosition  - length, currentPosition));
 
         if (inputMessage.charAt(++currentPosition) == 'P') {
             settupMoveMade();
@@ -69,6 +69,18 @@ public class ServerToClientMessageAdaptor {
         }
 
         return message;
+    }
+
+    private int getPIDLength() {
+
+        int i = currentPosition + 8;
+        int j = i;
+        while(inputMessage.charAt(j) != ' ') {
+            ++j;
+        }
+
+        currentPosition = j;
+        return j - i;
     }
 
     private void settupMoveMade() {
