@@ -7,6 +7,8 @@ public class GameBoard {
     private HashMap<Point, Hex> boardGame;
     private static Point tileLocations[];
     private int currentTile;
+    private Point LastTile= new Point();
+    private int orientation;
 
     public GameBoard() {
         int mapCapacity = 144;
@@ -125,9 +127,7 @@ public class GameBoard {
 
     public int size() { return boardGame.size(); }
 
-}
-
-public Point[] rotate(Point Location, int rotation){
+    public Point[] rotate(Point Location, int rotation){
         Point rotatedPlacement[] = new Point[3];
         int x = Location.x;
         int y = Location.y;
@@ -162,4 +162,8 @@ public Point[] rotate(Point Location, int rotation){
     }
     public int getLastTileOrientation(){return orientation;}
     private void SetLastTileOrientation(int orientation){this.orientation=orientation;}
+
+
+}
+
 
