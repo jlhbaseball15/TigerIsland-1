@@ -53,7 +53,8 @@ public class GameState {
         boolean player1Turn = true;
         boolean tilePlaced = false;
         boolean playerLostDueToNotBuilding = false;
-
+        Point Location = new Point;
+        int orientation=0;
         Point tilePlacement[] = new Point[3];
         BuildOptions build = BuildOptions.NOOP;
 
@@ -67,6 +68,7 @@ public class GameState {
                 while (!tilePlaced) {
                     // player must select where to place tile
                     try {
+                        tilePlacement=gameboard.rotate(Location,orientation);
                         gameRules.TryToAddTile(tile, tilePlacement);
                         gameboard.addTile(tile, tilePlacement);
                         tilePlaced = true;
@@ -102,6 +104,7 @@ public class GameState {
                 while (!tilePlaced) {
                     // player must select where to place tile
                     try {
+                        tilePlacement=gameboard.rotate(Location,orientation);
                         gameRules.TryToAddTile(tile, tilePlacement);
                         gameboard.addTile(tile, tilePlacement);
                         tilePlaced = true;
