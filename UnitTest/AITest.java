@@ -323,11 +323,7 @@ public class AITest {
             ourAI.decideTilePlacement(tile6);
             ourAI.decideBuildType();
         }
-        tile7 = new Tile('J', 'R');
-        ourAI.decideTilePlacement(tile7);
-        ourAI.decideBuildType();
-
-
+        
         Assert.assertEquals(Pieces.P1_TOTORO, ourAI.returnGameBoard().getHexAtPointP(-5, -1).getPiece());
         Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-7, -1).getPiece());
         Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-8, -1).getPiece());

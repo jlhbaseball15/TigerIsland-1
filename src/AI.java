@@ -269,8 +269,8 @@ public class AI implements Runnable{
                 gamerules.tryToAddTotoro(ourPlayer, location, new Point(location.x+1, location.y));
                 gameboard.addTotoroToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
-                ourPlayer.totoroBeingPlaced();
                 gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                ourPlayer.totoroBeingPlaced();
                 mOUT.setBuild(BuildOptions.TOTORO_SANCTUARY);
                 mOUT.setBuildPoint(location);
                 return true;
@@ -297,7 +297,6 @@ public class AI implements Runnable{
         }
         if(buildtype == BuildOptions.NOOP) {
             mOUT.setBuild(BuildOptions.NOOP); // last resort
-            System.out.println("placed all villagers and totoros.");
             return true;
         }
         return false;
