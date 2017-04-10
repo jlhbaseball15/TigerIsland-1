@@ -5,6 +5,8 @@ import java.awt.*;
  */
 public class Message {
     boolean isGameOver = false;
+    boolean isMove = false;
+    String originalMessage = "";
 
     private String gid = "";
     private String pid = "";

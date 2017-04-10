@@ -1,12 +1,9 @@
 import java.awt.*;
 
-/**
- * Created by dontf on 4/3/2017.
- */
 public class ServerToClientMessageAdaptor {
 
     private String inputMessage;
-    private Message message;
+    //private Message message;
 
     private static int currentPosition;
     private static double decimalPosition;
@@ -19,7 +16,7 @@ public class ServerToClientMessageAdaptor {
 
     public Message translate(String inMessage) {
         inputMessage = inMessage;
-        message = new Message();
+        //message = new Message();
         currentPosition = 0;
 
         if (inputMessage.substring(0, 4).equals("MAKE")) {
@@ -31,6 +28,39 @@ public class ServerToClientMessageAdaptor {
     }
 
     private Message translateActivePlayerMessage() {
+        Message message = new Message();
+        message.isMove = true;
+        // int length = 0;
+        // char T1_T2[] = new char[2];
+
+        // length = getNumLength();
+        // message.setGID(inputMessage.substring(currentPosition - length, currentPosition));
+
+        // length = getDecimalNumLength();
+        // message.setTime(Double.parseDouble(inputMessage.substring(currentPosition - length, currentPosition)));
+
+        // length = getNumLength();
+        // message.setMove(Integer.parseInt(inputMessage.substring(currentPosition - length, currentPosition)));
+
+        // getTileTerrain(T1_T2);
+        // message.setTile(new Tile(T1_T2[0], T1_T2[1]));
+
+
+        String[] strArr = inputMessage.split(" ");
+        message.originalMessage = inputMessage;
+
+        message.setGID(strArr[5]);
+        message.setTime(Double.parseDouble(strArr[7]));
+        message.setMove(Integer.parseInt(strArr[10]));
+        char t1 = strArr[12].split("\\+")[0].charAt(0);
+        char t2 = strArr[12].split("\\+")[1].charAt(0);
+        message.setTile(new Tile(t1, t2));
+
+        return message;
+    }
+
+    private Message translateBothPlayerMessage() {
+        /*
         int length = 0;
         char T1_T2[] = new char[2];
 
@@ -45,45 +75,64 @@ public class ServerToClientMessageAdaptor {
 
         getTileTerrain(T1_T2);
         message.setTile(new Tile(T1_T2[0], T1_T2[1]));
+        */
+        Message message = new Message();
+        String[] strArr = inputMessage.split(" ");
 
-        return message;
-    }
-
-    private Message translateBothPlayerMessage() {
-        int length = 0;
-
-        length = getNumLength();
-        message.setGID(inputMessage.substring(currentPosition - length, currentPosition));
-
-        length = getNumLength();
-        message.setMove(Integer.parseInt(inputMessage.substring(currentPosition - length, currentPosition)));
-
-        length = getPIDLength();
-        message.setPID(inputMessage.substring(currentPosition  - length, currentPosition));
-
-        if (inputMessage.charAt(++currentPosition) == 'P') {
-            settupMoveMade();
+        message.setGID(strArr[1]);
+        message.setMove(Integer.parseInt(strArr[3]));
+        message.setPID(strArr[5]);
+        if(strArr[6].charAt(0) == 'P'){
+            parseMove(message);
         }
-        else {
+        else{
             message.isGameOver = true;
         }
 
         return message;
     }
 
-    private int getPIDLength() {
+    private void parseMove(Message message){
+        String[] strArr = inputMessage.split(" ");
 
-        int i = currentPosition + 8;
-        int j = i;
-        while(inputMessage.charAt(j) != ' ') {
-            ++j;
+        char t1 = strArr[7].split("\\+")[0].charAt(0);
+        char t2 = strArr[7].split("\\+")[1].charAt(0);
+        message.setTile(new Tile(t1, t2));
+
+        int x = Integer.parseInt(strArr[9]);
+        int z = Integer.parseInt(strArr[11]);
+        message.setTilePoint(new Point(x, z));
+        int o = Integer.parseInt(strArr[12]);
+        message.getTile().setOrientation(o);
+
+        if(strArr[13].equals("FOUNDED")){
+            message.setBuild(BuildOptions.NEW_SETTLEMENT);
+            x = Integer.parseInt(strArr[16]);
+            z = Integer.parseInt(strArr[18]);
+            message.setBuildPoint(new Point(x, z));
         }
-
-        currentPosition = j;
-        return j - i;
+        else if(strArr[13].equals("EXPANDED")){
+            message.setBuild(BuildOptions.EXPAND);
+            x = Integer.parseInt(strArr[16]);
+            z = Integer.parseInt(strArr[18]);
+            message.setBuildPoint(new Point(x, z));
+            message.setTerrain(strArr[19].charAt(0));
+        }
+        else if(strArr[14].equals("TOTORO")){
+            message.setBuild(BuildOptions.TOTORO_SANCTUARY);
+            x = Integer.parseInt(strArr[17]);
+            z = Integer.parseInt(strArr[19]);
+            message.setBuildPoint(new Point(x, z));
+        }
+        else{//TIGER
+            message.setBuild(BuildOptions.TIGER_PLAYGROUND);
+            x = Integer.parseInt(strArr[17]);
+            z = Integer.parseInt(strArr[19]);
+            message.setBuildPoint(new Point(x, z));
+        }
     }
 
-    private void settupMoveMade() {
+    /*private void settupMoveMade() {
         int length = 0;
         int x, y, z, orientation;
         char T1_T2[] = new char[2];
@@ -196,6 +245,6 @@ public class ServerToClientMessageAdaptor {
             valueOfString = (int) ((int) (inputMessage.charAt(i) - 48) * Math.pow(10, currentPosition - i - 1));
         }
         return valueOfString;
-    }
+    }*/
 
 }

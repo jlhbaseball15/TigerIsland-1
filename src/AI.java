@@ -1,6 +1,6 @@
-
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
@@ -9,8 +9,8 @@ import java.util.*;
 public class AI implements Runnable{
     private static GameBoard gameboard;
     private static GameRules gamerules;
-    private Queue<Message> inMessages;
-    private Queue<Message> outMessage;
+    private ConcurrentLinkedQueue<Message> inMessages;
+    private ConcurrentLinkedQueue<Message> outMessage;
     private Message mIN = new Message();
     private Message mOUT = new Message();
     private Point tilePlacement[];
@@ -29,7 +29,8 @@ public class AI implements Runnable{
 
 
 
-    public AI(boolean areWeFirst, Queue<Message> in, Queue<Message> out, String pid){
+
+    public AI(boolean areWeFirst, ConcurrentLinkedQueue<Message> in, ConcurrentLinkedQueue<Message> out, String pid){
         gameboard =  new GameBoard();
         gameboard.addStartingTile();
         isFirst = areWeFirst;
@@ -76,53 +77,35 @@ public class AI implements Runnable{
     public void run() {
         if(isFirst) {
             while(true) {
-                while (inMessages.isEmpty()) {  // wait for my turn
+                while (inMessages.isEmpty())
+                    ;
+                mIN = inMessages.remove();
+                System.out.println("1st Player");
+                System.out.println(mIN.originalMessage);
+
+                if(mIN.isMove) {
+
+                    mOUT = new Message();
+                    mOUT.setMove(mIN.getMove());
+                    mOUT.setGID(mIN.getGID());
+
+                    decideTilePlacement(mIN.getTile());
+                    decideBuildType();
+
+
+                    outMessage.add(mOUT);
+
                 }
-
-                mIN = inMessages.remove();
-
-                mOUT = new Message();
-                mOUT.setMove(mIN.getMove());
-                mOUT.setGID(mIN.getGID());
-
-                decideTilePlacement(mIN.getTile());
-                decideBuildType();
-
-                outMessage.add(mOUT);
-
-                while (inMessages.isEmpty()) {
-                } // did server think my move was valid?
-
-                mIN = inMessages.remove();
-
-                if (PID.equals(mIN.getPID())) {
-                    if(mIN.getIsGameOver()) {
+                else if (PID.equals(mIN.getPID())) {
+                    if (mIN.getIsGameOver()) {
                         break;
                     }
                 }
                 else {
-                    if(mIN.getIsGameOver()) {
+                    if (mIN.getIsGameOver()) {
                         break;
                     }
 
-                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
-                }
-
-                while (inMessages.isEmpty()) {  // my opponents move, hope he/she lost!
-                }
-
-                mIN = inMessages.remove();
-
-                if (PID.equals(mIN.getPID())) {
-                    if(mIN.getIsGameOver()) {
-                        break;
-                    }
-                }
-                else {
-                    if(mIN.getIsGameOver()) {
-                        break;
-                    }
 
                     oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
                     oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
@@ -132,55 +115,38 @@ public class AI implements Runnable{
         else {
             while(true) {
 
-                while (inMessages.isEmpty()) {  // my opponents move, hope he/she lost!
-                }
-
-                mIN = inMessages.remove();
-
-                if (PID.equals(mIN.getPID())) {
-                    if(mIN.getIsGameOver()) {
-                        break;
-                    }
-                }
-                else {
-                    if(mIN.getIsGameOver()) {
-                        break;
-                    }
-
-                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
-                }
-
                 while (inMessages.isEmpty()) {  // wait for my turn
                 }
-
                 mIN = inMessages.remove();
+                System.out.println("2nd Player");
+                System.out.println(mIN.originalMessage);
 
-                mOUT = new Message();
-                mOUT.setMove(mIN.getMove());
-                mOUT.setGID(mIN.getGID());
+                if(mIN.isMove) {
 
-                decideTilePlacement(mIN.getTile());
-                decideBuildType();
+                    mOUT = new Message();
+                    mOUT.setMove(mIN.getMove());
+                    mOUT.setGID(mIN.getGID());
 
-                outMessage.add(mOUT);
+                    decideTilePlacement(mIN.getTile());
+                    decideBuildType();
 
-                while (inMessages.isEmpty()) {} // did server think my move was valid?
+                    outMessage.add(mOUT);
 
-                mIN = inMessages.remove();
-
-                if (PID.equals(mIN.getPID())) {
-                    if(mIN.getIsGameOver()) {
-                        break;
-                    }
                 }
                 else {
-                    if(mIN.getIsGameOver()) {
-                        break;
+                    if (PID.equals(mIN.getPID())) {
+                        if (mIN.getIsGameOver()) {
+                            break;
+                        }
+                    } else {
+                        if (mIN.getIsGameOver()) {
+                            break;
+                        }
+
+                        oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                        oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                     }
 
-                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                 }
             }
         }
@@ -260,6 +226,7 @@ public class AI implements Runnable{
                 decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                 piece = Pieces.P1_VILLAGER;
                 whenToPlacetotoro++;
+
             }
         }
         Point tryPieceLocation = lastTilePlacedLocations[1];
@@ -277,6 +244,7 @@ public class AI implements Runnable{
 
             }
         }
+
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
         if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
