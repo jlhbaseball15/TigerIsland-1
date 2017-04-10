@@ -21,8 +21,11 @@ public class AI implements Runnable{
     private int smallestXcord;
     private int smallestYcord;
     private Player ourPlayer;
-    int whenToPlacetotoro;
+    private int whenToPlacetotoro;
     private boolean isFirst;
+    private boolean notThefirstPiece;
+    private Point lastPiecePlaced;
+
 
 
 
@@ -41,6 +44,7 @@ public class AI implements Runnable{
         gamerules = new GameRules(gameboard);
         inMessages = in;
         outMessage = out;
+        notThefirstPiece = false;
     }
 
     public AI(boolean areWeFirst){
@@ -56,6 +60,7 @@ public class AI implements Runnable{
         settlementBuilder = new SettlementBuilder();
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
+        notThefirstPiece = false;
     }
 
     public Message removeOutMessage() {
@@ -209,17 +214,37 @@ public class AI implements Runnable{
     public void decideBuildType(){
         Pieces piece = Pieces.NONE;
         BuildOptions decidedBuildOptions = BuildOptions.NOOP;
-        if((whenToPlacetotoro >= 5) && (ourPlayer.gettotorosRemaining() > 0)){
+        if((whenToPlacetotoro > 4) && (ourPlayer.gettotorosRemaining() > 0)){
             decidedBuildOptions = BuildOptions.TOTORO_SANCTUARY;
             piece = Pieces.P1_TOTORO;
             whenToPlacetotoro = 0;
         }else {
-            if ((whenToPlacetotoro < 5) && (ourPlayer.getvillagersRemaining() > 0)) {
+            if ((whenToPlacetotoro <= 4) && (ourPlayer.getvillagersRemaining() > 0)) {
                 decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                 piece = Pieces.P1_VILLAGER;
+                whenToPlacetotoro++;
             }
-            whenToPlacetotoro++;
-           while( !performBuild(decidedBuildOptions, lastTilePlacedLocations[0], piece) ) {}
+        }
+        Point tryPieceLocation = lastTilePlacedLocations[1];
+        if(notThefirstPiece){
+            tryPieceLocation = lastPiecePlaced;
+        }else {
+            tryPieceLocation = new Point(tryPieceLocation.x + 1, tryPieceLocation.y);
+        }
+        while( !performBuild(decidedBuildOptions, tryPieceLocation, piece) ) {
+            if(tryPieceLocation.x >= smallestXcord-1){
+                tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
+            }else{
+
+                System.out.println("ERROR");
+
+            }
+        }
+        notThefirstPiece = true;
+        lastPiecePlaced = tryPieceLocation;
+        System.out.println(lastPiecePlaced.x + " " + lastPiecePlaced.y);
+        if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
+            lastPiecePlaced =  new Point(lastPiecePlaced.x-2,lastPiecePlaced.y);
         }
     }
 
@@ -232,6 +257,7 @@ public class AI implements Runnable{
                 gameboard.addVillagerToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
                 gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                ourPlayer.villagersBeingPlaced(gameboard.getHexAtPointP(location).getLevel());
                 mOUT.setBuild(BuildOptions.NEW_SETTLEMENT);
                 mOUT.setBuildPoint(location);
                 return true;
@@ -244,6 +270,7 @@ public class AI implements Runnable{
                 gamerules.tryToAddTotoro(ourPlayer, location, new Point(location.x+1, location.y));
                 gameboard.addTotoroToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
+                ourPlayer.totoroBeingPlaced();
                 gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
                 mOUT.setBuild(BuildOptions.TOTORO_SANCTUARY);
                 mOUT.setBuildPoint(location);
@@ -258,6 +285,7 @@ public class AI implements Runnable{
                 gameboard.addTigerToBoard(true, location);
                 settlementBuilder.calculateSettlements(gameboard);
                 gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                ourPlayer.tigerBeingPlaced();
                 mOUT.setBuild(BuildOptions.TIGER_PLAYGROUND);
                 mOUT.setBuildPoint(location);
                 return true;
@@ -270,6 +298,7 @@ public class AI implements Runnable{
         }
         if(buildtype == BuildOptions.NOOP) {
             mOUT.setBuild(BuildOptions.NOOP); // last resort
+            System.out.println("placed all villagers and totoros.");
             return true;
         }
         return false;
