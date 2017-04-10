@@ -226,7 +226,6 @@ public class AI implements Runnable{
                 decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                 piece = Pieces.P1_VILLAGER;
                 whenToPlacetotoro++;
-
             }
         }
         Point tryPieceLocation = lastTilePlacedLocations[1];
@@ -236,15 +235,23 @@ public class AI implements Runnable{
             tryPieceLocation = new Point(tryPieceLocation.x + 1, tryPieceLocation.y);
         }
         while( !performBuild(decidedBuildOptions, tryPieceLocation, piece) ) {
-            if(tryPieceLocation.x >= smallestXcord-1){
+            if(tryPieceLocation.x >= smallestXcord-3){
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
             }else{
+                if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
+                    if(ourPlayer.gettotorosRemaining() > 0) {
+                        decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
+                        tryPieceLocation = lastPiecePlaced;
+                    }else{
+                        decidedBuildOptions = BuildOptions.NOOP;
+                    }
 
-                System.out.println("ERROR");
+                }else{
+                    decidedBuildOptions = BuildOptions.NOOP;
+                }
 
             }
         }
-
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
         if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
