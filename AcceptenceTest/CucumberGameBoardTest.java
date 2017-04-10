@@ -185,6 +185,7 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, p);
             Assert.assertTrue(false);
         } catch (GameRulesException e) {
+           // System.out.println(e.getMessage());
             char [] expected = "A settlement cannot be destroyed".toCharArray();
             char [] actual = e.getMessage().toCharArray();
 
@@ -248,4 +249,172 @@ public class CucumberGameBoardTest {
         }
     }
 
+    @Given("^the Tile is placed over just one Tile$")
+    public void thetileisplacedontopofanotheritle() throws Throwable{
+        board = new GameBoard();
+        rules = new GameRules(board);
+        deck = new Deck();
+        tile = deck.getTile();
+        tileLocations = new Point[3];
+        tileLocations[0] = new Point(0,0);
+        tileLocations[1] = new Point(1,0);
+        tileLocations[2] = new Point(0,1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, tileLocations);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, tileLocations);
+    }
+    @When("^the Tile is placed$")
+    public void Isthetileontopofanother(){
+        tile = deck.getTile();
+        Point p[] = new Point [3];
+        p[0] = new Point(0, 0);
+        p[1] = new Point(1, 0);
+        p[2] = new Point(0, 1);
+
+        try {
+            rules.TryToAddTile(tile, p);
+            Assert.assertTrue(true);
+        } catch (GameRulesException e) {
+            //System.out.println(e.getMessage());
+            char [] expected = "The Tile Is Directly Over Another Tile".toCharArray();
+            char [] actual = e.getMessage().toCharArray();
+
+            Assert.assertArrayEquals(expected, actual);
+        }
+    }
+    @Then("^the Tile is not added to the Map$")
+    public void thetileisnotadded(){
+        Assert.assertEquals(1, board.getHexAtPointP(0, 0).getLevel());
+    }
+
+    @Given("^the Volcano TerrainType is not placed over another Volcano$")
+    public void thevolcanoesdontmatch(){
+        board = new GameBoard();
+        rules = new GameRules(board);
+        deck = new Deck();
+        Point p[] = new Point[3];
+
+        p[0] = new Point(0, 0);
+        p[1] = new Point(1, 0);
+        p[2] = new Point(0, 1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+
+        p[0] = new Point(2, 1);
+        p[1] = new Point(2, 0);
+        p[2] = new Point(1, 1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+    }
+    @When("^the Tile is Placed$")
+    public void placingthetilewithmismatchvolcanoes(){
+        tile = deck.getTile();
+        Point p[] = new Point [3];
+        p[0] = new Point(1, 1);
+        p[1] = new Point(0, 1);
+        p[2] = new Point(1, 0);
+
+        try {
+            rules.TryToAddTile(tile, p);
+            Assert.assertTrue(true);
+        } catch (GameRulesException e) {
+           // System.out.println(e.getMessage());
+            char [] expected = "The Tile's Volcano Is Not Aligned With A Volcano Hex".toCharArray();
+            char [] actual = e.getMessage().toCharArray();
+
+            Assert.assertArrayEquals(expected, actual);
+        }
+    }
+
+    @Then("^the Tile is not added to the map$")
+    public void thevolcaneotileisnotplaced(){
+            Assert.assertEquals(1, board.getHexAtPointP(1, 0).getLevel());
+    }
+
+    @Given("^the Tile is placed over different leveled Tiles$")
+    public void tileisondifferentlevels(){
+        board = new GameBoard();
+        rules = new GameRules(board);
+        deck = new Deck();
+        Point p[] = new Point[3];
+
+        p[0] = new Point(0, 0);
+        p[1] = new Point(1, 0);
+        p[2] = new Point(0, 1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+
+        p[0] = new Point(2, 1);
+        p[1] = new Point(2, 0);
+        p[2] = new Point(1, 1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+        p[0] = new Point(1, -1);
+        p[1] = new Point(1, -2);
+        p[2] = new Point(2, -2);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+        p[0] = new Point(1, 0);
+        p[1] = new Point(0, 1);
+        p[2] = new Point(1, 1);
+        tile = deck.getTile();
+        try {
+            rules.TryToAddTile(tile, p);
+        } catch(GameRulesException e) {
+            Assert.assertTrue(false);
+        }
+        board.addTile(tile, p);
+    }
+    @When("^The Tile is placed$")
+    public void placingantileonunevenlevels(){
+        tile = deck.getTile();
+        Point p[] = new Point [3];
+        p[0] = new Point(0, 0);
+        p[1] = new Point(1, -1);
+        p[2] = new Point(1, 0);
+
+        try {
+            rules.TryToAddTile(tile, p);
+            Assert.assertTrue(true);
+        } catch (GameRulesException e) {
+          //  System.out.println(e.getMessage());
+            char [] expected = "The Tile Is Located Over Different Leveled Tiles".toCharArray();
+            char [] actual = e.getMessage().toCharArray();
+
+            Assert.assertArrayEquals(expected, actual);
+        }
+    }
+    @Then("^the Tile is Not added to the Map$")
+    public void theunevenleveltileisnotplaced(){
+        Assert.assertEquals(2, board.getHexAtPointP(1, 0).getLevel());
+    }
 }
