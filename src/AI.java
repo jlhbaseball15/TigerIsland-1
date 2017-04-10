@@ -23,13 +23,13 @@ public class AI implements Runnable{
     private Player ourPlayer;
     private int whenToPlacetotoro;
     private boolean isFirst;
+    private String PID;
     private boolean notThefirstPiece;
     private Point lastPiecePlaced;
 
 
 
-
-    public AI(boolean areWeFirst, Queue<Message> in, Queue<Message> out){
+    public AI(boolean areWeFirst, Queue<Message> in, Queue<Message> out, String pid){
         gameboard =  new GameBoard();
         gameboard.addStartingTile();
         isFirst = areWeFirst;
@@ -44,6 +44,7 @@ public class AI implements Runnable{
         gamerules = new GameRules(gameboard);
         inMessages = in;
         outMessage = out;
+        PID = pid;
         notThefirstPiece = false;
     }
 
@@ -61,6 +62,7 @@ public class AI implements Runnable{
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
         notThefirstPiece = false;
+
     }
 
     public Message removeOutMessage() {
@@ -88,12 +90,23 @@ public class AI implements Runnable{
 
                 outMessage.add(mOUT);
 
-                while (inMessages.isEmpty()) {} // did server think my move was valid?
+                while (inMessages.isEmpty()) {
+                } // did server think my move was valid?
 
                 mIN = inMessages.remove();
 
-                if(mIN.getIsGameOver()) {
-                    break;
+                if (PID.equals(mIN.getPID())) {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
+                }
+                else {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
+
+                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                 }
 
                 while (inMessages.isEmpty()) {  // my opponents move, hope he/she lost!
@@ -101,12 +114,19 @@ public class AI implements Runnable{
 
                 mIN = inMessages.remove();
 
-                if(mIN.getIsGameOver()) {
-                    break;
+                if (PID.equals(mIN.getPID())) {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
                 }
+                else {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
 
-                oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                }
             }
         }
         else {
@@ -117,12 +137,19 @@ public class AI implements Runnable{
 
                 mIN = inMessages.remove();
 
-                if(mIN.getIsGameOver()) {
-                    break;
+                if (PID.equals(mIN.getPID())) {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
                 }
+                else {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
 
-                oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                }
 
                 while (inMessages.isEmpty()) {  // wait for my turn
                 }
@@ -142,8 +169,18 @@ public class AI implements Runnable{
 
                 mIN = inMessages.remove();
 
-                if(mIN.getIsGameOver()) {
-                    break;
+                if (PID.equals(mIN.getPID())) {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
+                }
+                else {
+                    if(mIN.getIsGameOver()) {
+                        break;
+                    }
+
+                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                 }
             }
         }
@@ -349,4 +386,6 @@ public class AI implements Runnable{
     }
 
 }
+
+
 
