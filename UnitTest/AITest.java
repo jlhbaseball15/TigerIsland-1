@@ -298,11 +298,10 @@ public class AITest {
     @Test
     public void completedGameAIPlaced() {
         ourAI = new AI(true);
-        for(int i = 0; i<5;i++) {
+        for(int i = 0; i<4;i++) {
             tile = new Tile('J','R');
             ourAI.decideTilePlacement(tile);
             ourAI.decideBuildType();
-
 
             tile2 = new Tile('G', 'L');
             ourAI.decideTilePlacement(tile2);
@@ -329,11 +328,15 @@ public class AITest {
         ourAI.decideBuildType();
 
 
-        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(0,-1).getPiece());
-        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-1,-1).getPiece());
-        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-2,-1).getPiece());
-        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-3,-1).getPiece());
-        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-4,-1).getPiece());
-        Assert.assertEquals(Pieces.P1_TOTORO, ourAI.returnGameBoard().getHexAtPointP(-5,-1).getPiece());
+        Assert.assertEquals(Pieces.P1_TOTORO, ourAI.returnGameBoard().getHexAtPointP(-5, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-7, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-8, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-9, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-10, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-11, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_TOTORO, ourAI.returnGameBoard().getHexAtPointP(-12, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-14, -1).getPiece());
+
+
     }
 }

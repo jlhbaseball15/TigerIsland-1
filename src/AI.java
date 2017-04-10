@@ -242,7 +242,6 @@ public class AI implements Runnable{
         }
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
-        System.out.println(lastPiecePlaced.x + " " + lastPiecePlaced.y);
         if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
             lastPiecePlaced =  new Point(lastPiecePlaced.x-2,lastPiecePlaced.y);
         }
