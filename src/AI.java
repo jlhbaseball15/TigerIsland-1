@@ -7,10 +7,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Saulo on 4/4/2017.
  */
 public class AI implements Runnable{
-    private static GameBoard gameboard;
-    private static GameRules gamerules;
-    private ConcurrentLinkedQueue<Message> inMessages;
-    private ConcurrentLinkedQueue<Message> outMessage;
+    private GameBoard gameboard;
+    private GameRules gamerules;
+    private volatile ConcurrentLinkedQueue<Message> inMessages;
+    private volatile ConcurrentLinkedQueue<Message> outMessage;
     private Message mIN = new Message();
     private Message mOUT = new Message();
     private Point tilePlacement[];
@@ -75,13 +75,19 @@ public class AI implements Runnable{
     }
 
     public void run() {
+        boolean running = true;
         if(isFirst) {
             while(true) {
-                while (inMessages.isEmpty())
-                    ;
+                while (inMessages.isEmpty()) {  // wait for my turn
+                    if(Thread.interrupted()) {
+                        running = false;
+                        break;
+                    }
+                }
+                if (!running) {
+                    break;
+                }
                 mIN = inMessages.remove();
-                System.out.println("1st Player");
-                System.out.println(mIN.originalMessage);
 
                 if(mIN.isMove) {
 
@@ -116,10 +122,15 @@ public class AI implements Runnable{
             while(true) {
 
                 while (inMessages.isEmpty()) {  // wait for my turn
+                    if(Thread.interrupted()) {
+                        running = false;
+                        break;
+                    }
+                }
+                if (!running) {
+                    break;
                 }
                 mIN = inMessages.remove();
-                System.out.println("2nd Player");
-                System.out.println(mIN.originalMessage);
 
                 if(mIN.isMove) {
 
@@ -205,6 +216,9 @@ public class AI implements Runnable{
         int x = (int)location.getX();
         int y = (int)location.getY();
         Point tileLocation[] = gameboard.rotate(location, rotation);
+        for(Point p: tileLocation){
+            System.out.println(p);
+        }
         gameboard.addTile(tile, tileLocation);
 
         lastTilePlacedLocations[0] = tileLocation[0];
@@ -234,8 +248,11 @@ public class AI implements Runnable{
         }else {
             tryPieceLocation = new Point(tryPieceLocation.x + 1, tryPieceLocation.y);
         }
-        while( !performBuild(decidedBuildOptions, tryPieceLocation, piece) ) {
-            if(tryPieceLocation.x >= smallestXcord-3){
+
+        int count = 0;
+        while( !performBuild(decidedBuildOptions, tryPieceLocation, piece) && count < 10) {
+            if(tryPieceLocation.x >= smallestXcord-1){
+
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
             }else{
                 if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
@@ -251,6 +268,10 @@ public class AI implements Runnable{
                 }
 
             }
+            ++count;
+        }
+        if (count >= 10) {
+            decidedBuildOptions = BuildOptions.NOOP;
         }
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
