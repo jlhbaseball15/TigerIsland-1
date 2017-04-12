@@ -256,7 +256,7 @@ public class AI implements Runnable{
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
             }else{
                 if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
-                    if(ourPlayer.gettotorosRemaining() > 0) {
+                    if(ourPlayer.getvillagersRemaining() > 0) {
                         decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                         tryPieceLocation = lastPiecePlaced;
                     }else{
