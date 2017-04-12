@@ -186,7 +186,6 @@ public class GameBoardTest {
         hexPoints[2] = new Point(2, -4);
         gameBoard.addTile(tile, hexPoints);
 
-        // done adding tiles //
         ArrayList<Point> expansionMap;
 
         try {

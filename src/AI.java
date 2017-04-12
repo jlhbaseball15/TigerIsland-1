@@ -29,6 +29,7 @@ public class AI implements Runnable{
 
 
 
+
     public AI(boolean areWeFirst, ConcurrentLinkedQueue<Message> in, ConcurrentLinkedQueue<Message> out, String pid){
         gameboard =  new GameBoard();
         gameboard.addStartingTile();
@@ -97,6 +98,7 @@ public class AI implements Runnable{
                     decideTilePlacement(mIN.getTile());
                     decideBuildType();
 
+
                     outMessage.add(mOUT);
 
                 }
@@ -109,6 +111,7 @@ public class AI implements Runnable{
                     if (mIN.getIsGameOver()) {
                         break;
                     }
+
 
                     oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
                     oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
@@ -154,6 +157,7 @@ public class AI implements Runnable{
                         oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
                         oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                     }
+
                 }
             }
         }
@@ -236,6 +240,7 @@ public class AI implements Runnable{
                 decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                 piece = Pieces.P1_VILLAGER;
                 whenToPlacetotoro++;
+
             }
         }
         Point tryPieceLocation = lastTilePlacedLocations[1];
@@ -258,6 +263,7 @@ public class AI implements Runnable{
         if (count >= 10) {
             decidedBuildOptions = BuildOptions.NOOP;
         }
+
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
         if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
