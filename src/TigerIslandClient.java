@@ -104,6 +104,9 @@ public class TigerIslandClient{
 
 		moveProtocol(writer, reader);
 
+		aiP1.interrupt();
+		aiP2.interrupt();
+
 		//System.out.println(reader.readLine()); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
 		//System.out.println(reader.readLine()); //GAME <gid> OVER PLAYER <pid> <score> PLAYER <pid> <score>
 	}
