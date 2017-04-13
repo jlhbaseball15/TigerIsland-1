@@ -39,7 +39,7 @@ public class GameBoardTest {
     public void GettingMap() {
         tile = deck.getTile();
         gameBoard.addTile(tile, hexPoints);
-       HashMap<Point, Hex> currentBoard = gameBoard.getMap();
+        HashMap<Point, Hex> currentBoard = gameBoard.getMap();
         Assert.assertEquals('V', currentBoard.get(new Point(1,1)).getTerrain());
     }
 
