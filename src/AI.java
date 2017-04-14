@@ -50,7 +50,7 @@ public class AI implements Runnable{
         outMessage = out;
         PID = pid;
         notThefirstPiece = false;
-        verticalBranchLocation = 0;
+        verticalBranchLocation = -2;
         timesTotoroBuildInterrupted = 0;
     }
 
@@ -286,7 +286,7 @@ public class AI implements Runnable{
                             if(isFirst) {
                                 verticalBranchLocation = 2;
                             }else{
-                                verticalBranchLocation = 0;
+                                verticalBranchLocation = -2;
                             }
                             notThefirstPiece = false;
                             timesTotoroBuildInterrupted = -100;
