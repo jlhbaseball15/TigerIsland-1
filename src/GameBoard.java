@@ -57,7 +57,7 @@ public class GameBoard {
         ++currentTile;
     }
 
-    public void addVillagerToBoard(boolean playerNumber, Point buildLocation) {
+    public void addVillagerToBoard(boolean playerNumber, Point buildLocation) throws NullPointerException{
         Hex currentHex = getHexAtPointP(buildLocation);
         if (playerNumber) {
             currentHex.setOccupied(Pieces.P1_VILLAGER, currentHex.getLevel());
