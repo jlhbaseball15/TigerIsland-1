@@ -339,7 +339,7 @@ public class GameRules {
         }
     }
 
-    public void tryToAddTotoro(Player player, Point buildLocation, Point settlement) throws GameRulesException{
+    public void tryToAddTotoro(Player player, Point buildLocation, Point settlement) throws GameRulesException, NullPointerException{
         CurrentPlayer = player;
 
         for (Settlement s: settlements) {
@@ -406,7 +406,7 @@ public class GameRules {
         return (sizeOfSettlement < settlementSizeForTotoro);
     }
 
-    private boolean isOnVolcano(Point location){
+    private boolean isOnVolcano(Point location) throws NullPointerException{
         char terrainOfHex = board.retrieveTerrainFromHex(location);
 
         return (terrainOfHex == 'V');
