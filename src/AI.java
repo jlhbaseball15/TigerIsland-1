@@ -178,38 +178,45 @@ public class AI implements Runnable{
         }
     }
 
-    public void decideTilePlacement(Tile tile){
-        boolean tilePlaced = false;
-        tilePlacement = new Point[3];
-        for (int vertical = verticalBranchLocation; vertical < biggestYcord+3; vertical++) {
+    public void decideTilePlacement(Tile tile) {
+        if (!isFirst) {
+            verticalBranchLocation = 2;
+        }
+            boolean tilePlaced = false;
+            tilePlacement = new Point[3];
+            for (int vertical = verticalBranchLocation; vertical < biggestYcord + 3; vertical++) {
 
-            for (int horizontal = smallestXcord-3; horizontal < biggestXcord+3; horizontal++) {
+                for (int horizontal = smallestXcord - 3; horizontal < biggestXcord + 3; horizontal++) {
 
-                tilePlacement[0] = new Point(horizontal,vertical-1);
-                tilePlacement[1] = new Point(horizontal+1,vertical-1);
-                tilePlacement[2] = new Point(horizontal,vertical);
-                try {
-                    gamerules.TryToAddTile(tile, tilePlacement);
-                    gameboard.addTile(tile, tilePlacement);
-                    mOUT.setTile(tile);
-                    mOUT.setTilePoint(tilePlacement[2]);
-                    mOUT.setOrientation(gameboard.findOrientation(tilePlacement));
-                    tilePlaced = true;
-                } catch(GameRulesException e) {
-                    tilePlaced = false;
+                    tilePlacement[0] = new Point(horizontal, vertical - 1);
+                    tilePlacement[1] = new Point(horizontal + 1, vertical - 1);
+                    if(isFirst) {
+                        tilePlacement[2] = new Point(horizontal, vertical - 2);
+                    }else{
+                        tilePlacement[2] = new Point(horizontal, vertical);
+                    }
+                    try {
+                        gamerules.TryToAddTile(tile, tilePlacement);
+                        gameboard.addTile(tile, tilePlacement);
+                        mOUT.setTile(tile);
+                        mOUT.setTilePoint(tilePlacement[2]);
+                        mOUT.setOrientation(gameboard.findOrientation(tilePlacement));
+                        tilePlaced = true;
+                    } catch (GameRulesException e) {
+                        tilePlaced = false;
+                    }
+                    if (tilePlaced) {
+                        break;
+                    }
                 }
-                if(tilePlaced) {
+                if (tilePlaced) {
+                    lastTilePlacedLocations[0] = tilePlacement[0];
+                    lastTilePlacedLocations[1] = tilePlacement[1];
+                    lastTilePlacedLocations[2] = tilePlacement[2];
+                    maxAndMinCord();
                     break;
                 }
             }
-            if(tilePlaced) {
-                lastTilePlacedLocations[0] = tilePlacement[0];
-                lastTilePlacedLocations[1] = tilePlacement[1];
-                lastTilePlacedLocations[2] = tilePlacement[2];
-                maxAndMinCord();
-                break;
-            }
-        }
     }
 
     public void maxAndMinCord(){
@@ -275,8 +282,12 @@ public class AI implements Runnable{
                         decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                         tryPieceLocation = lastPiecePlaced;
                         whenToPlacetotoro = 5;
-                        if(timesTotoroBuildInterrupted >= 2){
-                            verticalBranchLocation = 2;
+                        if(timesTotoroBuildInterrupted >= 1){
+                            if(isFirst) {
+                                verticalBranchLocation = 2;
+                            }else{
+                                verticalBranchLocation = 0;
+                            }
                             notThefirstPiece = false;
                             timesTotoroBuildInterrupted = -100;
                             whenToPlacetotoro =0;
