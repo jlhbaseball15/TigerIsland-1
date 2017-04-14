@@ -103,7 +103,8 @@ public class ServerToClientMessageAdaptor {
         int z = Integer.parseInt(strArr[11]);
         message.setTilePoint(new Point(x, z));
         int o = Integer.parseInt(strArr[12]);
-        message.getTile().setOrientation(o);
+        message.getTile().setOrientation(o - 1);
+        message.setOrientation(o - 1);
 
         if(strArr[13].equals("FOUNDED")){
             message.setBuild(BuildOptions.NEW_SETTLEMENT);
