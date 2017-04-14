@@ -26,6 +26,8 @@ public class AI implements Runnable{
     private String PID;
     private boolean notThefirstPiece;
     private Point lastPiecePlaced;
+    private int verticalBranchLocation;
+    private int timesTotoroBuildInterrupted;
 
 
 
@@ -47,6 +49,8 @@ public class AI implements Runnable{
         outMessage = out;
         PID = pid;
         notThefirstPiece = false;
+        verticalBranchLocation = 0;
+        timesTotoroBuildInterrupted = 0;
     }
 
     public AI(boolean areWeFirst){
@@ -63,6 +67,8 @@ public class AI implements Runnable{
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
         notThefirstPiece = false;
+        verticalBranchLocation = 0;
+        timesTotoroBuildInterrupted = 0;
 
     }
 
@@ -166,7 +172,7 @@ public class AI implements Runnable{
     public void decideTilePlacement(Tile tile){
         boolean tilePlaced = false;
         tilePlacement = new Point[3];
-        for (int vertical = 0; vertical < biggestYcord+3; vertical++) {
+        for (int vertical = verticalBranchLocation; vertical < biggestYcord+3; vertical++) {
             for (int horizontal = smallestXcord-3; horizontal < biggestXcord+3; horizontal++) {
                 tilePlacement[0] = new Point(horizontal,vertical-1);
                 tilePlacement[1] = new Point(horizontal+1,vertical-1);
@@ -259,6 +265,12 @@ public class AI implements Runnable{
                     if(ourPlayer.getvillagersRemaining() > 0) {
                         decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                         tryPieceLocation = lastPiecePlaced;
+                        if(timesTotoroBuildInterrupted >= 2){
+                            verticalBranchLocation = 2;
+                            notThefirstPiece = false;
+                            timesTotoroBuildInterrupted = 0;
+                        }
+                        timesTotoroBuildInterrupted = timesTotoroBuildInterrupted+1;
                     }else{
                         decidedBuildOptions = BuildOptions.NOOP;
                     }
