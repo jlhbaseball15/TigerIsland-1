@@ -32,6 +32,7 @@ public class AI implements Runnable{
 
 
 
+
     public AI(boolean areWeFirst, ConcurrentLinkedQueue<Message> in, ConcurrentLinkedQueue<Message> out, String pid){
         gameboard =  new GameBoard();
         gameboard.addStartingTile();
@@ -120,7 +121,11 @@ public class AI implements Runnable{
 
 
                     oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                    oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                 try {
+                     oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                 } catch(NullPointerException e) {
+
+                 }
                 }
             }
         }
@@ -161,7 +166,11 @@ public class AI implements Runnable{
                         }
 
                         oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
-                        oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                        try {
+                            oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
+                        } catch(NullPointerException e) {
+
+                        }
                     }
 
                 }
@@ -173,7 +182,9 @@ public class AI implements Runnable{
         boolean tilePlaced = false;
         tilePlacement = new Point[3];
         for (int vertical = verticalBranchLocation; vertical < biggestYcord+3; vertical++) {
+
             for (int horizontal = smallestXcord-3; horizontal < biggestXcord+3; horizontal++) {
+
                 tilePlacement[0] = new Point(horizontal,vertical-1);
                 tilePlacement[1] = new Point(horizontal+1,vertical-1);
                 tilePlacement[2] = new Point(horizontal,vertical);
@@ -187,11 +198,11 @@ public class AI implements Runnable{
                 } catch(GameRulesException e) {
                     tilePlaced = false;
                 }
-                if(tilePlaced == true) {
+                if(tilePlaced) {
                     break;
                 }
             }
-            if(tilePlaced == true) {
+            if(tilePlaced) {
                 lastTilePlacedLocations[0] = tilePlacement[0];
                 lastTilePlacedLocations[1] = tilePlacement[1];
                 lastTilePlacedLocations[2] = tilePlacement[2];
@@ -222,9 +233,6 @@ public class AI implements Runnable{
         int x = (int)location.getX();
         int y = (int)location.getY();
         Point tileLocation[] = gameboard.rotate(location, rotation);
-        for(Point p: tileLocation){
-            System.out.println(p);
-        }
         gameboard.addTile(tile, tileLocation);
 
         lastTilePlacedLocations[0] = tileLocation[0];
@@ -241,11 +249,13 @@ public class AI implements Runnable{
             decidedBuildOptions = BuildOptions.TOTORO_SANCTUARY;
             piece = Pieces.P1_TOTORO;
             whenToPlacetotoro = 0;
-        }else {
+        }
+        else {
             if ((whenToPlacetotoro <= 4) && (ourPlayer.getvillagersRemaining() > 0)) {
                 decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                 piece = Pieces.P1_VILLAGER;
                 whenToPlacetotoro++;
+
             }
         }
         Point tryPieceLocation = lastTilePlacedLocations[1];
@@ -255,10 +265,9 @@ public class AI implements Runnable{
             tryPieceLocation = new Point(tryPieceLocation.x + 1, tryPieceLocation.y);
         }
 
-        int count = 0;
-        while( !performBuild(decidedBuildOptions, tryPieceLocation, piece) && count < 10) {
+        int tempXLoc = tryPieceLocation.x;
+        while( !performBuild(decidedBuildOptions, tryPieceLocation, piece)) {
             if(tryPieceLocation.x >= smallestXcord-1){
-
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
             }else{
                 if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
@@ -282,11 +291,8 @@ public class AI implements Runnable{
                 }
 
             }
-            ++count;
         }
-        if (count >= 10) {
-            decidedBuildOptions = BuildOptions.NOOP;
-        }
+
         notThefirstPiece = true;
         lastPiecePlaced = tryPieceLocation;
         if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY){
@@ -340,7 +346,7 @@ public class AI implements Runnable{
             }
         }
         if(buildtype == BuildOptions.EXPAND) {
-            return false;  // we are not expanding as of now
+            return false;
         }
         if(buildtype == BuildOptions.NOOP) {
             mOUT.setBuild(BuildOptions.NOOP); // last resort
@@ -349,7 +355,7 @@ public class AI implements Runnable{
         return false;
     }
 
-    public void oponentBuild(BuildOptions buildtype, Point location, char terrain){
+    public void oponentBuild(BuildOptions buildtype, Point location, char terrain) throws NullPointerException{
 
         if(buildtype == BuildOptions.NEW_SETTLEMENT) {
             gameboard.addVillagerToBoard(false, location);
