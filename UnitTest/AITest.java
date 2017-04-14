@@ -361,6 +361,41 @@ public class AITest {
         Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-2, -1).getPiece());
         Assert.assertEquals(Pieces.P2_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-3, -1).getPiece());
         Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-4, -1).getPiece());
+    }
+    public void placeAllVillagersWithEnemies() {
+        for(int x = 0; x <6; x++) {
+            ourAI = new AI(true);
+            tile = new Tile('J', 'R');
+            ourAI.decideTilePlacement(tile);
+            ourAI.decideBuildType();
 
+            tile2 = new Tile('G', 'L');
+            ourAI.oppoentsTilePlacement(tile2, new Point(-4, 0), 0);
+            ourAI.oponentBuild(BuildOptions.NEW_SETTLEMENT, new Point(-3, -1), 'L');
+
+            tile3 = new Tile('R', 'G');
+            ourAI.decideTilePlacement(tile3);
+            ourAI.decideBuildType();
+
+            tile4 = new Tile('G', 'L');
+            ourAI.decideTilePlacement(tile4);
+            ourAI.decideBuildType();
+
+            tile5 = new Tile('R', 'G');
+            ourAI.decideTilePlacement(tile5);
+            ourAI.decideBuildType();
+        }
+
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(0, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-1, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-2, -1).getPiece());
+        Assert.assertEquals(Pieces.P2_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-3, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-4, -1).getPiece());
+
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-5, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-6, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-7, -1).getPiece());
+        Assert.assertEquals(Pieces.P2_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-8, -1).getPiece());
+        Assert.assertEquals(Pieces.P1_VILLAGER, ourAI.returnGameBoard().getHexAtPointP(-9, -1).getPiece());
     }
 }

@@ -26,7 +26,9 @@ public class AI implements Runnable{
     private String PID;
     private boolean notThefirstPiece;
     private Point lastPiecePlaced;
-    private int countMovesForTilePlacement;
+    private int verticalBranchLocation;
+    private int timesTotoroBuildInterrupted;
+
 
 
 
@@ -48,7 +50,8 @@ public class AI implements Runnable{
         outMessage = out;
         PID = pid;
         notThefirstPiece = false;
-        countMovesForTilePlacement = 0;
+        verticalBranchLocation = 0;
+        timesTotoroBuildInterrupted = 0;
     }
 
     public AI(boolean areWeFirst){
@@ -65,6 +68,8 @@ public class AI implements Runnable{
         whenToPlacetotoro = 0;
         gamerules = new GameRules(gameboard);
         notThefirstPiece = false;
+        verticalBranchLocation = 0;
+        timesTotoroBuildInterrupted = 0;
 
     }
 
@@ -176,7 +181,7 @@ public class AI implements Runnable{
     public void decideTilePlacement(Tile tile){
         boolean tilePlaced = false;
         tilePlacement = new Point[3];
-        for (int vertical = 0; vertical < biggestYcord+3; vertical++) {
+        for (int vertical = verticalBranchLocation; vertical < biggestYcord+3; vertical++) {
 
             for (int horizontal = smallestXcord-3; horizontal < biggestXcord+3; horizontal++) {
 
@@ -264,11 +269,27 @@ public class AI implements Runnable{
         while( !performBuild(decidedBuildOptions, tryPieceLocation, piece)) {
             if(tryPieceLocation.x >= smallestXcord-1){
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
-            }else if (decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
-                decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
-                tryPieceLocation.x = tempXLoc;
-            }else {
-                decidedBuildOptions = BuildOptions.NOOP;
+            }else{
+                if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
+                    if(ourPlayer.getvillagersRemaining() > 0) {
+                        decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
+                        tryPieceLocation = lastPiecePlaced;
+                        if(timesTotoroBuildInterrupted >= 2){
+                            verticalBranchLocation = 2;
+                            notThefirstPiece = false;
+                            timesTotoroBuildInterrupted = 0;
+                        }else {
+                            whenToPlacetotoro = 5;
+                        }
+                        timesTotoroBuildInterrupted = timesTotoroBuildInterrupted+1;
+                    }else{
+                        decidedBuildOptions = BuildOptions.NOOP;
+                    }
+
+                }else{
+                    decidedBuildOptions = BuildOptions.NOOP;
+                }
+
             }
         }
 
