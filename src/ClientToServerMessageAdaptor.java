@@ -38,8 +38,7 @@ public class ClientToServerMessageAdaptor {
             buildMessage = "FOUND SETTLEMENT AT " + x + " " + y + " " + z;
         }
         else if (build == BuildOptions.EXPAND) {
-            buildMessage = "EXPAND SETTLEMENT AT " + x + " " + y + " " + z + " ";
-            buildMessage += getTerrainFromMessage();
+            buildMessage = "EXPAND SETTLEMENT AT " + x + " " + y + " " + z + " " + getTerrainFromMessage();
         }
         else if (build == BuildOptions.TOTORO_SANCTUARY) {
             buildMessage = "BUILD TOTORO SANCTUARY AT " + x + " " + y + " " + z;

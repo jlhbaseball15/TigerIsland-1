@@ -1,12 +1,10 @@
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+
+import java.awt.*;
+import java.util.ArrayList;
 public class CucumberTotoro {
     private GameBoard board;
     private GameRules rules;
@@ -83,7 +81,6 @@ public class CucumberTotoro {
 
         Settlementslist.add(chosensettlement);
         rules.setSettlements(Settlementslist);
-       // board.addVillagerToBoard(true, new Point(-1, -1));
 
     }
     @When("^a Totoro is placed$")
