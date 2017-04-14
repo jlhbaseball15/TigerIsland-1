@@ -269,6 +269,8 @@ public class AI implements Runnable{
                             verticalBranchLocation = 2;
                             notThefirstPiece = false;
                             timesTotoroBuildInterrupted = 0;
+                        }else {
+                            whenToPlacetotoro = 5;
                         }
                         timesTotoroBuildInterrupted = timesTotoroBuildInterrupted+1;
                     }else{
