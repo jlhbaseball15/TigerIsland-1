@@ -117,7 +117,7 @@ public class GameBoard {
         return boardGame.get(hexOfInterest).getLevel();
     }
 
-    public char retrieveTerrainFromHex(Point hexOfInterest) {
+    public char retrieveTerrainFromHex(Point hexOfInterest) throws NullPointerException {
         return boardGame.get(hexOfInterest).getTerrain();
     }
 

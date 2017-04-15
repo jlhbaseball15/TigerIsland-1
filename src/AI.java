@@ -267,21 +267,23 @@ public class AI implements Runnable{
 
         int tempXLoc = tryPieceLocation.x;
         while( !performBuild(decidedBuildOptions, tryPieceLocation, piece)) {
-            if(tryPieceLocation.x >= smallestXcord-1){
+            if(tryPieceLocation.x >= smallestXcord-3){
                 tryPieceLocation = new Point(tryPieceLocation.x-1,tryPieceLocation.y);
             }else{
                 if(decidedBuildOptions == BuildOptions.TOTORO_SANCTUARY) {
                     if(ourPlayer.getvillagersRemaining() > 0) {
                         decidedBuildOptions = BuildOptions.NEW_SETTLEMENT;
                         tryPieceLocation = lastPiecePlaced;
+                        whenToPlacetotoro = 5;
                         if(timesTotoroBuildInterrupted >= 2){
                             verticalBranchLocation = 2;
                             notThefirstPiece = false;
-                            timesTotoroBuildInterrupted = 0;
+                            timesTotoroBuildInterrupted = -100;
+                            whenToPlacetotoro =0;
+                            tryPieceLocation = new Point(0,1);
                         }else {
-                            whenToPlacetotoro = 5;
+                            timesTotoroBuildInterrupted = timesTotoroBuildInterrupted+1;
                         }
-                        timesTotoroBuildInterrupted = timesTotoroBuildInterrupted+1;
                     }else{
                         decidedBuildOptions = BuildOptions.NOOP;
                     }
@@ -316,6 +318,9 @@ public class AI implements Runnable{
             }catch(GameRulesException e){
                 return false;
             }
+            catch(NullPointerException e) {
+            return false;
+            }
         }
         if(buildtype == BuildOptions.TOTORO_SANCTUARY) {
             try {
@@ -328,6 +333,8 @@ public class AI implements Runnable{
                 mOUT.setBuildPoint(location);
                 return true;
             }catch(GameRulesException e){
+                return false;
+            }catch(NullPointerException e) {
                 return false;
             }
         }
@@ -402,6 +409,5 @@ public class AI implements Runnable{
     }
 
 }
-
 
 
