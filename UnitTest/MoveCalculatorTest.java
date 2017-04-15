@@ -165,10 +165,10 @@ public class MoveCalculatorTest {
 
         gameBoard.getHexAtPointP(new Point(0, 0)).setLevel(10);
 
-        int tigerListNum = moveCalculator.possibleTigerPlacementNum(testPlayer1);
+        int tigerListNum = moveCalculator.possibleTigerPlacementNum(true, testPlayer1);
         Assert.assertEquals(1, tigerListNum);
 
-        int num2 = moveCalculator.possibleTigerPlacementNum(testPlayer2);
+        int num2 = moveCalculator.possibleTigerPlacementNum(false, testPlayer2);
         Assert.assertEquals(0, num2);
     }
 
@@ -188,7 +188,7 @@ public class MoveCalculatorTest {
     }
 
     @Test
-    public void tigerListWithValidSpot() {
+    public void totoroListWithValidSpot() {
         Settlement settle = new Settlement();
         ArrayList<Settlement> settlements = new ArrayList<>();
 
@@ -266,11 +266,52 @@ public class MoveCalculatorTest {
         settlements.add(settle);
         gameRules.setSettlements(settlements);
 
-        int num = moveCalculator.possibleTotoroPlacementNum(testPlayer1);
-        Assert.assertEquals(1, num);
+        int num = moveCalculator.possibleTotoroPlacementNum(true, testPlayer1);
+        Assert.assertEquals(2, num);
 
-        int num2 = moveCalculator.possibleTotoroPlacementNum(testPlayer2);
+        int num2 = moveCalculator.possibleTotoroPlacementNum(false, testPlayer2);
         Assert.assertEquals(0, num2);
+    }
+
+    @Test
+    public void expansionListWithThreeTilesPlacedAndTwoDiffSettlements() {
+        Settlement settle1 = new Settlement();
+        Settlement settle2 = new Settlement();
+        ArrayList<Settlement> settlements = new ArrayList<>();
+
+        tile = new Tile('J', 'J');
+        hexPoints = new Point [3];
+        hexPoints[0] = new Point (0,-1);
+        hexPoints[1] = new Point (1,-1);
+        hexPoints[2] = new Point (0,0);
+        gameBoard.addTile(tile, hexPoints);
+
+
+        tile = new Tile('G', 'G');
+        hexPoints[0] = new Point(1, 0);
+        hexPoints[1] = new Point(2, -1);
+        hexPoints[2] = new Point(2, 0);
+        gameBoard.addTile(tile, hexPoints);
+
+        tile = new Tile('G', 'G');
+        hexPoints[0] = new Point(3,0);
+        hexPoints[1] = new Point(3, -1);
+        hexPoints[2] = new Point(4, -1);
+
+        gameBoard.getHexAtPointP(new Point(0, -1)).setOccupied(Pieces.P2_VILLAGER, 1);
+        settle1.addPointToSettlement(new Point(0, -1));
+        settlements.add(settle1);
+        gameBoard.getHexAtPointP(new Point(2, -1)).setOccupied(Pieces.P1_VILLAGER, 1);
+        settle2.addPointToSettlement(new Point(2, -1));
+        settlements.add(settle2);
+
+        gameRules.setSettlements(settlements);
+
+        int num = moveCalculator.possibleSettlementExpandNum(true, testPlayer1);
+        Assert.assertEquals(2, num);
+
+        int num2 = moveCalculator.possibleSettlementExpandNum(false, testPlayer2);
+        Assert.assertEquals(1, num2);
     }
 
     public void checkIfEveryPlacementIsValid(ArrayList<Point[]>[] placementList) {

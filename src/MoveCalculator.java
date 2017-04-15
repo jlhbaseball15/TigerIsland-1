@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by scott on 4/11/17.
@@ -30,19 +31,26 @@ public class MoveCalculator {
     }
 
 
-    public int possibleTigerPlacementNum(Player player) {
-        ArrayList<Point> tigerPlacementArray = getTigerPlacementArrayList(player);
+    public int possibleTigerPlacementNum(boolean isPlayer1, Player player) {
+        ArrayList<Point> tigerPlacementArray = getTigerPlacementArrayList(isPlayer1, player);
         return tigerPlacementArray.size();
     }
 
-    public int possibleTotoroPlacementNum(Player player) {
-        ArrayList<Point> totoroPlacementArray = getTotoroPlacementArrayList(player);
+    public int possibleTotoroPlacementNum(boolean isPlayer1, Player player) {
+        ArrayList<Point> totoroPlacementArray = getTotoroPlacementArrayList(isPlayer1, player);
         return totoroPlacementArray.size();
     }
-    /*
-    public int possibleSettlementExpandNum(Player player) {
 
-    }*/
+    public int possibleSettlementExpandNum(boolean isPlayer1, Player player) {
+        HashMap<Character, ArrayList<Point>> expansionPlacementMap = getExpandSettlementHashMap(isPlayer1, player);
+        int num = 0;
+        // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
+        char terrainTypes[] = {'J', 'R', 'L', 'G'};
+        for (int i = 0; i < terrainTypes.length; i++) {
+            num += expansionPlacementMap.get(terrainTypes[i]).size();
+        }
+        return num;
+    }
 
     public ArrayList<Point[]>[] getTilePlacementArrayList(Tile tileToBePlayed) {
         Point[] hexLocations;
@@ -120,7 +128,48 @@ public class MoveCalculator {
         return possiblePlacementsArrayList;
     }
 
-    public ArrayList<Point> getTigerPlacementArrayList(Player player) {
+    public HashMap<Character, ArrayList<Point>> getExpandSettlementHashMap(boolean isPlayer1, Player player) {
+        Point hexLocation;
+        HashMap<Character, ArrayList<Point>> possiblePlacementsHashMap = new HashMap<>();
+        //build hashmap with terrainTypes
+        // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
+        char terrainTypes[] = {'J', 'R', 'L', 'G'};
+        for (int i = 0; i < terrainTypes.length; i++) {
+            ArrayList<Point> newList = new ArrayList<>();
+            possiblePlacementsHashMap.put(terrainTypes[i], newList);
+        }
+
+        //if player doesn't have any villagers then return 0
+        if (player.getvillagersRemaining() == 0) {
+            return possiblePlacementsHashMap;
+        }
+
+        //cycle through y coords
+        for (int coordX = 0; coordX < maxCoord; coordX++) {
+            //cycle through x coords
+            for (int coordY = 0; coordY < maxCoord; coordY++) {
+                //Positive coords
+                hexLocation = new Point(coordX, coordY);
+                tryToAddExpandSettlementLocation(isPlayer1, player, hexLocation, possiblePlacementsHashMap);
+
+                //Negative xCoord
+                hexLocation = new Point(coordX * -1, coordY);
+                tryToAddExpandSettlementLocation(isPlayer1, player, hexLocation, possiblePlacementsHashMap);
+
+                //Negative yCoord
+                hexLocation = new Point(coordX, coordY * -1);
+                tryToAddExpandSettlementLocation(isPlayer1, player, hexLocation, possiblePlacementsHashMap);
+
+                //Negative xCoord and yCoord
+                hexLocation = new Point(coordX * -1, coordY * -1);
+                tryToAddExpandSettlementLocation(isPlayer1, player, hexLocation, possiblePlacementsHashMap);
+            }
+        }
+        return possiblePlacementsHashMap;
+
+    }
+
+    public ArrayList<Point> getTigerPlacementArrayList(boolean isPlayer1, Player player) {
         Point hexLocation;
         ArrayList<Point> possiblePlacementsArrayList = new ArrayList<>();
 
@@ -135,25 +184,25 @@ public class MoveCalculator {
             for (int coordY = 0; coordY < maxCoord; coordY++) {
                 //Positive coords
                 hexLocation = new Point(coordX, coordY);
-                tryToAddTiger(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTiger(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative xCoord
                 hexLocation = new Point(coordX * -1, coordY);
-                tryToAddTiger(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTiger(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative yCoord
                 hexLocation = new Point(coordX, coordY * -1);
-                tryToAddTiger(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTiger(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative xCoord and yCoord
                 hexLocation = new Point(coordX * -1, coordY * -1);
-                tryToAddTiger(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTiger(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
             }
         }
         return possiblePlacementsArrayList;
     }
 
-    public ArrayList<Point> getTotoroPlacementArrayList(Player player) {
+    public ArrayList<Point> getTotoroPlacementArrayList(boolean isPlayer1, Player player) {
         Point hexLocation;
         ArrayList<Point> possiblePlacementsArrayList = new ArrayList<>();
 
@@ -168,27 +217,23 @@ public class MoveCalculator {
             for (int coordY = 0; coordY < maxCoord; coordY++) {
                 //Positive coords
                 hexLocation = new Point(coordX, coordY);
-                tryToAddTotoro(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTotoro(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative xCoord
                 hexLocation = new Point(coordX * -1, coordY);
-                tryToAddTotoro(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTotoro(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative yCoord
                 hexLocation = new Point(coordX, coordY * -1);
-                tryToAddTotoro(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTotoro(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
 
                 //Negative xCoord and yCoord
                 hexLocation = new Point(coordX * -1, coordY * -1);
-                tryToAddTotoro(player, hexLocation, possiblePlacementsArrayList);
+                tryToAddTotoro(isPlayer1, player, hexLocation, possiblePlacementsArrayList);
             }
         }
         return possiblePlacementsArrayList;
     }
-    /*
-    public Point[] getExpandSettlementArray(Player player) {
-
-    }*/
 
     private Point[] getHexLocationsFromOrient(int orientNum, int volcanoX, int volcanoY) {
         switch (orientNum) {
@@ -259,7 +304,40 @@ public class MoveCalculator {
         }
     }
 
-    private void tryToAddTiger(Player player, Point hexLocation, ArrayList<Point> currentList) {
+    private void tryToAddExpandSettlementLocation(boolean isPlayer1, Player player, Point hexLocation, HashMap<Character, ArrayList<Point>> currentMap) {
+        //check if intended hex is null
+        Hex intendedHex = gameboard.getHexAtPointP(hexLocation);
+        if (intendedHex == null) {
+            return;
+        }
+
+        //check if intendedHex contains player's settlement
+        Pieces piece = intendedHex.getPiece();
+        if(isPlayer1 && !(piece == Pieces.P1_VILLAGER || piece == Pieces.P1_TOTORO || piece == Pieces.P1_TIGER)) {
+            return;
+        }
+        else if(!isPlayer1 && !(piece == Pieces.P2_VILLAGER || piece == Pieces.P2_TOTORO || piece == Pieces.P2_TIGER)) {
+            return;
+        }
+
+        // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
+        char terrainTypeList[] = {'J', 'R', 'L', 'G'};
+
+        //try to expand settlement for each terrain type
+        boolean neighborHexContainsSettlement = false;
+        for (int i = 0; i < terrainTypeList.length; i++) {
+            //check if location and terrain type have already been added to map
+            if (currentMap.get(terrainTypeList[i]).contains(hexLocation)) {
+                continue;
+            }
+            try {
+                gamerules.tryToExpand(player, terrainTypeList[i], hexLocation);
+                currentMap.get(terrainTypeList[i]).add(hexLocation);
+            } catch(GameRulesException e) {}
+        }
+    }
+
+    private void tryToAddTiger(boolean isPlayer1, Player player, Point hexLocation, ArrayList<Point> currentList) {
         int coordX = (int)hexLocation.getX();
         int coordY = (int)hexLocation.getY();
         Point[] hexNeighborLocations = {new Point(coordX, coordY - 1),
@@ -269,22 +347,38 @@ public class MoveCalculator {
                                         new Point(coordX + 1, coordY),
                                         new Point(coordX + 1, coordY - 1)};
 
-
+        //check if it has already been added to list or if intended hex is null
+        Hex intendedHex = gameboard.getHexAtPointP(hexLocation);
+        if (currentList.contains(hexLocation) || intendedHex == null) {
+            return;
+        }
             for (int i = 0; i < hexNeighborLocations.length; i++) {
-                boolean doesHexExist = gameboard.hasTileInMap(hexNeighborLocations[i]);
-                Hex hex = gameboard.getHexAtPointP(hexLocation);
-                //check if hex is null or if it has already been added to list
-                if (hex != null && !currentList.contains(hexLocation)) {
+                Hex Neighborhex = gameboard.getHexAtPointP(hexNeighborLocations[i]);
+                //check if hex is null
+                if (Neighborhex == null) {
+                    continue;
+                }
 
+                //check if NeighborHex contains player's settlement
+                Pieces piece = Neighborhex.getPiece();
+
+                if (isPlayer1 && (Pieces.P1_VILLAGER == piece)) {
                     try {
                         gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
                         currentList.add(hexLocation);
                     } catch(GameRulesException e) {}
                 }
+                else if (!isPlayer1 && (Pieces.P2_VILLAGER == piece)) {
+                    try {
+                        gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
+                        currentList.add(hexLocation);
+                    } catch(GameRulesException e) {}
+                }
+
             }
     }
 
-    private void tryToAddTotoro(Player player, Point hexLocation, ArrayList<Point> currentList) {
+    private void tryToAddTotoro(boolean isPlayer1, Player player, Point hexLocation, ArrayList<Point> currentList) {
         int coordX = (int)hexLocation.getX();
         int coordY = (int)hexLocation.getY();
         Point[] hexNeighborLocations = {new Point(coordX, coordY - 1),
@@ -294,13 +388,29 @@ public class MoveCalculator {
                 new Point(coordX + 1, coordY),
                 new Point(coordX + 1, coordY - 1)};
 
+        //check if it has already been added to list or if intended hex is null
+        Hex intendedHex = gameboard.getHexAtPointP(hexLocation);
+        if (currentList.contains(hexLocation) || intendedHex == null) {
+            return;
+        }
 
         for (int i = 0; i < hexNeighborLocations.length; i++) {
-            boolean doesHexExist = gameboard.hasTileInMap(hexNeighborLocations[i]);
-            Hex hex = gameboard.getHexAtPointP(hexLocation);
-            //check if hex is null or if it has already been added to list
-            if (hex != null && !currentList.contains(hexLocation)) {
+            Hex Neighborhex = gameboard.getHexAtPointP(hexNeighborLocations[i]);
+            //check if NeighborHex is null
+            if (Neighborhex == null) {
+                continue;
+            }
 
+            //check if NeighborHex contains player's settlement
+            Pieces piece = Neighborhex.getPiece();
+
+            if (isPlayer1 && (Pieces.P1_VILLAGER == piece)) {
+                try {
+                    gamerules.tryToAddTotoro(player, hexLocation, hexNeighborLocations[i]);
+                    currentList.add(hexLocation);
+                } catch(GameRulesException e) {}
+            }
+            else if (!isPlayer1 && (Pieces.P2_VILLAGER == piece)) {
                 try {
                     gamerules.tryToAddTotoro(player, hexLocation, hexNeighborLocations[i]);
                     currentList.add(hexLocation);
