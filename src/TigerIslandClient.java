@@ -96,8 +96,8 @@ public class TigerIslandClient{
 
 		p1InMessages.clear(); p2InMessages.clear(); p1OutMessages.clear(); p2OutMessages.clear();
 
-		aiP1 = new Thread(new AI(true, p1InMessages, p1OutMessages, PID));
-		aiP2 = new Thread(new AI(false, p2InMessages, p2OutMessages, PID));
+		aiP1 = new Thread(new AIMaster(true, p1InMessages, p1OutMessages, PID));
+		aiP2 = new Thread(new AIMaster(false, p2InMessages, p2OutMessages, PID));
 
 		aiP1.start();
 		aiP2.start();

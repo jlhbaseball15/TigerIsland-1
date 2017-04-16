@@ -89,7 +89,7 @@ public class AITest {
 
         Point point = new Point(-3,0);
         tile2 = new Tile('G','J');
-        ourAI.oppoentsTilePlacement(tile2,point,3);
+        ourAI.opponentsTilePlacement(tile2,point,3);
 
         Assert.assertEquals('G', ourAI.returnGameBoard().getHexAtPointP(new Point(-3, 1)).getTerrain());
         Assert.assertEquals('J', ourAI.returnGameBoard().getHexAtPointP(new Point(-4, 1)).getTerrain());
@@ -103,7 +103,7 @@ public class AITest {
 
         Point point = new Point(-4,0);
         tile2 = new Tile('G','J');
-        ourAI.oppoentsTilePlacement(tile2,point,0);
+        ourAI.opponentsTilePlacement(tile2,point,0);
 
         tile = new Tile('R','J');
         ourAI.decideTilePlacement(tile);
@@ -341,7 +341,7 @@ public class AITest {
         ourAI.decideBuildType();
 
         tile2 = new Tile('G', 'L');
-        ourAI.oppoentsTilePlacement(tile2, new Point(-4,0) ,0);
+        ourAI.opponentsTilePlacement(tile2, new Point(-4,0) ,0);
         ourAI.oponentBuild(BuildOptions.NEW_SETTLEMENT,new Point(-3,-1),'L');
 
         tile3 = new Tile('R', 'G');
@@ -370,7 +370,7 @@ public class AITest {
             ourAI.decideBuildType();
 
             tile2 = new Tile('G', 'L');
-            ourAI.oppoentsTilePlacement(tile2, new Point(-4, 0), 0);
+            ourAI.opponentsTilePlacement(tile2, new Point(-4, 0), 0);
             ourAI.oponentBuild(BuildOptions.NEW_SETTLEMENT, new Point(-3, -1), 'L');
 
             tile3 = new Tile('R', 'G');

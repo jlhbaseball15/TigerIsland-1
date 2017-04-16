@@ -40,7 +40,7 @@ public class MoveCalculatorTest {
         gameBoard.addTile(tile, hexPoints);
         tile = deck.getTile();
 
-        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(tile);
+        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(true, tile);
         checkIfEveryPlacementIsValid(placementList);
     }
 
@@ -66,7 +66,7 @@ public class MoveCalculatorTest {
         hexPoints[1] = new Point(1, 0);
         hexPoints[2] = new Point(0, 0);
 
-        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(tile);
+        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(true, tile);
         checkIfEveryPlacementIsValid(placementList);
     }
 
@@ -75,7 +75,7 @@ public class MoveCalculatorTest {
         gameBoard.addStartingTile();
         tile = deck.getTile();
 
-        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(tile);
+        ArrayList<Point[]>[] placementList = moveCalculator.getTilePlacementArrayList(true, tile);
         checkIfEveryPlacementIsValid(placementList);
     }
 
@@ -319,6 +319,7 @@ public class MoveCalculatorTest {
             for (int j = 0; j < placementList[i].size(); j++) {
                 try {
                     gameRules.TryToAddTile(tile, placementList[i].get(j));
+                    System.out.println("Placing Tile: orientation = " + (i+1) + ", x = " + placementList[i].get(j)[2].getX() + ", y =  " + placementList[i].get(j)[2].getY());
                 } catch (GameRulesException e) {
                     Assert.assertTrue(false);
                 }

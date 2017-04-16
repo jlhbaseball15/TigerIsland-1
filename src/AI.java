@@ -120,7 +120,7 @@ public class AI implements Runnable{
                     }
 
 
-                    oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                    opponentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
                  try {
                      oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                  } catch(NullPointerException e) {
@@ -165,7 +165,7 @@ public class AI implements Runnable{
                             break;
                         }
 
-                        oppoentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
+                        opponentsTilePlacement(mIN.getTile(), mIN.getTilePoint(), mIN.getOrientation());
                         try {
                             oponentBuild(mIN.getBuild(), mIN.getBuildPoint(), mIN.getTerrain());
                         } catch(NullPointerException e) {
@@ -229,7 +229,7 @@ public class AI implements Runnable{
         }
     }
 
-    public void oppoentsTilePlacement(Tile tile, Point location, int rotation){
+    public void opponentsTilePlacement(Tile tile, Point location, int rotation){
         int x = (int)location.getX();
         int y = (int)location.getY();
         Point tileLocation[] = gameboard.rotate(location, rotation);

@@ -15,8 +15,8 @@ public class MoveCalculator {
         gamerules = gr;
     }
 
-    public int possibleTilePlacementNum(Tile tileToBePlayed) {
-        ArrayList<Point[]>[] tilePlacementArray =  getTilePlacementArrayList(tileToBePlayed);
+    public int possibleTilePlacementNum(boolean isPlayer1, Tile tileToBePlayed) {
+        ArrayList<Point[]>[] tilePlacementArray =  getTilePlacementArrayList(isPlayer1, tileToBePlayed);
         return (tilePlacementArray[0].size() +
                 tilePlacementArray[1].size() +
                 tilePlacementArray[2].size() +
@@ -52,7 +52,17 @@ public class MoveCalculator {
         return num;
     }
 
-    public ArrayList<Point[]>[] getTilePlacementArrayList(Tile tileToBePlayed) {
+    public int possibleNukeNum(boolean isPlayer1, Tile tileToBePlayed) {
+        ArrayList<Point[]>[] tileNukeArray =  getNukeArrayList(isPlayer1, tileToBePlayed);
+        return (tileNukeArray[0].size() +
+                tileNukeArray[1].size() +
+                tileNukeArray[2].size() +
+                tileNukeArray[3].size() +
+                tileNukeArray[4].size() +
+                tileNukeArray[5].size());
+    }
+
+    public ArrayList<Point[]>[] getTilePlacementArrayList(boolean isPlayer1, Tile tileToBePlayed) {
         Point[] hexLocations;
         ArrayList<Point[]> possiblePlacementsArrayList[] = new ArrayList[6];
         //initialize ArrayList elements
@@ -68,31 +78,58 @@ public class MoveCalculator {
                 for(int orient = 0; orient < 6; orient++) {
                     //Positive volcanoCoords
                     hexLocations = getHexLocationsFromOrient(orient, volcanoLocX, volcanoLocY);
-                    tryToAddTilePlacementLocation(tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
-                    /*try {
-                        gamerules.TryToAddTile(tileToBePlayed, hexLocations);
-                        possiblePlacementsArrayList[orient].add(hexLocations);
-                    } catch(GameRulesException e) {}
-
-                    if (volcanoLocX == 0 && volcanoLocY == 0) {
-                        continue;
-                    }*/
+                    tryToAddTilePlacementLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
 
                     //Negative volcanoCoordX
                     hexLocations = getHexLocationsFromOrient(orient, volcanoLocX * -1, volcanoLocY);
-                    tryToAddTilePlacementLocation(tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
+                    tryToAddTilePlacementLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
 
                     //Negative volcanoCoordY
                     hexLocations = getHexLocationsFromOrient(orient, volcanoLocX, volcanoLocY * -1);
-                    tryToAddTilePlacementLocation(tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
+                    tryToAddTilePlacementLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
 
                     //Negative volcanoCoordX and volcanoCoordY
                     hexLocations = getHexLocationsFromOrient(orient, volcanoLocX * -1, volcanoLocY * -1);
-                    tryToAddTilePlacementLocation(tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
+                    tryToAddTilePlacementLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possiblePlacementsArrayList);
                 }
             }
         }
         return possiblePlacementsArrayList;
+    }
+
+    public ArrayList<Point[]>[] getNukeArrayList(boolean isPlayer1, Tile tileToBePlayed) {
+        Point[] hexLocations;
+        ArrayList<Point[]> possibleNukeArrayList[] = new ArrayList[6];
+        //initialize ArrayList elements
+        for (int i = 0; i < 6; i++) {
+            possibleNukeArrayList[i] = new ArrayList<Point[]>();
+        }
+
+        //cycle through y coords
+        for (int volcanoLocX = 0; volcanoLocX < maxCoord; volcanoLocX++) {
+            //cycle through x coords
+            for (int volcanoLocY = 0; volcanoLocY < maxCoord; volcanoLocY++) {
+                //cycle through orientations
+                for(int orient = 0; orient < 6; orient++) {
+                    //Positive volcanoCoords
+                    hexLocations = getHexLocationsFromOrient(orient, volcanoLocX, volcanoLocY);
+                    tryToAddNukeLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possibleNukeArrayList);
+
+                    //Negative volcanoCoordX
+                    hexLocations = getHexLocationsFromOrient(orient, volcanoLocX * -1, volcanoLocY);
+                    tryToAddNukeLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possibleNukeArrayList);
+
+                    //Negative volcanoCoordY
+                    hexLocations = getHexLocationsFromOrient(orient, volcanoLocX, volcanoLocY * -1);
+                    tryToAddNukeLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possibleNukeArrayList);
+
+                    //Negative volcanoCoordX and volcanoCoordY
+                    hexLocations = getHexLocationsFromOrient(orient, volcanoLocX * -1, volcanoLocY * -1);
+                    tryToAddNukeLocation(isPlayer1, tileToBePlayed, orient, hexLocations, possibleNukeArrayList);
+                }
+            }
+        }
+        return possibleNukeArrayList;
     }
 
     public ArrayList<Point> getNewSettlementArrayList(Player player) {
@@ -131,17 +168,16 @@ public class MoveCalculator {
     public HashMap<Character, ArrayList<Point>> getExpandSettlementHashMap(boolean isPlayer1, Player player) {
         Point hexLocation;
         HashMap<Character, ArrayList<Point>> possiblePlacementsHashMap = new HashMap<>();
+        //if player doesn't have any villagers then return empty list
+        if (player.getvillagersRemaining() == 0) {
+            return possiblePlacementsHashMap;
+        }
         //build hashmap with terrainTypes
         // J = jungle, R = rocky, L = lake, G = grasslands, V = volcano
         char terrainTypes[] = {'J', 'R', 'L', 'G'};
         for (int i = 0; i < terrainTypes.length; i++) {
             ArrayList<Point> newList = new ArrayList<>();
             possiblePlacementsHashMap.put(terrainTypes[i], newList);
-        }
-
-        //if player doesn't have any villagers then return 0
-        if (player.getvillagersRemaining() == 0) {
-            return possiblePlacementsHashMap;
         }
 
         //cycle through y coords
@@ -173,7 +209,7 @@ public class MoveCalculator {
         Point hexLocation;
         ArrayList<Point> possiblePlacementsArrayList = new ArrayList<>();
 
-        //if player doesn't have any villagers then return 0
+        //if player doesn't have any tigers then return empty list
         if (player.gettigersRemaining() == 0) {
             return possiblePlacementsArrayList;
         }
@@ -206,7 +242,7 @@ public class MoveCalculator {
         Point hexLocation;
         ArrayList<Point> possiblePlacementsArrayList = new ArrayList<>();
 
-        //if player doesn't have any villagers then return 0
+        //if player doesn't have any totoros then return empty list
         if (player.gettotorosRemaining() == 0) {
             return possiblePlacementsArrayList;
         }
@@ -265,12 +301,101 @@ public class MoveCalculator {
         return null;
     }
 
-    private void tryToAddTilePlacementLocation(Tile tile, int orient, Point[] hexLocations, ArrayList<Point[]>[] currentArray) {
-        if (currentArray[orient].size() == 0) {
+    private void tryToAddTilePlacementLocation(boolean isPlayer1, Tile tile, int orient, Point[] hexLocations, ArrayList<Point[]>[] currentArray) {
+        //for some reason can not place tile over two volcanoes so I'm preventing it by checking the hexlocations
+        /*int volcanoCount = 0;
+        for (int i = 0; i < hexLocations.length; i++) {
+            Hex interestedHex = gameboard.getHexAtPointP(hexLocations[i]);
+            if (interestedHex == null) {
+                continue;
+            }
+            if (interestedHex.getTerrain() == 'V') {
+                volcanoCount += 1;
+            }
+        }
+
+        if (volcanoCount > 1) {
+            return;
+        }*/
+
+        //check if hex is not null
+        //int numOfOppVillagers = 0;
+        for (int i = 0; i < hexLocations.length; i++) {
+            Hex interestedHex = gameboard.getHexAtPointP(hexLocations[i]);
+            if(interestedHex != null) {
+                return;
+            }
+            /*if ((interestedHex.getPiece() == Pieces.P1_TIGER || interestedHex.getPiece() == Pieces.P1_TOTORO || interestedHex.getPiece() == Pieces.P1_VILLAGER)) {
+                return;
+            }
+            if (interestedHex.getPiece() == Pieces.P2_VILLAGER) {
+                numOfOppVillagers += 1;
+            }
+            //else if (!isPlayer1 && (interestedHex.getPiece() == Pieces.P2_TIGER || interestedHex.getPiece() == Pieces.P2_TOTORO || interestedHex.getPiece() == Pieces.P2_VILLAGER)) {
+            //    return;
+            //}*/
+        }
+        //if(numOfOppVillagers == 1) {
+        //    return;
+        //}
+
+        //check if location is already contained
+        boolean locationContained = false;
+        for (int i = 0; i < currentArray[orient].size(); i++) {
+            Point[] currentPointArray = currentArray[orient].get(i);
+            if ((currentPointArray[2].getX() == hexLocations[2].getX()) && (currentPointArray[2].getY() == hexLocations[2].getY())) {
+                locationContained = true;
+            } else {
+
+            }
+        }
+        if(locationContained == false) {
             try {
                 gamerules.TryToAddTile(tile, hexLocations);
                 currentArray[orient].add(hexLocations);
-            } catch (GameRulesException e) {}
+            } catch (GameRulesException e) {
+            }
+        }
+    }
+
+    private void tryToAddNukeLocation(boolean isPlayer1, Tile tile, int orient, Point[] hexLocations, ArrayList<Point[]>[] currentArray) {
+        //for some reason can not place tile over two volcanoes so I'm preventing it by checking the hexlocations
+        int volcanoCount = 0;
+        for (int i = 0; i < hexLocations.length; i++) {
+            Hex interestedHex = gameboard.getHexAtPointP(hexLocations[i]);
+            if (interestedHex == null) {
+                return;
+            }
+            if (interestedHex.getTerrain() == 'V') {
+                volcanoCount += 1;
+            }
+        }
+
+        if (volcanoCount > 1) {
+            return;
+        }
+
+        //check if hex contains opponents villages and players villagers
+        int numOfOppVillagers = 0;
+        for (int i = 0; i < hexLocations.length; i++) {
+            Hex interestedHex = gameboard.getHexAtPointP(hexLocations[i]);
+            if(interestedHex == null) {
+                return;
+            }
+            if (isPlayer1 && (interestedHex.getPiece() == Pieces.P1_TIGER || interestedHex.getPiece() == Pieces.P1_TOTORO || interestedHex.getPiece() == Pieces.P1_VILLAGER)) {
+                return;
+            }
+            else if (!isPlayer1 && (interestedHex.getPiece() == Pieces.P1_TIGER || interestedHex.getPiece() == Pieces.P1_TOTORO || interestedHex.getPiece() == Pieces.P1_VILLAGER)) {
+                return;
+            }
+            if (isPlayer1 && interestedHex.getPiece() == Pieces.P2_VILLAGER) {
+                numOfOppVillagers += 1;
+            }
+            if (!isPlayer1 && interestedHex.getPiece() == Pieces.P1_VILLAGER) {
+                numOfOppVillagers += 1;
+            }
+        }
+        if(numOfOppVillagers < 2) {
             return;
         }
 
@@ -294,14 +419,19 @@ public class MoveCalculator {
     }
 
     private void tryToAddNewSettlementLocation(Player player, Point hexLocation, ArrayList<Point> currentList) {
-        if (currentList.contains(hexLocation)) {
-
-        } else {
-            try {
-                gamerules.tryToBuildNewSettlement(player, hexLocation);
-                currentList.add(hexLocation);
-            } catch(GameRulesException e) {}
+        if (currentList.contains(hexLocation) || gameboard.getHexAtPointP(hexLocation) == null) {
+            return;
         }
+        if (gameboard.getHexAtPointP(hexLocation).getPiece() != Pieces.NONE) {
+            return;
+        }
+        if (gameboard.getHexAtPointP(hexLocation).getLevel() > 1) {
+            return;
+        }
+        try {
+            gamerules.tryToBuildNewSettlement(player, hexLocation);
+            currentList.add(hexLocation);
+        } catch(GameRulesException e) {}
     }
 
     private void tryToAddExpandSettlementLocation(boolean isPlayer1, Player player, Point hexLocation, HashMap<Character, ArrayList<Point>> currentMap) {
@@ -316,7 +446,7 @@ public class MoveCalculator {
         if(isPlayer1 && !(piece == Pieces.P1_VILLAGER || piece == Pieces.P1_TOTORO || piece == Pieces.P1_TIGER)) {
             return;
         }
-        else if(!isPlayer1 && !(piece == Pieces.P2_VILLAGER || piece == Pieces.P2_TOTORO || piece == Pieces.P2_TIGER)) {
+        if(!isPlayer1 && !(piece == Pieces.P2_VILLAGER || piece == Pieces.P2_TOTORO || piece == Pieces.P2_TIGER)) {
             return;
         }
 
@@ -324,15 +454,16 @@ public class MoveCalculator {
         char terrainTypeList[] = {'J', 'R', 'L', 'G'};
 
         //try to expand settlement for each terrain type
-        boolean neighborHexContainsSettlement = false;
         for (int i = 0; i < terrainTypeList.length; i++) {
             //check if location and terrain type have already been added to map
             if (currentMap.get(terrainTypeList[i]).contains(hexLocation)) {
                 continue;
             }
             try {
-                gamerules.tryToExpand(player, terrainTypeList[i], hexLocation);
-                currentMap.get(terrainTypeList[i]).add(hexLocation);
+                ArrayList<Point> theExpandMap = gamerules.tryToExpand(player, terrainTypeList[i], hexLocation);
+                if(theExpandMap.size() > 0) {
+                    currentMap.get(terrainTypeList[i]).add(hexLocation);
+                }
             } catch(GameRulesException e) {}
         }
     }
@@ -352,30 +483,28 @@ public class MoveCalculator {
         if (currentList.contains(hexLocation) || intendedHex == null) {
             return;
         }
-            for (int i = 0; i < hexNeighborLocations.length; i++) {
-                Hex Neighborhex = gameboard.getHexAtPointP(hexNeighborLocations[i]);
-                //check if hex is null
-                if (Neighborhex == null) {
-                    continue;
-                }
-
-                //check if NeighborHex contains player's settlement
-                Pieces piece = Neighborhex.getPiece();
-
-                if (isPlayer1 && (Pieces.P1_VILLAGER == piece)) {
-                    try {
-                        gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
-                        currentList.add(hexLocation);
-                    } catch(GameRulesException e) {}
-                }
-                else if (!isPlayer1 && (Pieces.P2_VILLAGER == piece)) {
-                    try {
-                        gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
-                        currentList.add(hexLocation);
-                    } catch(GameRulesException e) {}
-                }
-
+        for (int i = 0; i < hexNeighborLocations.length; i++) {
+            Hex Neighborhex = gameboard.getHexAtPointP(hexNeighborLocations[i]);
+            //check if hex is null
+            if (Neighborhex == null) {
+                continue;
             }
+
+            //check if NeighborHex contains player's settlement
+            Pieces piece = Neighborhex.getPiece();
+            if (isPlayer1 && (Pieces.P1_VILLAGER == piece)) {
+                try {
+                    gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
+                    currentList.add(hexLocation);
+                } catch(GameRulesException e) {}
+            }
+            else if (!isPlayer1 && (Pieces.P2_VILLAGER == piece)) {
+                try {
+                    gamerules.tryToAddTiger(player, hexLocation, hexNeighborLocations[i]);
+                    currentList.add(hexLocation);
+                } catch(GameRulesException e) {}
+            }
+        }
     }
 
     private void tryToAddTotoro(boolean isPlayer1, Player player, Point hexLocation, ArrayList<Point> currentList) {
