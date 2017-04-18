@@ -25,7 +25,12 @@ public class ServerToClientMessageAdaptor {
             return translateActivePlayerMessage();
         }
         else {
-            return translateBothPlayerMessage();
+            Message msg = translateBothPlayerMessage();
+            if (!inputMessage.contains("OVER SEND OUTCOME")) {
+                msg.setIsGameOver(false);
+                msg.setForfeit(true);
+            }
+            return msg;
         }
     }
 

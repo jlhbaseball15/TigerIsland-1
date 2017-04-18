@@ -7,6 +7,7 @@ import java.awt.*;
  */
 public class Message {
     boolean isGameOver = false;
+    boolean isForfeit;
     boolean isMove = false;
     String originalMessage = "";
 
@@ -103,4 +104,11 @@ public class Message {
         this.terrain = terrain;
     }
 
+    public boolean isForfeit() {
+        return isForfeit;
+    }
+
+    public void setForfeit(boolean forfeit) {
+        isForfeit = forfeit;
+    }
 }

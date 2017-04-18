@@ -160,6 +160,7 @@ public class AI implements Runnable{
                 else {
                     if (PID.equals(mIN.getPID())) {
                         if (mIN.getIsGameOver()) {
+
                             break;
                         }
                     } else {
