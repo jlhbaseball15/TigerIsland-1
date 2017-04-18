@@ -62,13 +62,13 @@ public class ServerToClientMessageTest {
 
     @Test
     public void CorrectTranslationForFounding() {
-        String input = "GAME 1248 MOVE 6 PLAYER WTF6574MYcar PLACED LAKE+GRASS AT 1 5 2 1 FOUNDED SETTLEMENT AT 2 3 4";
+        String input = "GAME 1248 MOVE 6 PLAYER WTF6574MYcar PLACED PADDY+GRASS AT 1 5 2 1 FOUNDED SETTLEMENT AT 2 3 4";
         mess = StoC.translate(input);
 
         Assert.assertTrue(mess.getGID().equals("1248"));
         Assert.assertTrue(mess.getPID().equals("WTF6574MYcar"));
         Assert.assertEquals(6, mess.getMove());
-        Assert.assertEquals('L', mess.getTile().getHexes()[0].getTerrain());
+        Assert.assertEquals('P', mess.getTile().getHexes()[0].getTerrain());
         Assert.assertEquals('G', mess.getTile().getHexes()[1].getTerrain());
         Assert.assertEquals(new Point(1, 2), mess.getTilePoint());
         Assert.assertEquals(0, mess.getOrientation());
