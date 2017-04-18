@@ -7,6 +7,7 @@ public class Settlement {
     private ArrayList<Point> pointsInSettlement;
     private boolean containsTotoro;
     private boolean containsTiger;
+    private boolean containsShaman;
 
     public Settlement(){
         containsTotoro = false;
@@ -31,9 +32,17 @@ public class Settlement {
 
     public boolean containsTiger(){ return containsTiger; }
 
+    public boolean containsShaman() {
+        return containsShaman;
+    }
+
     public void setTiger(){ containsTiger = true; }
 
     public void setTotoro(){ containsTotoro = true; }
+
+    public void setShaman() {
+        containsShaman = true;
+    }
 
     public ArrayList<Point> getSettlement(){
         return pointsInSettlement;

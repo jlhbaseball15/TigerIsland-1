@@ -9,12 +9,14 @@ public class Player {
     private int villagersRemaining;
     private int totorosRemaining;
     private int tigersRemaining;
+    private int shamanRemaining;
 
     public Player(String playername){
         score = 0;
-        villagersRemaining = 20;
+        villagersRemaining = 19;
         totorosRemaining = 3;
         tigersRemaining = 2;
+        shamanRemaining = 1;
         playerName = playername;
     }
 
@@ -26,6 +28,16 @@ public class Player {
             throw new IndexOutOfBoundsException("tried to place more villagers than available.");
         }
     }
+
+    public void shamanBeingPlaced(int numPlaced) {
+        if (numPlaced <= shamanRemaining) {
+            shamanRemaining -= numPlaced;
+            score += numPlaced * numPlaced;
+        } else {
+            throw new IndexOutOfBoundsException("tried to place more shaman than available");
+        }
+    }
+
     public void totoroBeingPlaced(){
         if(1 <= totorosRemaining) {
             totorosRemaining = totorosRemaining - 1;
@@ -58,6 +70,10 @@ public class Player {
 
     public int gettigersRemaining(){
         return tigersRemaining;
+    }
+
+    public int getShamanRemaining() {
+        return shamanRemaining;
     }
 
     public int getTotalPiecesRemaining() { return villagersRemaining + totorosRemaining + tigersRemaining; }

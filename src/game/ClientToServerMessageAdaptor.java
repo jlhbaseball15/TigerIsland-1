@@ -38,17 +38,15 @@ public class ClientToServerMessageAdaptor {
 
         if (build == BuildOptions.NEW_SETTLEMENT) {
             buildMessage = "FOUND SETTLEMENT AT " + x + " " + y + " " + z;
-        }
-        else if (build == BuildOptions.EXPAND) {
+        } else if (build == BuildOptions.EXPAND_SHANGRILA) {
+            buildMessage = "EXPAND SHANGRILA AT " + x + " " + y + " " + z + " " + getTerrainFromMessage();
+        } else if (build == BuildOptions.EXPAND) {
             buildMessage = "EXPAND SETTLEMENT AT " + x + " " + y + " " + z + " " + getTerrainFromMessage();
-        }
-        else if (build == BuildOptions.TOTORO_SANCTUARY) {
+        } else if (build == BuildOptions.TOTORO_SANCTUARY) {
             buildMessage = "BUILD TOTORO SANCTUARY AT " + x + " " + y + " " + z;
-        }
-        else if (build == BuildOptions.TIGER_PLAYGROUND) {
+        } else if (build == BuildOptions.TIGER_PLAYGROUND) {
             buildMessage = "BUILD TIGER PLAYGROUND AT " + x + " " + y + " " + z;
-        }
-        else { // build == NOOP
+        } else { // build == NOOP
             buildMessage = "UNABLE TO BUILD";
         }
 

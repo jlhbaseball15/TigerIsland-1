@@ -51,4 +51,8 @@ public class Hex {
     public void setLevel(int level) { LevelNumber = level; }
 
     public void setTileNumber(int tile) { TileNumber = tile; }
+
+    public Pieces getOccupied() {
+        return Occupied;
+    }
 }

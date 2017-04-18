@@ -187,6 +187,14 @@ public class GameBoard {
         }
     }
 
+    public void addShamanToBoard(boolean b, Point location) {
+        Hex currentHex = getHexAtPointP(location);
+        if (b) {
+            currentHex.setOccupied(Pieces.P1_SHAMAN, currentHex.getLevel());
+        } else {
+            currentHex.setOccupied(Pieces.P2_SHAMAN, currentHex.getLevel());
+        }
+    }
 }
 
 

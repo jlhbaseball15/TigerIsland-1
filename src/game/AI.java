@@ -324,6 +324,22 @@ public class AI implements Runnable{
             return false;
             }
         }
+        if (buildtype == BuildOptions.NEW_SHANGRILA) {
+            try {
+                gamerules.tryToBuildNewSettlement(ourPlayer, location);
+                gameboard.addShamanToBoard(true, location);
+                settlementBuilder.calculateSettlements(gameboard);
+                gamerules.setSettlements(settlementBuilder.getPlayer1Settlements());
+                ourPlayer.villagersBeingPlaced(gameboard.getHexAtPointP(location).getLevel());
+                mOUT.setBuild(BuildOptions.NEW_SHANGRILA);
+                mOUT.setBuildPoint(location);
+                return true;
+            } catch (GameRulesException e) {
+                return false;
+            } catch (NullPointerException e) {
+                return false;
+            }
+        }
         if(buildtype == BuildOptions.TOTORO_SANCTUARY) {
             try {
                 gamerules.tryToAddTotoro(ourPlayer, location, new Point(location.x+1, location.y));
@@ -354,7 +370,7 @@ public class AI implements Runnable{
                 return false;
             }
         }
-        if(buildtype == BuildOptions.EXPAND) {
+        if (buildtype == BuildOptions.EXPAND || buildtype == BuildOptions.EXPAND_SHANGRILA) {
             return false;
         }
         if(buildtype == BuildOptions.NOOP) {

@@ -109,13 +109,21 @@ public class ServerToClientMessageAdaptor {
         message.setOrientation(o - 1);
 
         if(strArr[13].equals("FOUNDED")){
-            message.setBuild(BuildOptions.NEW_SETTLEMENT);
+            if (strArr[14].equals("SHANGRILA")) {
+                message.setBuild(BuildOptions.NEW_SHANGRILA);
+            } else {
+                message.setBuild(BuildOptions.NEW_SETTLEMENT);
+            }
             x = Integer.parseInt(strArr[16]);
             z = Integer.parseInt(strArr[18]);
             message.setBuildPoint(new Point(x, z));
         }
         else if(strArr[13].equals("EXPANDED")){
-            message.setBuild(BuildOptions.EXPAND);
+            if (strArr[14].equals("SHANGRILA")) {
+                message.setBuild(BuildOptions.EXPAND_SHANGRILA);
+            } else {
+                message.setBuild(BuildOptions.EXPAND);
+            }
             x = Integer.parseInt(strArr[16]);
             z = Integer.parseInt(strArr[18]);
             message.setBuildPoint(new Point(x, z));

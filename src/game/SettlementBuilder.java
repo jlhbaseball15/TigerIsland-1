@@ -54,12 +54,15 @@ public class SettlementBuilder {
 
             //add all neighbors of current point to queue as long as not visited and has piece of same player
             addNeighborsToQueue(currentPoint, visitNext, visited, board);
-
+            if (board.getHexAtPointP(currentPoint).getOccupied() == Pieces.P1_SHAMAN ||
+                    board.getHexAtPointP(currentPoint).getOccupied() == Pieces.P2_SHAMAN) {
+                settlement.setShaman();
+            }
             if(board.getHexAtPointP(currentPoint).getPiece() == Pieces.P1_TIGER ||
                board.getHexAtPointP(currentPoint).getPiece() == Pieces.P2_TIGER){
                 settlement.containsTiger();
             } //settlements that contain Tigers or Totoro have boolean flags set
-            else if(board.getHexAtPointP(currentPoint).getPiece() == Pieces.P1_TOTORO ||
+            if (board.getHexAtPointP(currentPoint).getPiece() == Pieces.P1_TOTORO ||
                     board.getHexAtPointP(currentPoint).getPiece() == Pieces.P2_TOTORO){
                 settlement.containsTotoro();
             }
@@ -94,10 +97,7 @@ public class SettlementBuilder {
     }
 
     private boolean isPlayer1Piece(Hex hex){
-        if(hex.getPiece() == Pieces.P1_TIGER || hex.getPiece() == Pieces.P1_TOTORO|| hex.getPiece() == Pieces.P1_VILLAGER){
-            return true;
-        }
-        return false;
+        return hex.getPiece() == Pieces.P1_TIGER || hex.getPiece() == Pieces.P1_TOTORO || hex.getPiece() == Pieces.P1_VILLAGER;
     }
 
 }
