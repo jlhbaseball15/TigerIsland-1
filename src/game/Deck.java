@@ -3,8 +3,8 @@ package game;
 import java.util.Stack;
 
 public class Deck {
-    private static final int NUM_TERRAIN = 4;
-    private char[] terrain = {'J', 'R', 'L', 'G'};
+    private static final int NUM_TERRAIN = 5;
+    private char[] terrain = {'J', 'R', 'L', 'G', 'P'};
     private Stack<Tile> deck = new Stack<>();
 
     public Deck() {
