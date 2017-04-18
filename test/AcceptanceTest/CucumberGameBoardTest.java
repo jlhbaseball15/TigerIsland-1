@@ -95,7 +95,7 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
             Assert.assertEquals("The game.Tile Is Not Adjacent To An Existing game.Tile", e.getMessage());
-        };
+        }
     }
 
     @Then("^the tile is not added to the map$")
@@ -104,7 +104,7 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
             Assert.assertEquals("The game.Tile Is Not Adjacent To An Existing game.Tile", e.getMessage());
-        };
+        }
     }
 
     //given same as above
@@ -118,7 +118,7 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
             Assert.assertEquals("The game.Tile Is Not Sitting On Three Hexes", e.getMessage());
-        };
+        }
     }
     @Then("^the tile is not added to the map due to the Tile overhanging$")
     public void theTileIsNotAddedduetonotbeinganemptyspot() throws GameRulesException{
@@ -126,7 +126,7 @@ public class CucumberGameBoardTest {
             rules.TryToAddTile(tile, tileLocations);
         }catch (GameRulesException e) {
             Assert.assertEquals("The game.Tile Is Not Sitting On Three Hexes", e.getMessage());
-        };
+        }
     }
 
     @Given("^The tile is placed on two or three tiles at level two or higher$")
